@@ -1,4 +1,4 @@
-package com.greevebite.trackhub.ui.theme
+package com.greevebite.trackhub.core.theme
 
 import androidx.compose.ui.graphics.Color
 

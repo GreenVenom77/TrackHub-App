@@ -74,14 +74,17 @@ dependencies {
 
     // Retrofit
     implementation(libs.retrofit)
-    implementation(libs.converter.gson)
+    implementation(libs.retrofit.converter.moshi)
 
     // OkHttp
     implementation(libs.okhttp)
-    implementation(libs.logging.interceptor)
+    implementation(libs.okhttp.logging.interceptor)
 
     // Supabase
-    implementation(libs.bom)
-    implementation(libs.postgrest.kt)
     implementation(libs.ktor.client.android)
+    implementation(libs.supabase.bom)
+    implementation(libs.supabase.postgrest.kt)
+    implementation(libs.supabase.auth.kt)
+    implementation(libs.supabase.realtime.kt)
+    implementation(libs.supabase.serializer.moshi)
 }

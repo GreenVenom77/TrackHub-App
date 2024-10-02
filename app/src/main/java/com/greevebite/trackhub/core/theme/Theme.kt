@@ -1,4 +1,4 @@
-package com.greevebite.trackhub.ui.theme
+package com.greevebite.trackhub.core.theme
 
 import android.app.Activity
 import android.os.Build
