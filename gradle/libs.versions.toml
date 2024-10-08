@@ -1,6 +1,6 @@
 [versions]
 agp = "8.6.1"
-supabaseBom = "3.0.0"
+navigationCompose = "2.8.2"
 koin = "4.0.0"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
@@ -16,6 +16,7 @@ retrofit = "2.11.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -36,13 +37,7 @@ okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 okhttp-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit" }
-supabase-bom = { module = "io.github.jan-tennert.supabase:bom", version.ref = "supabaseBom" }
-supabase-auth-kt = { module = "io.github.jan-tennert.supabase:auth-kt" }
-supabase-realtime-kt = { module = "io.github.jan-tennert.supabase:realtime-kt" }
-supabase-postgrest-kt = { module = "io.github.jan-tennert.supabase:postgrest-kt" }
-supabase-serializer-moshi = { module = "io.github.jan-tennert.supabase:serializer-moshi", version.ref = "supabaseBom" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-
