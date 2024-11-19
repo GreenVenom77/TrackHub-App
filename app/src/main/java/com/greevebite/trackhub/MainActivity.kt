@@ -4,13 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.Surface
 import com.greevebite.trackhub.core.di.networkModule
 import com.greevebite.trackhub.core.theme.TrackHubTheme
-import com.greevebite.trackhub.core.viewmodel.AppViewModel
+import com.greevebite.trackhub.features.auth.login.screen.LoginScreen
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
-import org.koin.androidx.compose.koinViewModel
 import org.koin.core.context.GlobalContext.startKoin
 
 class MainActivity : ComponentActivity() {
@@ -24,7 +23,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TrackHubTheme {
-
+                Surface {
+                    LoginScreen()
+                }
             }
         }
     }

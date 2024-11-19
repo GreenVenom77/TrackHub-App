@@ -1,48 +1,102 @@
 package com.greevebite.trackhub.features.auth.login.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.greevebite.trackhub.R
+import com.greevebite.trackhub.core.model.OperationType
+import com.greevebite.trackhub.core.model.SupabaseResponse
 import com.greevebite.trackhub.core.theme.TrackHubTheme
-import com.greevebite.trackhub.core.viewmodel.AppViewModel
+import com.greevebite.trackhub.core.viewmodel.SupabaseViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun LoginScreen(appViewModel: AppViewModel = koinViewModel()) {
+fun LoginScreen(supabaseViewModel: SupabaseViewModel = koinViewModel()) {
+    var showDialog by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
+    val context = LocalContext.current
+    val loginState = supabaseViewModel.loginOperationsState.collectAsStateWithLifecycle().value
+
+    LaunchedEffect(loginState) {
+        when (loginState) {
+            is SupabaseResponse.Idle -> {
+                Toast.makeText(context, "Idle state", Toast.LENGTH_SHORT).show()
+            }
+            is SupabaseResponse.Loading -> {
+                Toast.makeText(context, "Loading state", Toast.LENGTH_SHORT).show()
+            }
+            is SupabaseResponse.Success -> {
+                // Handle success, such as navigating to a new screen
+                Toast.makeText(context, "Login successful!", Toast.LENGTH_SHORT).show()
+                supabaseViewModel.resetAuthOperationsState(OperationType.Login)
+            }
+            is SupabaseResponse.Failure -> {
+                errorMessage = loginState.error.message
+                showDialog = true
+            }
+        }
+    }
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = { Text(text = stringResource(R.string.login_failure_title)) },
+            text = { Text(text = errorMessage) },
+            confirmButton = {
+                Button(onClick = {
+                    showDialog = false
+                    supabaseViewModel.resetAuthOperationsState(OperationType.Login)
+                }) {
+                    Text(text = stringResource(R.string.ok))
+                }
+            },
+            properties = DialogProperties(
+                dismissOnBackPress = true,
+                dismissOnClickOutside = true
+            )
+        )
+    }
 
     LoginScreenContent(
         email = email,
         password = password,
         onEmailChange = { email = it },
         onPasswordChange = { password = it },
-        onLoginClick = { appViewModel.loginUser(email, password) }
+        onLoginClick = { supabaseViewModel.loginUser(email, password) }
     )
 }
 
 @Composable
-fun LoginScreenContent(
+private fun LoginScreenContent(
     email: String,
     password: String,
     onEmailChange: (String) -> Unit,
@@ -55,8 +109,8 @@ fun LoginScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
-        .fillMaxSize()
-        .padding(10.dp)
+            .fillMaxSize()
+            .padding(10.dp)
     ) {
         Text(
             text = stringResource(R.string.login_header ),
