@@ -1,4 +1,4 @@
-package com.greevebite.auth.register
+package com.greevebite.auth.presentation.register
 
 sealed interface RegisterAction {
     data class ValidateUsername(val username: String): RegisterAction

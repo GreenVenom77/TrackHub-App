@@ -6,9 +6,9 @@ import com.greevebite.auth.data.repository.RegisterRepositoryImpl
 import com.greevebite.auth.domain.repository.AccountRepository
 import com.greevebite.auth.domain.repository.LoginRepository
 import com.greevebite.auth.domain.repository.RegisterRepository
-import com.greevebite.auth.login.viewmodel.LoginViewModel
-import com.greevebite.auth.register.viewmodel.RegisterViewModel
-import com.greevebite.auth.AccountViewModel
+import com.greevebite.auth.presentation.login.viewmodel.LoginViewModel
+import com.greevebite.auth.presentation.register.viewmodel.RegisterViewModel
+import com.greevebite.auth.presentation.AccountViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 

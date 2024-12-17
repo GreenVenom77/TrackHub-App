@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.Surface
 import com.greevebite.trackhub.ui.theme.TrackHubTheme
-import com.greevebite.auth.login.screen.LoginScreen
+import com.greevebite.auth.presentation.login.screen.LoginScreen
 import com.greevebite.trackhub.navigation.AppNavHost
 
 class MainActivity : ComponentActivity() {

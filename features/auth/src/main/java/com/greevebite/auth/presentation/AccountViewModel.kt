@@ -1,4 +1,4 @@
-package com.greevebite.auth
+package com.greevebite.auth.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.greevebite.auth.domain.repository.AccountRepository

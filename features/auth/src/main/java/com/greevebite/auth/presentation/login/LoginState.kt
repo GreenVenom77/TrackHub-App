@@ -1,4 +1,4 @@
-package com.greevebite.auth.login
+package com.greevebite.auth.presentation.login
 
 import androidx.compose.runtime.Immutable
 import com.greevebite.auth.util.ValidationError

@@ -1,9 +1,9 @@
-package com.greevebite.auth.login.viewmodel
+package com.greevebite.auth.presentation.login.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.greevebite.auth.domain.repository.LoginRepository
-import com.greevebite.auth.login.LoginAction
-import com.greevebite.auth.login.LoginState
+import com.greevebite.auth.presentation.login.LoginAction
+import com.greevebite.auth.presentation.login.LoginState
 import com.greevebite.auth.util.ValidateInput
 import com.greevebite.data.util.SupabaseError
 import com.greevebite.domain.util.Result

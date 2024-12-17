@@ -1,4 +1,4 @@
-package com.greevebite.auth.login.screen
+package com.greevebite.auth.presentation.login.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,9 +17,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.greevebite.auth.R
-import com.greevebite.auth.login.LoginAction
-import com.greevebite.auth.login.LoginState
-import com.greevebite.auth.login.viewmodel.LoginViewModel
+import com.greevebite.auth.presentation.login.LoginAction
+import com.greevebite.auth.presentation.login.LoginState
+import com.greevebite.auth.presentation.login.viewmodel.LoginViewModel
 import com.greevebite.auth.util.ValidationError
 import com.greevebite.domain.util.Result
 import com.greevebite.domain.util.onSuccess

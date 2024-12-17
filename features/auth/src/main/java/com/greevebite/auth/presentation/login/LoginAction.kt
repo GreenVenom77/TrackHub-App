@@ -1,4 +1,4 @@
-package com.greevebite.auth.login
+package com.greevebite.auth.presentation.login
 
 sealed interface LoginAction {
     data class ValidateEmail(val email: String): LoginAction
