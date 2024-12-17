@@ -56,7 +56,6 @@ compose-material-icons-extended = { group = "androidx.compose.material", name = 
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 
 # Dependency Injection with Koin
-koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 koin-android-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 koin-android-compose-navigation = { group = "io.insert-koin", name = "koin-androidx-compose-navigation", version.ref = "koin" }
 
@@ -100,7 +99,6 @@ networking = [
 ]
 
 dependency-injection = [
-    "koin-core",
     "koin-android-compose",
     "koin-android-compose-navigation"
 ]
