@@ -128,11 +128,7 @@ fun OtpContent(
 fun OtpScreenPreview() {
     OtpContent(
         state = OtpState(),
-        focusRequesters = listOf(
-            FocusRequester(),
-            FocusRequester(),
-            FocusRequester(),
-        ),
+        focusRequesters = List(4) { FocusRequester() },
         action = {},
         navigate = {}
     )
