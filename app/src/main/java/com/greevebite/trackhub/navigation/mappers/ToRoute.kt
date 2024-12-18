@@ -7,6 +7,9 @@ fun AppDestination.toRoute(): String {
         is AppDestination.Home -> "home"
         is AppDestination.Login -> "login"
         is AppDestination.Register -> "register"
-        is AppDestination.ForgotPassword -> "forgot_password"
+        is AppDestination.VerifyEmail -> "verify_email"
+        is AppDestination.OTP -> "otp"
+        is AppDestination.ResetPassword -> "reset_password"
+
     }
 }

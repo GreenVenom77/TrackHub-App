@@ -1,4 +1,4 @@
-package com.greevebite.trackhub.ui.theme
+package com.greevebite.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

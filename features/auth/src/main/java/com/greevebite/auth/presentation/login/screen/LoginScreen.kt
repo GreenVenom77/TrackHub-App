@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.greevebite.auth.R
 import com.greevebite.auth.presentation.login.LoginAction
 import com.greevebite.auth.presentation.login.LoginState
@@ -29,15 +30,17 @@ import com.greevebite.ui.presentation.BaseScreen
 
 @Composable
 fun LoginScreen(
-    onSuccessLogin: () -> Unit,
-) {
+    modifier: Modifier = Modifier,
+    onSuccessLogin: () -> Unit
+    ) {
     BaseScreen<LoginViewModel> { viewModel ->
-        val loginState = viewModel.loginState.collectAsState()
+        val loginState = viewModel.loginState.collectAsStateWithLifecycle()
 
         LoginScreenContent(
             state = loginState.value,
             onSuccessLogin = onSuccessLogin,
-            loginAction = viewModel::loginAction
+            loginAction = viewModel::loginAction,
+            modifier = modifier
         )
     }
 }
@@ -46,15 +49,18 @@ fun LoginScreen(
 private fun LoginScreenContent(
     state: LoginState,
     onSuccessLogin: () -> Unit,
-    loginAction: (LoginAction) -> Unit
+    loginAction: (LoginAction) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
+    state.loginResult?.onSuccess { onSuccessLogin() }
+
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(10.dp)
     ) {
@@ -82,10 +88,7 @@ private fun LoginScreenContent(
         )
         AuthCustomButton(
             text = stringResource(R.string.login_btn),
-            onClick = {
-                loginAction(LoginAction.Login(email, password))
-                state.loginResult?.onSuccess { onSuccessLogin() }
-            }
+            onClick = { loginAction(LoginAction.Login(email, password)) }
         )
     }
 }

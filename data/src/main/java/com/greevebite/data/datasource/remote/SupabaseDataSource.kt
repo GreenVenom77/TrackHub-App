@@ -18,7 +18,7 @@ class SupabaseDataSource(supabaseClient: SupabaseClient): RemoteDataSource {
         }
     }
 
-    override suspend fun verifyUserRegistration(email: String, otp: String) {
+    override suspend fun verifyOtp(email: String, otp: String) {
         client.auth.verifyEmailOtp(OtpType.Email.EMAIL, email, otp)
     }
 

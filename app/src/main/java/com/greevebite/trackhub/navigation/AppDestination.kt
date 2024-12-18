@@ -11,7 +11,13 @@ sealed interface AppDestination {
     data object Register: AppDestination
 
     @Serializable
-    data object ForgotPassword: AppDestination
+    data object VerifyEmail: AppDestination
+
+    @Serializable
+    data object OTP: AppDestination
+
+    @Serializable
+    data object ResetPassword: AppDestination
 
     @Serializable
     data object Home: AppDestination

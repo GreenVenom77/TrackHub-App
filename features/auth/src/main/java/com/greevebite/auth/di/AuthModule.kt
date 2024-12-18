@@ -9,6 +9,7 @@ import com.greevebite.auth.domain.repository.RegisterRepository
 import com.greevebite.auth.presentation.login.viewmodel.LoginViewModel
 import com.greevebite.auth.presentation.register.viewmodel.RegisterViewModel
 import com.greevebite.auth.presentation.AccountViewModel
+import com.greevebite.auth.presentation.otp.viewmodel.OtpViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
@@ -28,4 +29,5 @@ val authModule = module {
     viewModelOf(::AccountViewModel)
     viewModelOf(::LoginViewModel)
     viewModelOf(::RegisterViewModel)
+    viewModelOf(::OtpViewModel)
 }

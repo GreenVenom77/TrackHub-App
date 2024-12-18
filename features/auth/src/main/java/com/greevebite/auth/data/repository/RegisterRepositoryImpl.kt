@@ -13,8 +13,4 @@ class RegisterRepositoryImpl(
     ) {
         remoteDataSource.registerUser(email, password, displayName)
     }
-
-    override suspend fun verifyUserRegistration(email: String, otp: String) {
-        remoteDataSource.verifyUserRegistration(email, otp)
-    }
 }
