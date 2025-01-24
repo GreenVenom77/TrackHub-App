@@ -16,6 +16,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven(url = "https://jitpack.io")
     }
 }
 
@@ -23,5 +24,8 @@ rootProject.name = "Track Hub"
 include(":app")
 include(":domain")
 include(":data")
+include(":validation")
+include(":networking")
+include(":navigation")
 include(":ui")
 include(":features:auth")

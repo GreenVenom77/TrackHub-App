@@ -1,13 +1,6 @@
-import java.io.FileInputStream
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-}
-
-val localProperties = Properties().apply {
-    load(FileInputStream(rootProject.file("local.properties")))
 }
 
 android {
@@ -19,9 +12,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-
-        buildConfigField("String", "SUPABASE_URL", "\"${localProperties.getProperty("SUPABASE_URL")}\"")
-        buildConfigField("String", "SUPABASE_KEY", "\"${localProperties.getProperty("SUPABASE_KEY")}\"")
     }
 
     buildTypes {
@@ -40,23 +30,15 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    buildFeatures {
-        buildConfig = true
-    }
 }
 
 dependencies {
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(project(":domain"))
 
-    implementation(libs.bundles.networking)
-    implementation(libs.bundles.dependency.injection)
-    implementation(libs.bundles.data.persistence)
-    implementation(platform(libs.supabase.bom))
-    implementation(libs.bundles.supabase)
+    implementation(libs.bundles.koin)
+    implementation(project(":networking"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

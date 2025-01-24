@@ -51,17 +51,17 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
-    implementation(libs.bundles.dependency.injection)
-    implementation(libs.bundles.data.persistence)
+    implementation(libs.bundles.koin)
     implementation(libs.bundles.compose)
 
     // Navigation
-    implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
     implementation(project(":domain"))
     implementation(project(":data"))
-    implementation(project(":features:auth"))
+    implementation(project(":navigation"))
+    implementation(project(":networking"))
     implementation(project(":ui"))
+    implementation(project(":features:auth"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

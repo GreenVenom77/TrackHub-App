@@ -35,14 +35,8 @@ android {
 dependencies {
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
 
-    implementation(libs.bundles.networking)
-    implementation(libs.bundles.dependency.injection)
-    implementation(libs.bundles.data.persistence)
-    implementation(platform(libs.supabase.bom))
-    implementation(libs.bundles.supabase)
+    implementation(libs.bundles.koin)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

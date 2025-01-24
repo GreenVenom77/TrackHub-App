@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.greevebite.ui"
+    namespace = "com.greenvenom.ui"
     compileSdk = 34
 
     defaultConfig {
@@ -31,23 +31,32 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        compose = true
+    }
 }
 
 dependencies {
+    val lifecycleVersion = "2.8.7"
+    val koin = "4.0.0"
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
     implementation(libs.material)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.ui.tooling.preview)
 
-    implementation(libs.bundles.dependency.injection)
-    implementation(libs.bundles.data.persistence)
-    implementation(libs.bundles.image.loading)
-    implementation(libs.bundles.compose)
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion")
+
+    implementation(platform("io.insert-koin:koin-bom:$koin"))
+    implementation("io.insert-koin:koin-androidx-compose")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.bundles.compose.debug)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
 }

@@ -4,14 +4,12 @@ agp = "8.7.3"
 coreKtx = "1.13.1"
 kotlin = "2.1.0"
 lifecycle = "2.8.7"
-kotlinxSerializationJson = "1.7.3"
+kotlinxSerializationJson = "1.8.0"
 
 # UI
 activityCompose = "1.9.3"
 composeBom = "2024.11.00"
-material3-adaptive = "1.0.0"
 compose-material-icons-extended = "1.7.5"
-navigationCompose = "2.8.4"
 material3 = "1.3.1"
 
 # Testing
@@ -19,15 +17,11 @@ junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 
-# Networking
-supabase = "3.0.0"
-ktor = "3.0.0"
-
 # Dependency Injection
 koin = "4.0.0"
 
 # Data Persistence
-datastore = "1.1.1"
+datastore = "1.1.2"
 
 # Image Loading
 coil = "2.7.0"
@@ -36,11 +30,10 @@ material = "1.12.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
 androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
@@ -51,21 +44,11 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
-androidx-compose-material3-adaptive-navigation = { module = "androidx.compose.material3.adaptive:adaptive-navigation", version.ref = "material3-adaptive" }
-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "compose-material-icons-extended" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 
 # Dependency Injection with Koin
 koin-android-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 koin-android-compose-navigation = { group = "io.insert-koin", name = "koin-androidx-compose-navigation", version.ref = "koin" }
-
-# Networking with Ktor
-ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
-ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
-ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
-ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
-ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
-ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
 
 # Preferences DataStore
 androidx-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
@@ -73,11 +56,7 @@ androidx-datastore = { group = "androidx.datastore", name = "datastore-preferenc
 # Image Loading with Coil
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 
-# Supabase
-supabase-serializer-moshi = { group = "io.github.jan-tennert.supabase", name = "serializer-moshi", version.ref = "supabase" }
-supabase-postgrest-kt = { group = "io.github.jan-tennert.supabase", name = "postgrest-kt", version.ref = "supabase" }
-supabase-auth-kt = { group = "io.github.jan-tennert.supabase", name = "auth-kt", version.ref = "supabase" }
-supabase-bom = { module = "io.github.jan-tennert.supabase:bom", version.ref = "supabase" }
+# Other
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
@@ -89,44 +68,23 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 android-library = { id = "com.android.library", version.ref = "agp" }
 
 [bundles]
-networking = [
-    "ktor-client-cio",
-    "ktor-client-content-negotiation",
-    "ktor-serialization-kotlinx-json",
-    "ktor-client-logging",
-    "ktor-client-core",
-    "ktor-client-okhttp"
-]
 
-dependency-injection = [
+koin = [
     "koin-android-compose",
     "koin-android-compose-navigation"
 ]
 
-data-persistence = ["androidx-datastore"]
-
-image-loading = ["coil-compose"]
-
 compose = [
     "androidx-activity-compose",
-    "androidx-lifecycle-runtime-ktx",
+    "androidx-lifecycle-runtime-compose",
     "androidx-lifecycle-viewmodel-compose",
-    "androidx-navigation-compose",
     "androidx-material3",
     "androidx-ui",
     "androidx-ui-graphics",
     "androidx-ui-tooling-preview",
-    "androidx-compose-material3-adaptive-navigation",
-    "compose-material-icons-extended"
 ]
 
 compose-debug = [
     "androidx-ui-tooling",
     "androidx-ui-test-manifest",
-]
-
-supabase = [
-    "supabase-serializer-moshi",
-    "supabase-postgrest-kt",
-    "supabase-auth-kt",
 ]
