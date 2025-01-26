@@ -1,4 +1,4 @@
-package com.greevebite.trackhub
+package com.skewnexus.trackhub
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

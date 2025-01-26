@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.greevebite.domain"
-    compileSdk = 34
+    namespace = "com.skewnexus.domain"
+    compileSdk = 35
 
     defaultConfig {
-        minSdk = 24
+        minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")

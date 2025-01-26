@@ -6,13 +6,13 @@ plugins {
 }
 
 android {
-    namespace = "com.greevebite.trackhub"
-    compileSdk = 34
+    namespace = "com.skewnexus.trackhub"
+    compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.greevebite.trackhub"
-        minSdk = 24
-        targetSdk = 34
+        applicationId = "com.skewnexus.trackhub"
+        minSdk = 26
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -39,7 +39,6 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
-        buildConfig = true
         compose = true
     }
     packaging {
@@ -54,7 +53,6 @@ dependencies {
     implementation(libs.bundles.koin)
     implementation(libs.bundles.compose)
 
-    // Navigation
     implementation(libs.kotlinx.serialization.json)
     implementation(project(":domain"))
     implementation(project(":data"))

@@ -1,4 +1,4 @@
-package com.greevebite.trackhub
+package com.skewnexus.trackhub
 
 import android.app.Application
 import com.greenvenom.auth.di.authenticationModule

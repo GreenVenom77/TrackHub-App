@@ -1,4 +1,4 @@
-package com.greevebite.data.util
+package com.skewnexus.data.util
 
 import android.content.Context
 import android.net.ConnectivityManager
