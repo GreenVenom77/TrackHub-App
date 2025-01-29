@@ -1,4 +1,4 @@
-package com.greenvenom.networking.data.datasource.remote
+package com.greenvenom.networking.data.datasource.supabase.util
 
 import com.greenvenom.networking.BuildConfig
 import io.github.jan.supabase.auth.Auth

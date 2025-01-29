@@ -6,7 +6,11 @@ import com.greenvenom.networking.domain.datasource.RemoteDataSource
 class ResetPasswordRepositoryImpl(
     private val remoteDataSource: RemoteDataSource
 ): ResetPasswordRepository {
-    override suspend fun resetPassword(email: String, newPassword: String) {
-        remoteDataSource.resetPassword(email, newPassword)
+    override suspend fun sendResetPasswordEmail(email: String) {
+        remoteDataSource.sendResetPasswordEmail(email)
+    }
+
+    override suspend fun updatePassword(newPassword: String) {
+        remoteDataSource.updatePassword(password = newPassword)
     }
 }

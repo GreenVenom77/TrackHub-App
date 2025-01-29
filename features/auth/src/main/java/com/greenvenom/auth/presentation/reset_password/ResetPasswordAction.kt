@@ -7,6 +7,7 @@ interface ResetPasswordAction {
         val password: String,
         val confirmPassword: String
     ): ResetPasswordAction
-    data class ResetPassword(val newPassword: String): ResetPasswordAction
+    data class SendResetPasswordEmail(val email: String): ResetPasswordAction
+    data class UpdatePassword(val newPassword: String): ResetPasswordAction
     data object ResetState: ResetPasswordAction
 }

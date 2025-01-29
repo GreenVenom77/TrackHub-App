@@ -67,8 +67,8 @@ private fun NewPasswordContent(
     var password by rememberSaveable { mutableStateOf("") }
     var confirmPassword by rememberSaveable { mutableStateOf("") }
 
-    LaunchedEffect(state.resetPasswordResult) {
-        state.resetPasswordResult?.onSuccess {
+    LaunchedEffect(state.emailSentResult) {
+        state.emailSentResult?.onSuccess {
             action(ResetPasswordAction.ResetState)
             navigateToLoginScreen()
         }
@@ -126,7 +126,7 @@ private fun NewPasswordContent(
             AuthCustomButton(
                 text = stringResource(R.string.next),
                 enabled = state.passwordValidity is ValidationResult.Success && state.confirmPasswordValidity is ValidationResult.Success,
-                onClick = { action(ResetPasswordAction.ResetPassword(password)) }
+                onClick = { action(ResetPasswordAction.SendResetPasswordEmail(password)) }
             )
         }
     }

@@ -1,10 +1,10 @@
 package com.greenvenom.auth.presentation.otp
 
 import androidx.lifecycle.viewModelScope
-import com.greenvenom.auth.data.repository.AuthStateRepository
+import com.greenvenom.auth.data.repository.EmailStateRepository
 import com.greenvenom.auth.domain.repository.OtpRepository
 import com.greenvenom.networking.data.Result
-import com.greenvenom.networking.data.datasource.SupabaseError
+import com.greenvenom.networking.data.datasource.supabase.util.SupabaseError
 import com.greenvenom.networking.data.onError
 import com.greenvenom.ui.presentation.BaseViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class OtpViewModel(
-    private val authStateRepository: AuthStateRepository,
+    private val emailStateRepository: EmailStateRepository,
     private val otpRepository: OtpRepository
 ): BaseViewModel() {
     private val _otpState = MutableStateFlow(OtpState())
@@ -90,7 +90,7 @@ class OtpViewModel(
         ) }
         if (newCode.all { it != null }) {
             val otp = newCode.joinToString("") { it.toString() }
-            authStateRepository.authState.value.email?.let { verifyOtp(it, otp) }
+            emailStateRepository.emailState.value.email?.let { verifyOtp(it, otp) }
         }
     }
 

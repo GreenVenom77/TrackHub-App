@@ -3,7 +3,7 @@ package com.greenvenom.auth.presentation.register
 import androidx.lifecycle.viewModelScope
 import com.greenvenom.auth.domain.repository.RegisterRepository
 import com.greenvenom.networking.data.Result
-import com.greenvenom.networking.data.datasource.SupabaseError
+import com.greenvenom.networking.data.datasource.supabase.util.SupabaseError
 import com.greenvenom.networking.data.onError
 import com.greenvenom.ui.presentation.BaseViewModel
 import com.greenvenom.validation.ValidateInput

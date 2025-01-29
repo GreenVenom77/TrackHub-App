@@ -1,4 +1,4 @@
-package com.greenvenom.networking.data.datasource
+package com.greenvenom.networking.data.datasource.supabase.util
 
 import com.greenvenom.networking.data.Error
 

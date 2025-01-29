@@ -11,6 +11,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -23,14 +24,17 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.greenvenom.validation.domain.ValidationResult
 import com.greenvenom.validation.util.toString
-import com.greenvenom.auth.AuthState
+import com.greenvenom.auth.presentation.EmailState
 import com.greenvenom.auth.R
 import com.greenvenom.auth.component.AuthHeader
-import com.greenvenom.auth.data.repository.AuthStateRepository
+import com.greenvenom.auth.data.repository.EmailStateRepository
 import com.greenvenom.auth.presentation.reset_password.ResetPasswordAction
 import com.greenvenom.auth.presentation.reset_password.ResetPasswordViewModel
 import com.greenvenom.auth.component.AuthCustomButton
 import com.greenvenom.auth.component.AuthTextField
+import com.greenvenom.auth.presentation.reset_password.ResetPasswordState
+import com.greenvenom.networking.data.onSuccess
+import com.greenvenom.ui.presentation.BaseScreen
 import com.greenvenom.ui.theme.AppTheme
 import com.greenvenom.ui.theme.backgroundLight
 import com.greenvenom.ui.theme.onBackgroundLight
@@ -41,27 +45,38 @@ fun VerifyEmailScreen(
     navigateBack: () -> Unit,
     navigateToOtpScreen: () -> Unit
 ) {
-    val resetPasswordViewModel: ResetPasswordViewModel = koinInject()
-    val authStateRepository: AuthStateRepository = koinInject()
-    val authState by authStateRepository.authState.collectAsStateWithLifecycle()
+    val emailStateRepository: EmailStateRepository = koinInject()
+    val emailState by emailStateRepository.emailState.collectAsStateWithLifecycle()
 
-    VerifyEmailContent(
-        state = authState,
-        action = resetPasswordViewModel::resetPasswordAction,
-        navigateToOtpScreen = navigateToOtpScreen,
-        navigateBack = navigateBack
-    )
+    BaseScreen<ResetPasswordViewModel> { resetPasswordViewModel ->
+        val resetPasswordState by resetPasswordViewModel.resetPasswordState.collectAsStateWithLifecycle()
+
+        VerifyEmailContent(
+            resetPasswordState = resetPasswordState,
+            emailState = emailState,
+            action = resetPasswordViewModel::resetPasswordAction,
+            navigateToOtpScreen = navigateToOtpScreen,
+            navigateBack = navigateBack
+        )
+    }
 }
 
 @Composable
 private fun VerifyEmailContent(
-    state: AuthState,
+    resetPasswordState: ResetPasswordState,
+    emailState: EmailState,
     action: (ResetPasswordAction) -> Unit,
     navigateToOtpScreen: () -> Unit,
     navigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
     var email by rememberSaveable { mutableStateOf("") }
+
+    LaunchedEffect(resetPasswordState.emailSentResult) {
+        resetPasswordState.emailSentResult?.onSuccess {
+            navigateToOtpScreen()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -91,14 +106,14 @@ private fun VerifyEmailContent(
                     action(ResetPasswordAction.UpdateEmail(email))
                 },
                 label = stringResource(R.string.enter_your_email),
-                error = if (state.emailValidity is ValidationResult.Error) state.emailValidity.error.toString(context) else "",
+                error = if (emailState.emailValidity is ValidationResult.Error) emailState.emailValidity.error.toString(context) else "",
             )
             Spacer(modifier = Modifier.height(20.dp))
             AuthCustomButton(
                 text = stringResource(R.string.next),
-                enabled = state.emailValidity is ValidationResult.Success,
+                enabled = emailState.emailValidity is ValidationResult.Success,
                 onClick = {
-                    navigateToOtpScreen()
+                    action(ResetPasswordAction.SendResetPasswordEmail(email))
                 }
             )
         }
@@ -110,7 +125,8 @@ private fun VerifyEmailContent(
 private fun VerifyEmailContentPreview() {
     AppTheme {
         VerifyEmailContent(
-            state = AuthState(),
+            resetPasswordState = ResetPasswordState(),
+            emailState = EmailState(),
             action = { },
             navigateToOtpScreen = { },
             navigateBack = { }

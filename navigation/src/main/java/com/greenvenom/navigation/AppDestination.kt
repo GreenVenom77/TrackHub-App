@@ -23,9 +23,6 @@ sealed interface AppDestination {
     data object NewPassword: AppDestination
 
     @Serializable
-    data object OnBoarding: AppDestination
-
-    @Serializable
     data object Home: AppDestination
 
     @Serializable

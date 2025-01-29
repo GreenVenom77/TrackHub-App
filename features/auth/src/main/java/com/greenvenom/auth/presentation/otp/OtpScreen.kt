@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -37,7 +39,7 @@ fun OtpScreen(
     BaseScreen<OtpViewModel> { viewModel ->
         val otpState by viewModel.otpState.collectAsStateWithLifecycle()
         val focusRequesters = remember {
-            List(4) { FocusRequester() }
+            List(6) { FocusRequester() }
         }
         val focusManager = LocalFocusManager.current
         val keyboardManager = LocalSoftwareKeyboardController.current
@@ -113,6 +115,7 @@ private fun OtpContent(
             horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
             modifier = Modifier
                 .fillMaxHeight(0.7f)
+                .fillMaxWidth()
                 .padding(16.dp)
         ) {
             state.code.forEachIndexed { index, number ->
@@ -145,7 +148,7 @@ private fun OtpScreenPreview() {
     AppTheme {
         OtpContent(
             state = OtpState(),
-            focusRequesters = List(4) { FocusRequester() },
+            focusRequesters = List(6) { FocusRequester() },
             action = {},
             navigateToNewPasswordScreen = {},
             navigateBack = {}

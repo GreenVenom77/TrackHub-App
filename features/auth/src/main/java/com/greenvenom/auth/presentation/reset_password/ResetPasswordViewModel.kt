@@ -1,13 +1,13 @@
 package com.greenvenom.auth.presentation.reset_password
 
 import androidx.lifecycle.viewModelScope
-import com.greenvenom.auth.data.repository.AuthStateRepository
+import com.greenvenom.auth.data.repository.EmailStateRepository
 import com.greenvenom.auth.domain.repository.ResetPasswordRepository
 import com.greenvenom.validation.ValidateInput
 import com.greenvenom.validation.domain.onError
 import com.greenvenom.validation.domain.onSuccess
 import com.greenvenom.networking.data.Result
-import com.greenvenom.networking.data.datasource.SupabaseError
+import com.greenvenom.networking.data.datasource.supabase.util.SupabaseError
 import com.greenvenom.networking.data.onError
 import com.greenvenom.ui.presentation.BaseViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ResetPasswordViewModel(
-    private val authStateRepository: AuthStateRepository,
+    private val emailStateRepository: EmailStateRepository,
     private val resetPasswordRepository: ResetPasswordRepository
 ): BaseViewModel() {
     private val _resetPasswordState = MutableStateFlow(ResetPasswordState())
@@ -25,10 +25,10 @@ class ResetPasswordViewModel(
 
     private val _resetPasswordExceptionHandler = CoroutineExceptionHandler { _, exception ->
         _resetPasswordState.value = _resetPasswordState.value.copy(
-            resetPasswordResult = Result.Error(SupabaseError(exception.message.toString())),
+            emailSentResult = Result.Error(SupabaseError(exception.message.toString())),
         )
         hideLoading()
-        _resetPasswordState.value.resetPasswordResult?.onError { showErrorMessage(it.message) }
+        _resetPasswordState.value.emailSentResult?.onError { showErrorMessage(it.message) }
     }
 
     fun resetPasswordAction(action: ResetPasswordAction) {
@@ -49,13 +49,15 @@ class ResetPasswordViewModel(
                     )
                 )
             }
-            is ResetPasswordAction.ResetPassword -> {
-                authStateRepository.authState.value.email?.let {
-                    resetPassword(
-                        email = it,
-                        newPassword = action.newPassword
+            is ResetPasswordAction.SendResetPasswordEmail -> {
+                emailStateRepository.emailState.value.email?.let {
+                    sendPasswordResetEmail(
+                        email = it
                     )
                 }
+            }
+            is ResetPasswordAction.UpdatePassword -> {
+                updatePassword(action.newPassword)
             }
             is ResetPasswordAction.ResetState -> resetState()
         }
@@ -63,19 +65,29 @@ class ResetPasswordViewModel(
 
     private fun validateEmail(email: String) {
         val typedEmailValidity = ValidateInput.validateEmail(email)
-        typedEmailValidity.onError { authStateRepository.updateEmailValidity(typedEmailValidity) }
+        typedEmailValidity.onError { emailStateRepository.updateEmailValidity(typedEmailValidity) }
         typedEmailValidity.onSuccess {
-            authStateRepository.updateEmail(email)
-            authStateRepository.updateEmailValidity(typedEmailValidity)
+            emailStateRepository.updateEmail(email)
+            emailStateRepository.updateEmailValidity(typedEmailValidity)
         }
     }
 
-    private fun resetPassword(email: String, newPassword: String) {
+    private fun sendPasswordResetEmail(email: String) {
         showLoading()
         viewModelScope.launch(_resetPasswordExceptionHandler) {
-            resetPasswordRepository.resetPassword(email, newPassword)
+            resetPasswordRepository.sendResetPasswordEmail(email)
         }.invokeOnCompletion {
-            _resetPasswordState.update { it.copy(resetPasswordResult = Result.Success(Unit)) }
+            _resetPasswordState.update { it.copy(emailSentResult = Result.Success(Unit)) }
+            hideLoading()
+        }
+    }
+
+    private fun updatePassword(newPassword: String) {
+        showLoading()
+        viewModelScope.launch(_resetPasswordExceptionHandler) {
+            resetPasswordRepository.updatePassword(newPassword)
+        }.invokeOnCompletion {
+            _resetPasswordState.update { it.copy(passwordUpdatedResult = Result.Success(Unit)) }
             hideLoading()
         }
     }

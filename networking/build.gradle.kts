@@ -56,6 +56,7 @@ dependencies {
     val koin = "4.0.0"
 
     implementation(libs.androidx.core.ktx)
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
 
     implementation("io.ktor:ktor-client-cio:$ktor")

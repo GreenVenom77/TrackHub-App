@@ -2,7 +2,7 @@ package com.greenvenom.auth.presentation.register
 
 import androidx.compose.runtime.Immutable
 import com.greenvenom.networking.data.Result
-import com.greenvenom.networking.data.datasource.SupabaseError
+import com.greenvenom.networking.data.datasource.supabase.util.SupabaseError
 import com.greenvenom.validation.domain.ValidationError
 import com.greenvenom.validation.domain.ValidationResult
 

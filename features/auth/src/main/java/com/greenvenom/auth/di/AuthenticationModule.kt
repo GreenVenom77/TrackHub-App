@@ -1,6 +1,6 @@
 package com.greenvenom.auth.di
 
-import com.greenvenom.auth.data.repository.AuthStateRepository
+import com.greenvenom.auth.data.repository.EmailStateRepository
 import com.greenvenom.auth.data.repository.OtpRepositoryImpl
 import com.greenvenom.auth.data.repository.LoginRepositoryImpl
 import com.greenvenom.auth.data.repository.RegisterRepositoryImpl
@@ -17,7 +17,7 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val authenticationModule = module {
-    single { AuthStateRepository() }
+    single { EmailStateRepository() }
 
     single<OtpRepository> {
         OtpRepositoryImpl(remoteDataSource = get())
@@ -37,6 +37,6 @@ val authenticationModule = module {
 
     viewModel { LoginViewModel(loginRepository = get()) }
     viewModel { RegisterViewModel(registerRepository = get()) }
-    viewModel { OtpViewModel(authStateRepository = get(), otpRepository = get() ) }
-    viewModel { ResetPasswordViewModel(authStateRepository = get(), resetPasswordRepository = get()) }
+    viewModel { OtpViewModel(emailStateRepository = get(), otpRepository = get() ) }
+    viewModel { ResetPasswordViewModel(emailStateRepository = get(), resetPasswordRepository = get()) }
 }
