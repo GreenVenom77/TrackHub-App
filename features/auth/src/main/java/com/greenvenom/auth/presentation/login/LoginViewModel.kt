@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.greenvenom.auth.domain.repository.LoginRepository
 import com.greenvenom.validation.ValidateInput
 import com.greenvenom.networking.data.Result
-import com.greenvenom.networking.data.datasource.supabase.util.SupabaseError
+import com.greenvenom.networking.supabase.util.SupabaseError
 import com.greenvenom.networking.data.onError
 import com.greenvenom.ui.presentation.BaseViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler

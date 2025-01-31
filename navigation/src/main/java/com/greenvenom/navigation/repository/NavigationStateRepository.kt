@@ -11,9 +11,29 @@ class NavigationStateRepository {
 
     fun updateCurrentDestination(newDestination: AppDestination) {
         _navigationState.update { it.copy(currentDestination = newDestination) }
+        println("Current Destination: $newDestination")
+
+        when (newDestination) {
+            AppDestination.Home,
+            AppDestination.AIChat,
+            AppDestination.Sessions,
+            AppDestination.Doctors -> {
+                updateBarsState(
+                    bottomBarState = true,
+                    topBarState = true
+                )
+            }
+
+            else -> {
+                updateBarsState(
+                    bottomBarState = false,
+                    topBarState = false
+                )
+            }
+        }
     }
 
-    fun updateBarsState(bottomBarState: Boolean, topBarState: Boolean) {
+    private fun updateBarsState(bottomBarState: Boolean, topBarState: Boolean) {
         _navigationState.update {
             it.copy(
                 bottomBarState = bottomBarState,

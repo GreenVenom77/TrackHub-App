@@ -7,7 +7,7 @@ import com.greenvenom.validation.ValidateInput
 import com.greenvenom.validation.domain.onError
 import com.greenvenom.validation.domain.onSuccess
 import com.greenvenom.networking.data.Result
-import com.greenvenom.networking.data.datasource.supabase.util.SupabaseError
+import com.greenvenom.networking.supabase.util.SupabaseError
 import com.greenvenom.networking.data.onError
 import com.greenvenom.ui.presentation.BaseViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler

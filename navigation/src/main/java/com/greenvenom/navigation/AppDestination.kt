@@ -3,7 +3,7 @@ package com.greenvenom.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed interface AppDestination {
+sealed interface AppDestination: NavigationTarget {
     @Serializable
     data object Splash: AppDestination
 

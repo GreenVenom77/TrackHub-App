@@ -25,7 +25,7 @@ android {
     buildTypes {
         debug {
             isMinifyEnabled = false
-            buildConfigField("String", "BASE_URL", "\"${localProperties.getProperty("DEVELOPMENT_URL")}\"")
+            buildConfigField("String", "BASE_URL", "\"${localProperties.getProperty("BASE_URL")}\"")
             buildConfigField("String", "API_KEY", "\"${localProperties.getProperty("API_KEY")}\"")
         }
         release {
@@ -34,7 +34,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField("String", "BASE_URL", "\"${localProperties.getProperty("PRODUCTION_URL")}\"")
+            buildConfigField("String", "BASE_URL", "\"${localProperties.getProperty("BASE_URL")}\"")
             buildConfigField("String", "API_KEY", "\"${localProperties.getProperty("API_KEY")}\"")
         }
     }

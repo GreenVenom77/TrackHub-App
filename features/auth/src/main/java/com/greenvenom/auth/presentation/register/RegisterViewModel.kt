@@ -1,9 +1,10 @@
 package com.greenvenom.auth.presentation.register
 
 import androidx.lifecycle.viewModelScope
+import com.greenvenom.auth.data.repository.EmailStateRepository
 import com.greenvenom.auth.domain.repository.RegisterRepository
 import com.greenvenom.networking.data.Result
-import com.greenvenom.networking.data.datasource.supabase.util.SupabaseError
+import com.greenvenom.networking.supabase.util.SupabaseError
 import com.greenvenom.networking.data.onError
 import com.greenvenom.ui.presentation.BaseViewModel
 import com.greenvenom.validation.ValidateInput
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(
+    private val emailStateRepository: EmailStateRepository,
     private val registerRepository: RegisterRepository
 ): BaseViewModel() {
     private val _registerState = MutableStateFlow(RegisterState())
@@ -71,6 +73,7 @@ class RegisterViewModel(
             registerRepository.registerUser(username, email, password)
         }.invokeOnCompletion {
             _registerState.update { it.copy(registrationResult = Result.Success(Unit)) }
+            emailStateRepository.updateEmail(email)
             hideLoading()
         }
     }

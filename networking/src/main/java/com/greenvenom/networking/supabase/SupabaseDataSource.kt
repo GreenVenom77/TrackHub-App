@@ -1,6 +1,6 @@
-package com.greenvenom.networking.data.datasource.supabase
+package com.greenvenom.networking.supabase
 
-import com.greenvenom.networking.data.datasource.supabase.util.SupabaseClient
+import com.greenvenom.networking.supabase.util.SupabaseClient
 import com.greenvenom.networking.domain.datasource.RemoteDataSource
 import io.github.jan.supabase.auth.OtpType
 import io.github.jan.supabase.auth.auth

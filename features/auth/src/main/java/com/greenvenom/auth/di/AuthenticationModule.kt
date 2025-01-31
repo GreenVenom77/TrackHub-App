@@ -36,7 +36,7 @@ val authenticationModule = module {
     }
 
     viewModel { LoginViewModel(loginRepository = get()) }
-    viewModel { RegisterViewModel(registerRepository = get()) }
+    viewModel { RegisterViewModel(emailStateRepository = get(), registerRepository = get()) }
     viewModel { OtpViewModel(emailStateRepository = get(), otpRepository = get() ) }
     viewModel { ResetPasswordViewModel(emailStateRepository = get(), resetPasswordRepository = get()) }
 }

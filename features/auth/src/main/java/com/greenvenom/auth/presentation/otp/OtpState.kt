@@ -2,7 +2,7 @@ package com.greenvenom.auth.presentation.otp
 
 import androidx.compose.runtime.Immutable
 import com.greenvenom.networking.data.Result
-import com.greenvenom.networking.data.datasource.supabase.util.SupabaseError
+import com.greenvenom.networking.supabase.util.SupabaseError
 
 @Immutable
 data class OtpState(

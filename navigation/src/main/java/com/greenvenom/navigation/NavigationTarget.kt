@@ -1,0 +1,3 @@
+package com.greenvenom.navigation
+
+interface NavigationTarget

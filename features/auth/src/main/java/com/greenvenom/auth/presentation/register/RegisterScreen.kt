@@ -39,7 +39,7 @@ import com.greenvenom.validation.util.toString
 @Composable
 fun RegisterScreen(
     navigateBack: () -> Unit,
-    navigateToLoginScreen: () -> Unit,
+    navigateToAccountVerificationScreen: () -> Unit,
 ) {
     BaseScreen<RegisterViewModel> { viewModel ->
         val state by viewModel.registerState.collectAsStateWithLifecycle()
@@ -48,7 +48,7 @@ fun RegisterScreen(
             state = state,
             action = viewModel::registerAction,
             navigateBack = navigateBack,
-            navigateToLoginScreen = navigateToLoginScreen
+            navigateToAccountVerificationScreen = navigateToAccountVerificationScreen
         )
     }
 }
@@ -58,7 +58,7 @@ private fun RegisterContent(
     state: RegisterState,
     action: (RegisterAction) -> Unit,
     navigateBack: () -> Unit,
-    navigateToLoginScreen: () -> Unit,
+    navigateToAccountVerificationScreen: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -70,7 +70,7 @@ private fun RegisterContent(
     LaunchedEffect(state.registrationResult) {
         state.registrationResult?.onSuccess {
             action(RegisterAction.ResetState)
-            navigateToLoginScreen()
+            navigateToAccountVerificationScreen()
         }
     }
 
@@ -186,7 +186,7 @@ private fun RegisterContentsPreview() {
             state = RegisterState(),
             action = { },
             navigateBack = { },
-            navigateToLoginScreen = { }
+            navigateToAccountVerificationScreen = { }
         )
     }
 }

@@ -11,7 +11,6 @@ fun AppDestination.toRoute(): String {
         is AppDestination.OTP -> "otp"
         is AppDestination.NewPassword -> "new_password"
         is AppDestination.Home -> "home"
-        is AppDestination.OnBoarding -> "onboarding"
         is AppDestination.AIChat -> "ai_chat"
         is AppDestination.Doctors -> "doctors"
         is AppDestination.Sessions -> "sessions"

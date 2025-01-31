@@ -14,7 +14,6 @@ fun NavBackStackEntry?.fromRoute(): AppDestination {
                 AppDestination.OTP::class.simpleName -> return AppDestination.OTP
                 AppDestination.NewPassword::class.simpleName -> return AppDestination.NewPassword
                 AppDestination.Home::class.simpleName -> return AppDestination.Home
-                AppDestination.OnBoarding::class.simpleName -> return AppDestination.OnBoarding
                 AppDestination.AIChat::class.simpleName -> return AppDestination.AIChat
                 AppDestination.Doctors::class.simpleName -> return AppDestination.Doctors
                 AppDestination.Sessions::class.simpleName -> return AppDestination.Sessions

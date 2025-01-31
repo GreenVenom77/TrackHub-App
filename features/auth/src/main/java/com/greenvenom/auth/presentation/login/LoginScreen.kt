@@ -38,7 +38,7 @@ import com.greenvenom.ui.theme.onBackgroundLight
 fun LoginScreen(
     navigateToRegisterScreen: () -> Unit,
     navigateToEmailVerificationScreen: () -> Unit,
-    navigateToForm:()->Unit,
+    navigateToForm:() -> Unit,
     navigateToHomeScreen: () -> Unit,
 ) {
     BaseScreen<LoginViewModel> { viewModel ->

@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.greenvenom.auth.data.repository.EmailStateRepository
 import com.greenvenom.auth.domain.repository.OtpRepository
 import com.greenvenom.networking.data.Result
-import com.greenvenom.networking.data.datasource.supabase.util.SupabaseError
+import com.greenvenom.networking.supabase.util.SupabaseError
 import com.greenvenom.networking.data.onError
 import com.greenvenom.ui.presentation.BaseViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -106,7 +106,7 @@ class OtpViewModel(
             return null
         }
 
-        if(currentFocusedIndex == 3) {
+        if(currentFocusedIndex == 5) {
             return currentFocusedIndex
         }
 

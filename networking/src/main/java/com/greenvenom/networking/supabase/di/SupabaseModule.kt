@@ -1,13 +1,13 @@
-package com.greenvenom.networking.data.datasource.di
+package com.greenvenom.networking.supabase.di
 
-import com.greenvenom.networking.data.datasource.supabase.SessionStateRepository
-import com.greenvenom.networking.data.datasource.supabase.util.SupabaseClient
-import com.greenvenom.networking.data.datasource.supabase.SupabaseDataSource
+import com.greenvenom.networking.supabase.SessionStateRepository
+import com.greenvenom.networking.supabase.util.SupabaseClient
+import com.greenvenom.networking.supabase.SupabaseDataSource
 import com.greenvenom.networking.domain.datasource.RemoteDataSource
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-val dataSourceModule = module {
+val supabaseModule = module {
     single<SupabaseClient> { SupabaseClient() }
     single<SessionStateRepository> { SessionStateRepository(supabaseClient = get()) }
 
