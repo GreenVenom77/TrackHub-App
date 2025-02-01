@@ -51,8 +51,8 @@ android {
 }
 
 dependencies {
-    val ktor = "3.0.0"
-    val supabase = "3.0.0"
+    val ktor = "3.0.3"
+    val supabase = "3.1.0"
     val koin = "4.0.0"
 
     implementation(libs.androidx.core.ktx)
