@@ -18,7 +18,11 @@ class SessionStateRepository(supabaseClient: SupabaseClient) {
     private val _userSessionState = MutableStateFlow(UserSessionState())
     val userSessionState = _userSessionState.asStateFlow()
 
-    fun collectSessionStatus() {
+    init {
+        collectSessionStatus()
+    }
+
+    private fun collectSessionStatus() {
         CoroutineScope(Dispatchers.IO).launch {
             client.auth.sessionStatus.collect {
                 handleSessionStatus(it)

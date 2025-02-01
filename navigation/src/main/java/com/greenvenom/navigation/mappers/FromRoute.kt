@@ -1,10 +1,10 @@
 package com.greenvenom.navigation.mappers
 
-import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavDestination
 import com.greenvenom.navigation.AppDestination
 
-fun NavBackStackEntry?.fromRoute(): AppDestination {
-    this?.destination?.route?.substringBefore("?")?.substringBefore("/")
+fun NavDestination?.fromRoute(): AppDestination {
+    this?.route?.substringBefore("?")?.substringBefore("/")
         ?.substringAfterLast(".")?.let {
             return when (it) {
                 AppDestination.Splash::class.simpleName -> return AppDestination.Splash

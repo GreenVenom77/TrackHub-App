@@ -21,23 +21,21 @@ class AppNavigator(navControllerHolder: NavHostControllerHolder) {
     }
 
     fun navigateAndClearBackStack(target: NavigationTarget): AppDestination {
+        navController.clearBackStack<NavigationTarget>()
         navController.navigate(target) {
-            popUpTo(0) {
-                inclusive = true
-            }
             launchSingleTop = true
         }
         return getCurrentDestination()
     }
 
     fun getCurrentDestination(): AppDestination {
-        val backstackEntry = navController.currentBackStackEntry
-        val currentDestination = backstackEntry.fromRoute()
+        val backstackCurrentDest = navController.currentDestination
+        val currentDestination = backstackCurrentDest.fromRoute()
 
         return currentDestination
     }
 
     private fun hasBackStack(): Boolean {
-        return navController.previousBackStackEntry != null
+        return navController.currentBackStackEntry != null
     }
 }

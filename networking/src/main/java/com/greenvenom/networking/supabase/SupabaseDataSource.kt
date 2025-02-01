@@ -16,14 +16,9 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 
 class SupabaseDataSource(
-    supabaseClient: SupabaseClient,
-    sessionStateRepository: SessionStateRepository
+    supabaseClient: SupabaseClient
 ): RemoteDataSource {
     private val client = supabaseClient.getClient()
-
-    init {
-        sessionStateRepository.collectSessionStatus()
-    }
 
     override suspend fun registerUser(username: String, email: String, password: String) {
         client.auth.signUpWith(Email) {

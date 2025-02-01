@@ -13,8 +13,7 @@ val supabaseModule = module {
 
     single<RemoteDataSource>(qualifier = named("supabase")) {
         SupabaseDataSource(
-            supabaseClient = get(),
-            sessionStateRepository = get()
+            supabaseClient = get()
         )
     }
 

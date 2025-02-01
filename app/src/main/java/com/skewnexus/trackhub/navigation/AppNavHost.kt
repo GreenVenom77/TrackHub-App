@@ -1,5 +1,6 @@
 package com.skewnexus.trackhub.navigation
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -16,7 +17,6 @@ import com.greenvenom.auth.presentation.otp.OtpScreen
 import com.greenvenom.auth.presentation.register.RegisterScreen
 import com.greenvenom.auth.presentation.splash.SplashScreen
 import com.greenvenom.navigation.AppDestination
-import com.greenvenom.navigation.NavigationTarget
 import com.greenvenom.navigation.utils.AppNavigator
 import com.greenvenom.navigation.SubGraph
 import com.greenvenom.navigation.repository.NavigationStateRepository
@@ -31,7 +31,7 @@ fun AppNavHost(modifier: Modifier = Modifier) {
     val navigationStateRepository = koinInject<NavigationStateRepository>()
     val sessionStateRepository = koinInject<SessionStateRepository>()
     val userSessionState by sessionStateRepository.userSessionState.collectAsStateWithLifecycle()
-    var currentDestination: NavigationTarget by remember { mutableStateOf(AppDestination.Splash) }
+    var currentDestination: AppDestination by remember { mutableStateOf(AppDestination.Splash) }
 
     LaunchedEffect(userSessionState.wantedDestination) {
         when(userSessionState.wantedDestination) {
@@ -40,15 +40,16 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                 currentDestination = appNavigator.navigateAndClearBackStack(SubGraph.Auth)
             }
             SessionDestinations.HOME -> {
-                currentDestination = appNavigator.navigateAndClearBackStack(AppDestination.Home)
+                currentDestination = appNavigator.navigateAndClearBackStack(SubGraph.Main)
             }
             else -> {}
         }
+        navigationStateRepository.updateCurrentDestination(currentDestination)
     }
 
     NavHost(
         navController = koinInject<NavHostControllerHolder>().navController,
-        startDestination = currentDestination,
+        startDestination = AppDestination.Splash,
         modifier = modifier
     ) {
         composable<AppDestination.Splash> {
@@ -56,8 +57,6 @@ fun AppNavHost(modifier: Modifier = Modifier) {
         }
 
         navigation<SubGraph.Auth>(startDestination = AppDestination.Login) {
-            navigationStateRepository.updateCurrentDestination(appNavigator.getCurrentDestination())
-
             composable<AppDestination.Login> {
                 LoginScreen(
                     navigateToRegisterScreen = { appNavigator.navigateTo(AppDestination.Register) },
@@ -87,10 +86,8 @@ fun AppNavHost(modifier: Modifier = Modifier) {
         }
 
         navigation<SubGraph.Main>(startDestination = AppDestination.Home) {
-            navigationStateRepository.updateCurrentDestination(appNavigator.getCurrentDestination())
-
             composable<AppDestination.Home> {
-
+                Text(text = "Home")
             }
         }
     }
