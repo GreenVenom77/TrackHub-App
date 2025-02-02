@@ -1,4 +1,4 @@
-package com.greenvenom.networking.domain.utils
+package com.greenvenom.networking.api.utils
 
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine

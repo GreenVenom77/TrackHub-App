@@ -1,6 +1,6 @@
 package com.greenvenom.networking.data
 
-enum class NetworkError: Error {
+enum class ErrorType {
     REQUEST_TIMEOUT,
     TOO_MANY_REQUESTS,
     NO_INTERNET,

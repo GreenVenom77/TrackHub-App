@@ -3,5 +3,6 @@ package com.greenvenom.networking.supabase.util
 import com.greenvenom.networking.data.Error
 
 data class SupabaseError(
-    val message: String,
-): Error
+    override val message: String = "",
+    val description: String? = null,
+): Error()
