@@ -1,6 +1,6 @@
 package com.greenvenom.networking.supabase.di
 
-import com.greenvenom.networking.supabase.SessionStateRepository
+import com.greenvenom.networking.supabase.data.repository.SessionStateRepository
 import com.greenvenom.networking.supabase.util.SupabaseClient
 import com.greenvenom.networking.supabase.SupabaseDataSource
 import com.greenvenom.networking.domain.datasource.RemoteDataSource

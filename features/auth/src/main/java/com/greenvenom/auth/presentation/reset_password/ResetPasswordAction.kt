@@ -10,4 +10,6 @@ interface ResetPasswordAction {
     data class SendResetPasswordEmail(val email: String): ResetPasswordAction
     data class UpdatePassword(val newPassword: String): ResetPasswordAction
     data object ResetState: ResetPasswordAction
+    data object ResetEmailResult: ResetPasswordAction
+    data object ResetPasswordResult: ResetPasswordAction
 }

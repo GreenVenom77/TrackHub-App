@@ -3,12 +3,9 @@ package com.greenvenom.auth.presentation.register
 import androidx.lifecycle.viewModelScope
 import com.greenvenom.auth.data.repository.EmailStateRepository
 import com.greenvenom.auth.domain.repository.RegisterRepository
-import com.greenvenom.networking.data.Result
-import com.greenvenom.networking.supabase.util.SupabaseError
-import com.greenvenom.networking.data.onError
+import com.greenvenom.networking.data.onSuccess
 import com.greenvenom.ui.presentation.BaseViewModel
 import com.greenvenom.validation.ValidateInput
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -20,14 +17,6 @@ class RegisterViewModel(
 ): BaseViewModel() {
     private val _registerState = MutableStateFlow(RegisterState())
     val registerState = _registerState.asStateFlow()
-
-    private val _registerExceptionHandler = CoroutineExceptionHandler { _, exception ->
-        _registerState.value = _registerState.value.copy(
-            registrationResult = Result.Error(SupabaseError(exception.message.toString())),
-        )
-        hideLoading()
-        _registerState.value.registrationResult?.onError { showErrorMessage(it.message) }
-    }
 
     fun registerAction(action: RegisterAction) {
         when(action) {
@@ -60,6 +49,7 @@ class RegisterViewModel(
                 password = action.password,
             )
             is RegisterAction.ResetState -> resetState()
+            is RegisterAction.ResetNetworkResult -> resetNetworkResult()
         }
     }
 
@@ -68,17 +58,18 @@ class RegisterViewModel(
         email: String,
         password: String,
     ) {
-        showLoading()
-        viewModelScope.launch(_registerExceptionHandler) {
-            registerRepository.registerUser(username, email, password)
-        }.invokeOnCompletion {
-            _registerState.update { it.copy(registrationResult = Result.Success(Unit)) }
-            emailStateRepository.updateEmail(email)
-            hideLoading()
+        viewModelScope.launch {
+            val result = registerRepository.registerUser(username, email, password)
+            _registerState.update { it.copy(registrationResult = result) }
+            result.onSuccess { emailStateRepository.updateEmail(email) }
         }
     }
 
     private fun resetState() {
-        _registerState.value = RegisterState()
+        _registerState.update { RegisterState() }
+    }
+
+    private fun resetNetworkResult() {
+        _registerState.update { it.copy(registrationResult = null) }
     }
 }

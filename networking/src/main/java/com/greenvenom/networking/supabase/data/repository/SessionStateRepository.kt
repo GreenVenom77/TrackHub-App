@@ -1,7 +1,7 @@
-package com.greenvenom.networking.supabase
+package com.greenvenom.networking.supabase.data.repository
 
 import android.util.Log
-import com.greenvenom.networking.supabase.util.SessionDestinations
+import com.greenvenom.networking.supabase.domain.SessionDestinations
 import com.greenvenom.networking.supabase.util.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.status.SessionSource

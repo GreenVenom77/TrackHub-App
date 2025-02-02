@@ -14,4 +14,5 @@ sealed interface RegisterAction {
         val password: String,
     ): RegisterAction
     data object ResetState: RegisterAction
+    data object ResetNetworkResult: RegisterAction
 }

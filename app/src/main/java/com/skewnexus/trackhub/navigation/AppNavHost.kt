@@ -21,8 +21,8 @@ import com.greenvenom.navigation.utils.AppNavigator
 import com.greenvenom.navigation.SubGraph
 import com.greenvenom.navigation.repository.NavigationStateRepository
 import com.greenvenom.navigation.utils.NavHostControllerHolder
-import com.greenvenom.networking.supabase.SessionStateRepository
-import com.greenvenom.networking.supabase.util.SessionDestinations
+import com.greenvenom.networking.supabase.data.repository.SessionStateRepository
+import com.greenvenom.networking.supabase.domain.SessionDestinations
 import org.koin.compose.koinInject
 
 @Composable
@@ -61,13 +61,12 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                 LoginScreen(
                     navigateToRegisterScreen = { appNavigator.navigateTo(AppDestination.Register) },
                     navigateToEmailVerificationScreen = { appNavigator.navigateTo(AppDestination.VerifyEmail) },
-                    navigateToForm = {  },
-                    navigateToHomeScreen = {  }
+                    navigateToNextScreen = {  },
                 )
             }
             composable<AppDestination.Register> {
                 RegisterScreen(
-                    navigateBack = {  appNavigator.navigateBack() },
+                    navigateBack = { appNavigator.navigateBack() },
                     navigateToAccountVerificationScreen = { appNavigator.navigateTo(AppDestination.OTP) },
                 )
             }
@@ -76,8 +75,8 @@ fun AppNavHost(modifier: Modifier = Modifier) {
             }
             composable<AppDestination.OTP> {
                 OtpScreen(
-                    navigateBack = {  appNavigator.navigateBack() },
-                    navigateToNewPasswordScreen = { appNavigator.navigateAndClearBackStack(AppDestination.Login) }
+                    navigateBack = { appNavigator.navigateBack() },
+                    navigateToNewPasswordScreen = {  }
                 )
             }
             composable<AppDestination.NewPassword> {

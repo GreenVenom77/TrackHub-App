@@ -8,4 +8,5 @@ sealed interface LoginAction {
         val password: String,
     ): LoginAction
     data object ResetState: LoginAction
+    data object ResetNetworkResult: LoginAction
 }

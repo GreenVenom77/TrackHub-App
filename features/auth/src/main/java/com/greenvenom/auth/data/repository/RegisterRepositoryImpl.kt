@@ -1,6 +1,8 @@
 package com.greenvenom.auth.data.repository
 
 import com.greenvenom.auth.domain.repository.RegisterRepository
+import com.greenvenom.networking.domain.NetworkError
+import com.greenvenom.networking.data.Result
 import com.greenvenom.networking.domain.datasource.RemoteDataSource
 
 class RegisterRepositoryImpl(
@@ -10,11 +12,14 @@ class RegisterRepositoryImpl(
         email: String,
         password: String,
         displayName: String
-    ) {
-        remoteDataSource.registerUser(email, password, displayName)
+    ): Result<Any?, NetworkError> {
+        return remoteDataSource.registerUser(email, password, displayName)
     }
 
-    override suspend fun verifyUserRegistration(email: String, otp: String) {
-        remoteDataSource.verifyOtp(email, otp)
+    override suspend fun verifyUserRegistration(
+        email: String,
+        otp: String
+    ): Result<Any, NetworkError> {
+        return remoteDataSource.verifyOtp(email, otp)
     }
 }

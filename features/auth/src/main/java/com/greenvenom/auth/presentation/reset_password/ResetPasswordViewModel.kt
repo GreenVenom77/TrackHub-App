@@ -7,7 +7,7 @@ import com.greenvenom.validation.ValidateInput
 import com.greenvenom.validation.domain.onError
 import com.greenvenom.validation.domain.onSuccess
 import com.greenvenom.networking.data.Result
-import com.greenvenom.networking.supabase.util.SupabaseError
+import com.greenvenom.networking.supabase.data.SupabaseError
 import com.greenvenom.networking.data.onError
 import com.greenvenom.ui.presentation.BaseViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -22,14 +22,6 @@ class ResetPasswordViewModel(
 ): BaseViewModel() {
     private val _resetPasswordState = MutableStateFlow(ResetPasswordState())
     val resetPasswordState = _resetPasswordState.asStateFlow()
-
-    private val _resetPasswordExceptionHandler = CoroutineExceptionHandler { _, exception ->
-        _resetPasswordState.value = _resetPasswordState.value.copy(
-            emailSentResult = Result.Error(SupabaseError(exception.message.toString())),
-        )
-        hideLoading()
-        _resetPasswordState.value.emailSentResult?.onError { showErrorMessage(it.message) }
-    }
 
     fun resetPasswordAction(action: ResetPasswordAction) {
         when (action) {
@@ -60,6 +52,8 @@ class ResetPasswordViewModel(
                 updatePassword(action.newPassword)
             }
             is ResetPasswordAction.ResetState -> resetState()
+            is ResetPasswordAction.ResetEmailResult -> resetEmailResult()
+            is ResetPasswordAction.ResetPasswordResult -> resetPasswordResult()
         }
     }
 
@@ -73,26 +67,28 @@ class ResetPasswordViewModel(
     }
 
     private fun sendPasswordResetEmail(email: String) {
-        showLoading()
-        viewModelScope.launch(_resetPasswordExceptionHandler) {
-            resetPasswordRepository.sendResetPasswordEmail(email)
-        }.invokeOnCompletion {
-            _resetPasswordState.update { it.copy(emailSentResult = Result.Success(Unit)) }
-            hideLoading()
+        viewModelScope.launch {
+            val result = resetPasswordRepository.sendResetPasswordEmail(email)
+            _resetPasswordState.update { it.copy(emailSentResult = result) }
         }
     }
 
     private fun updatePassword(newPassword: String) {
-        showLoading()
-        viewModelScope.launch(_resetPasswordExceptionHandler) {
-            resetPasswordRepository.updatePassword(newPassword)
-        }.invokeOnCompletion {
-            _resetPasswordState.update { it.copy(passwordUpdatedResult = Result.Success(Unit)) }
-            hideLoading()
+        viewModelScope.launch {
+            val result = resetPasswordRepository.updatePassword(newPassword)
+            _resetPasswordState.update { it.copy(passwordUpdatedResult = result) }
         }
     }
 
     private fun resetState() {
-        _resetPasswordState.value = ResetPasswordState()
+        _resetPasswordState.update { ResetPasswordState() }
+    }
+
+    private fun resetEmailResult() {
+        _resetPasswordState.update { it.copy(emailSentResult = null) }
+    }
+
+    private fun resetPasswordResult() {
+        _resetPasswordState.update { it.copy(passwordUpdatedResult = null) }
     }
 }

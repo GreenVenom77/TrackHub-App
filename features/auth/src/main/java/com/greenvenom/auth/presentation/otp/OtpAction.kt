@@ -5,4 +5,5 @@ sealed interface OtpAction {
     data class OnChangeFieldFocused(val index: Int): OtpAction
     data object OnKeyboardBack: OtpAction
     data object ResetState: OtpAction
+    data object ResetNetworkResult: OtpAction
 }

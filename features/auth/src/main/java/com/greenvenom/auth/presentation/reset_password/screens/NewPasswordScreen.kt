@@ -12,6 +12,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,7 +34,10 @@ import com.greenvenom.auth.presentation.reset_password.ResetPasswordState
 import com.greenvenom.auth.presentation.reset_password.ResetPasswordViewModel
 import com.greenvenom.auth.component.AuthCustomButton
 import com.greenvenom.auth.component.AuthTextField
+import com.greenvenom.networking.data.onError
 import com.greenvenom.networking.data.onSuccess
+import com.greenvenom.networking.utils.toString
+import com.greenvenom.ui.presentation.BaseAction
 import com.greenvenom.ui.presentation.BaseScreen
 import com.greenvenom.ui.theme.AppTheme
 import com.greenvenom.ui.theme.backgroundLight
@@ -49,7 +53,8 @@ fun NewPasswordScreen(
 
         NewPasswordContent(
             state = resetPasswordState,
-            action = viewModel::resetPasswordAction,
+            resetPasswordActions = viewModel::resetPasswordAction,
+            baseActions = viewModel::baseAction,
             navigateToLoginScreen = navigateToLoginScreen,
             navigateBack = navigateBack
         )
@@ -59,7 +64,8 @@ fun NewPasswordScreen(
 @Composable
 private fun NewPasswordContent(
     state: ResetPasswordState,
-    action: (ResetPasswordAction) -> Unit,
+    resetPasswordActions: (ResetPasswordAction) -> Unit,
+    baseActions: (BaseAction) -> Unit,
     navigateToLoginScreen: () -> Unit,
     navigateBack: () -> Unit
 ) {
@@ -67,10 +73,24 @@ private fun NewPasswordContent(
     var password by rememberSaveable { mutableStateOf("") }
     var confirmPassword by rememberSaveable { mutableStateOf("") }
 
-    LaunchedEffect(state.emailSentResult) {
-        state.emailSentResult?.onSuccess {
-            action(ResetPasswordAction.ResetState)
+    LaunchedEffect(state.passwordUpdatedResult) {
+        baseActions(BaseAction.HideLoading)
+        state.passwordUpdatedResult?.onSuccess {
             navigateToLoginScreen()
+        }
+        state.passwordUpdatedResult?.onError {
+            baseActions(BaseAction.ShowErrorMessage(
+                it.errorType?.toString(context)?: it.message.ifEmpty { "Something went wrong" }
+            ))
+            resetPasswordActions(ResetPasswordAction.ResetPasswordResult)
+        }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            resetPasswordActions(ResetPasswordAction.ResetState)
+            password = ""
+            confirmPassword = ""
         }
     }
 
@@ -100,7 +120,7 @@ private fun NewPasswordContent(
                 value = password,
                 onValueChange = {
                     password = it
-                    action(ResetPasswordAction.ValidatePassword(password))
+                    resetPasswordActions(ResetPasswordAction.ValidatePassword(password))
                 },
                 label = stringResource(R.string.enter_your_password),
                 error = if (state.passwordValidity is ValidationResult.Error) state.passwordValidity.error.toString(context) else "",
@@ -116,7 +136,7 @@ private fun NewPasswordContent(
                 value = confirmPassword,
                 onValueChange = {
                     confirmPassword = it
-                    action(ResetPasswordAction.ValidatePasswordConfirmation(password, confirmPassword))
+                    resetPasswordActions(ResetPasswordAction.ValidatePasswordConfirmation(password, confirmPassword))
                 },
                 label = stringResource(R.string.confirm_your_password),
                 error = if (state.confirmPasswordValidity is ValidationResult.Error) state.confirmPasswordValidity.error.toString(context) else "",
@@ -126,7 +146,10 @@ private fun NewPasswordContent(
             AuthCustomButton(
                 text = stringResource(R.string.next),
                 enabled = state.passwordValidity is ValidationResult.Success && state.confirmPasswordValidity is ValidationResult.Success,
-                onClick = { action(ResetPasswordAction.SendResetPasswordEmail(password)) }
+                onClick = {
+                    baseActions(BaseAction.ShowLoading)
+                    resetPasswordActions(ResetPasswordAction.UpdatePassword(password))
+                }
             )
         }
     }
@@ -138,7 +161,8 @@ private fun NewPasswordContentPreview() {
     AppTheme {
         NewPasswordContent(
             state = ResetPasswordState(),
-            action = { },
+            resetPasswordActions = { },
+            baseActions = { },
             navigateToLoginScreen = { },
             navigateBack = { }
         )

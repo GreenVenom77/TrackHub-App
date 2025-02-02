@@ -21,8 +21,10 @@ class AppNavigator(navControllerHolder: NavHostControllerHolder) {
     }
 
     fun navigateAndClearBackStack(target: NavigationTarget): AppDestination {
-        navController.clearBackStack<NavigationTarget>()
         navController.navigate(target) {
+            popUpTo(0) {
+                inclusive = true
+            }
             launchSingleTop = true
         }
         return getCurrentDestination()

@@ -26,4 +26,8 @@ class EmailStateRepository {
             )
         }
     }
+
+    fun resetEmailState() {
+        _emailState.update { EmailState() }
+    }
 }

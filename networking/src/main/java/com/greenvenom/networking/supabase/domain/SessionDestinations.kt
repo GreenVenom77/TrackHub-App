@@ -1,4 +1,4 @@
-package com.greenvenom.networking.supabase.data
+package com.greenvenom.networking.supabase.domain
 
 enum class SessionDestinations {
     SIGN_IN,

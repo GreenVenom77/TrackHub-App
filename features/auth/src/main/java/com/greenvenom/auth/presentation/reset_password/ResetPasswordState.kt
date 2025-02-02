@@ -4,12 +4,13 @@ import androidx.compose.runtime.Immutable
 import com.greenvenom.validation.domain.ValidationError
 import com.greenvenom.validation.domain.ValidationResult
 import com.greenvenom.networking.data.Result
-import com.greenvenom.networking.supabase.util.SupabaseError
+import com.greenvenom.networking.domain.NetworkError
+import com.greenvenom.networking.supabase.data.SupabaseError
 
 @Immutable
 data class ResetPasswordState(
     val passwordValidity: ValidationResult<Unit, ValidationError>? = null,
     val confirmPasswordValidity: ValidationResult<Unit, ValidationError>? = null,
-    val emailSentResult: Result<Unit, SupabaseError>? = null,
-    val passwordUpdatedResult: Result<Unit, SupabaseError>? = null
+    val passwordUpdatedResult: Result<Any, NetworkError>? = null,
+    val emailSentResult: Result<Any, NetworkError>? = null
 )

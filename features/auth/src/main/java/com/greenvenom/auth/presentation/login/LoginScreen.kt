@@ -8,6 +8,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,6 +29,9 @@ import com.greenvenom.auth.R
 import com.greenvenom.auth.component.AuthHeader
 import com.greenvenom.auth.component.AuthCustomButton
 import com.greenvenom.auth.component.AuthTextField
+import com.greenvenom.networking.data.onError
+import com.greenvenom.networking.utils.toString
+import com.greenvenom.ui.presentation.BaseAction
 import com.greenvenom.ui.presentation.BaseScreen
 import com.greenvenom.ui.theme.AppTheme
 import com.greenvenom.ui.theme.backgroundLight
@@ -38,19 +42,18 @@ import com.greenvenom.ui.theme.onBackgroundLight
 fun LoginScreen(
     navigateToRegisterScreen: () -> Unit,
     navigateToEmailVerificationScreen: () -> Unit,
-    navigateToForm:() -> Unit,
-    navigateToHomeScreen: () -> Unit,
+    navigateToNextScreen:() -> Unit
 ) {
     BaseScreen<LoginViewModel> { viewModel ->
         val state by viewModel.loginState.collectAsStateWithLifecycle()
 
         LoginContent(
+            state = state,
+            loginActions = viewModel::loginAction,
+            baseActions = viewModel::baseAction,
             navigateToRegisterScreen = navigateToRegisterScreen,
             navigateToEmailVerificationScreen = navigateToEmailVerificationScreen,
-            navigateToHomeScreen = navigateToHomeScreen,
-            navigateToForm = navigateToForm,
-            state = state,
-            action = viewModel::loginAction,
+            navigateToNextScreen = navigateToNextScreen
         )
     }
 }
@@ -58,11 +61,11 @@ fun LoginScreen(
 @Composable
 private fun LoginContent(
     state: LoginState,
-    action: (LoginAction) -> Unit,
+    loginActions: (LoginAction) -> Unit,
+    baseActions: (BaseAction) -> Unit,
     navigateToRegisterScreen: () -> Unit,
     navigateToEmailVerificationScreen: () -> Unit,
-    navigateToHomeScreen: () -> Unit,
-    navigateToForm: ()-> Unit,
+    navigateToNextScreen: ()-> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -70,10 +73,23 @@ private fun LoginContent(
     var password by rememberSaveable { mutableStateOf("") }
 
     LaunchedEffect(state.loginResult) {
+        baseActions(BaseAction.HideLoading)
         state.loginResult?.onSuccess {
-            action(LoginAction.ResetState)
-            //have to be handled when using api
-            navigateToForm()
+            navigateToNextScreen()
+        }
+        state.loginResult?.onError {
+            baseActions(BaseAction.ShowErrorMessage(
+                it.errorType?.toString(context)?: it.message.ifEmpty { "Something went wrong" }
+            ))
+            loginActions(LoginAction.ResetNetworkResult)
+        }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            loginActions(LoginAction.ResetState)
+            email = ""
+            password = ""
         }
     }
 
@@ -106,7 +122,7 @@ private fun LoginContent(
                 value = email,
                 onValueChange = {
                     email = it
-                    action(LoginAction.ValidateEmail(email))
+                    loginActions(LoginAction.ValidateEmail(email))
                 },
                 label = stringResource(R.string.enter_your_email),
                 error = if (state.emailValidity is ValidationResult.Error) state.emailValidity.error.toString(context) else "",
@@ -122,7 +138,7 @@ private fun LoginContent(
                 value = password,
                 onValueChange = {
                     password = it
-                    action(LoginAction.ValidatePassword(password))
+                    loginActions(LoginAction.ValidatePassword(password))
                 },
                 label = stringResource(R.string.enter_your_password),
                 error = if (state.passwordValidity is ValidationResult.Error) state.passwordValidity.error.toString(context) else "",
@@ -141,7 +157,10 @@ private fun LoginContent(
             Spacer(modifier = Modifier.height(20.dp))
             AuthCustomButton(
                 text = stringResource(R.string.log_in),
-                onClick = { action(LoginAction.Login(email, password)) },
+                onClick = {
+                    baseActions(BaseAction.ShowLoading)
+                    loginActions(LoginAction.Login(email, password))
+                },
                 enabled = state.emailValidity is ValidationResult.Success && state.passwordValidity is ValidationResult.Success
             )
         }
@@ -154,11 +173,11 @@ private fun LoginContentsPreview() {
     AppTheme {
         LoginContent(
             state = LoginState(),
-            action = { },
+            loginActions = { },
+            baseActions = { },
             navigateToRegisterScreen = { },
             navigateToEmailVerificationScreen = { },
-            navigateToHomeScreen = { },
-            navigateToForm = {},
+            navigateToNextScreen = {  },
         )
     }
 }

@@ -9,14 +9,15 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -26,7 +27,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.greenvenom.auth.R
 import com.greenvenom.auth.component.AuthHeader
 import com.greenvenom.auth.presentation.otp.components.OtpInputField
+import com.greenvenom.networking.data.onError
 import com.greenvenom.networking.data.onSuccess
+import com.greenvenom.networking.utils.toString
+import com.greenvenom.ui.presentation.BaseAction
 import com.greenvenom.ui.presentation.BaseScreen
 import com.greenvenom.ui.theme.AppTheme
 import com.greenvenom.ui.theme.backgroundLight
@@ -63,8 +67,7 @@ fun OtpScreen(
 
         OtpContent(
             state = otpState,
-            focusRequesters = focusRequesters,
-            action = { action ->
+            otpActions = { action ->
                 when(action) {
                     is OtpAction.OnEnterNumber -> {
                         if(action.number != null) {
@@ -75,6 +78,8 @@ fun OtpScreen(
                 }
                 viewModel.otpAction(action)
             },
+            baseActions = viewModel::baseAction,
+            focusRequesters = focusRequesters,
             navigateToNewPasswordScreen = navigateToNewPasswordScreen,
             navigateBack = navigateBack,
         )
@@ -84,16 +89,31 @@ fun OtpScreen(
 @Composable
 private fun OtpContent(
     state: OtpState,
+    otpActions: (OtpAction) -> Unit,
+    baseActions: (BaseAction) -> Unit,
     focusRequesters: List<FocusRequester>,
-    action: (OtpAction) -> Unit,
     navigateToNewPasswordScreen: () -> Unit,
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+
     LaunchedEffect(state.otpResult) {
+        baseActions(BaseAction.HideLoading)
         state.otpResult?.onSuccess {
-            action(OtpAction.ResetState)
             navigateToNewPasswordScreen()
+        }
+        state.otpResult?.onError {
+            baseActions(BaseAction.ShowErrorMessage(
+                it.errorType?.toString(context)?: it.message.ifEmpty { "Something went wrong" }
+            ))
+            otpActions(OtpAction.ResetNetworkResult)
+        }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            otpActions(OtpAction.ResetState)
         }
     }
 
@@ -124,14 +144,14 @@ private fun OtpContent(
                     focusRequester = focusRequesters[index],
                     onFocusChanged = { isFocused ->
                         if (isFocused) {
-                            action(OtpAction.OnChangeFieldFocused(index))
+                            otpActions(OtpAction.OnChangeFieldFocused(index))
                         }
                     },
                     onNumberChanged = { newNumber ->
-                        action(OtpAction.OnEnterNumber(newNumber, index))
+                        otpActions(OtpAction.OnEnterNumber(newNumber, index))
                     },
                     onKeyboardBack = {
-                        action(OtpAction.OnKeyboardBack)
+                        otpActions(OtpAction.OnKeyboardBack)
                     },
                     modifier = Modifier
                         .weight(1f)
@@ -148,8 +168,9 @@ private fun OtpScreenPreview() {
     AppTheme {
         OtpContent(
             state = OtpState(),
+            otpActions = {},
+            baseActions = {},
             focusRequesters = List(6) { FocusRequester() },
-            action = {},
             navigateToNewPasswordScreen = {},
             navigateBack = {}
         )

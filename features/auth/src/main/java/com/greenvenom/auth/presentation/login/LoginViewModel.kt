@@ -3,11 +3,7 @@ package com.greenvenom.auth.presentation.login
 import androidx.lifecycle.viewModelScope
 import com.greenvenom.auth.domain.repository.LoginRepository
 import com.greenvenom.validation.ValidateInput
-import com.greenvenom.networking.data.Result
-import com.greenvenom.networking.supabase.util.SupabaseError
-import com.greenvenom.networking.data.onError
 import com.greenvenom.ui.presentation.BaseViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -18,14 +14,6 @@ class LoginViewModel(
 ): BaseViewModel() {
     private val _loginState = MutableStateFlow(LoginState())
     val loginState = _loginState.asStateFlow()
-
-    private val _loginExceptionHandler = CoroutineExceptionHandler { _, exception ->
-        _loginState.value = _loginState.value.copy(
-            loginResult = Result.Error(SupabaseError(exception.message.toString())),
-        )
-        hideLoading()
-        _loginState.value.loginResult?.onError { showErrorMessage(it.message) }
-    }
 
     fun loginAction(action: LoginAction) {
         when(action) {
@@ -44,6 +32,7 @@ class LoginViewModel(
                 password = action.password
             )
             is LoginAction.ResetState -> resetState()
+            is LoginAction.ResetNetworkResult -> resetNetworkResult()
         }
     }
 
@@ -51,16 +40,17 @@ class LoginViewModel(
         email: String,
         password: String,
     ) {
-        showLoading()
-        viewModelScope.launch(_loginExceptionHandler) {
-            loginRepository.loginUser(email, password)
-        }.invokeOnCompletion {
-            _loginState.update { it.copy(loginResult = Result.Success(Unit)) }
-            hideLoading()
+        viewModelScope.launch {
+            val result = loginRepository.loginUser(email, password)
+            _loginState.update { it.copy(loginResult = result) }
         }
     }
 
     private fun resetState() {
-        _loginState.value = LoginState()
+        _loginState.update { LoginState() }
+    }
+
+    private fun resetNetworkResult() {
+        _loginState.update { it.copy(loginResult = null) }
     }
 }

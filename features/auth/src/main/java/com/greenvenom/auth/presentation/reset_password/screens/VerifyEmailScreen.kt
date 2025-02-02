@@ -33,7 +33,10 @@ import com.greenvenom.auth.presentation.reset_password.ResetPasswordViewModel
 import com.greenvenom.auth.component.AuthCustomButton
 import com.greenvenom.auth.component.AuthTextField
 import com.greenvenom.auth.presentation.reset_password.ResetPasswordState
+import com.greenvenom.networking.data.onError
 import com.greenvenom.networking.data.onSuccess
+import com.greenvenom.networking.utils.toString
+import com.greenvenom.ui.presentation.BaseAction
 import com.greenvenom.ui.presentation.BaseScreen
 import com.greenvenom.ui.theme.AppTheme
 import com.greenvenom.ui.theme.backgroundLight
@@ -54,7 +57,8 @@ fun VerifyEmailScreen(
         VerifyEmailContent(
             resetPasswordState = resetPasswordState,
             emailState = emailState,
-            action = resetPasswordViewModel::resetPasswordAction,
+            resetPasswordActions = resetPasswordViewModel::resetPasswordAction,
+            baseActions = resetPasswordViewModel::baseAction,
             navigateToOtpScreen = navigateToOtpScreen,
             navigateBack = navigateBack
         )
@@ -65,7 +69,8 @@ fun VerifyEmailScreen(
 private fun VerifyEmailContent(
     resetPasswordState: ResetPasswordState,
     emailState: EmailState,
-    action: (ResetPasswordAction) -> Unit,
+    resetPasswordActions: (ResetPasswordAction) -> Unit,
+    baseActions: (BaseAction) -> Unit,
     navigateToOtpScreen: () -> Unit,
     navigateBack: () -> Unit,
 ) {
@@ -73,8 +78,15 @@ private fun VerifyEmailContent(
     var email by rememberSaveable { mutableStateOf("") }
 
     LaunchedEffect(resetPasswordState.emailSentResult) {
+        baseActions(BaseAction.HideLoading)
         resetPasswordState.emailSentResult?.onSuccess {
             navigateToOtpScreen()
+        }
+        resetPasswordState.emailSentResult?.onError {
+            baseActions(BaseAction.ShowErrorMessage(
+                it.errorType?.toString(context)?: it.message.ifEmpty { "Something went wrong" }
+            ))
+            resetPasswordActions(ResetPasswordAction.ResetEmailResult)
         }
     }
 
@@ -103,7 +115,7 @@ private fun VerifyEmailContent(
                 value = email,
                 onValueChange = {
                     email = it
-                    action(ResetPasswordAction.UpdateEmail(email))
+                    resetPasswordActions(ResetPasswordAction.UpdateEmail(email))
                 },
                 label = stringResource(R.string.enter_your_email),
                 error = if (emailState.emailValidity is ValidationResult.Error) emailState.emailValidity.error.toString(context) else "",
@@ -113,7 +125,8 @@ private fun VerifyEmailContent(
                 text = stringResource(R.string.next),
                 enabled = emailState.emailValidity is ValidationResult.Success,
                 onClick = {
-                    action(ResetPasswordAction.SendResetPasswordEmail(email))
+                    baseActions(BaseAction.ShowLoading)
+                    resetPasswordActions(ResetPasswordAction.SendResetPasswordEmail(email))
                 }
             )
         }
@@ -127,7 +140,8 @@ private fun VerifyEmailContentPreview() {
         VerifyEmailContent(
             resetPasswordState = ResetPasswordState(),
             emailState = EmailState(),
-            action = { },
+            resetPasswordActions = { },
+            baseActions = { },
             navigateToOtpScreen = { },
             navigateBack = { }
         )

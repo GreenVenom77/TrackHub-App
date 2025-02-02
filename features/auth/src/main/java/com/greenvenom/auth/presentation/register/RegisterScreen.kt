@@ -12,6 +12,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,7 +29,10 @@ import com.greenvenom.auth.R
 import com.greenvenom.auth.component.AuthCustomButton
 import com.greenvenom.auth.component.AuthHeader
 import com.greenvenom.auth.component.AuthTextField
+import com.greenvenom.networking.data.onError
 import com.greenvenom.networking.data.onSuccess
+import com.greenvenom.networking.utils.toString
+import com.greenvenom.ui.presentation.BaseAction
 import com.greenvenom.ui.presentation.BaseScreen
 import com.greenvenom.ui.theme.AppTheme
 import com.greenvenom.ui.theme.backgroundLight
@@ -46,7 +50,8 @@ fun RegisterScreen(
 
         RegisterContent(
             state = state,
-            action = viewModel::registerAction,
+            registerActions = viewModel::registerAction,
+            baseActions = viewModel::baseAction,
             navigateBack = navigateBack,
             navigateToAccountVerificationScreen = navigateToAccountVerificationScreen
         )
@@ -56,21 +61,38 @@ fun RegisterScreen(
 @Composable
 private fun RegisterContent(
     state: RegisterState,
-    action: (RegisterAction) -> Unit,
+    registerActions: (RegisterAction) -> Unit,
+    baseActions: (BaseAction) -> Unit,
     navigateBack: () -> Unit,
     navigateToAccountVerificationScreen: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    var userName by rememberSaveable { mutableStateOf("") }
+    var username by rememberSaveable { mutableStateOf("") }
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     var confirmPassword by rememberSaveable { mutableStateOf("") }
 
     LaunchedEffect(state.registrationResult) {
+        baseActions(BaseAction.HideLoading)
         state.registrationResult?.onSuccess {
-            action(RegisterAction.ResetState)
             navigateToAccountVerificationScreen()
+        }
+        state.registrationResult?.onError {
+            baseActions(BaseAction.ShowErrorMessage(
+                it.errorType?.toString(context)?: it.message.ifEmpty { "Something went wrong" }
+            ))
+            registerActions(RegisterAction.ResetNetworkResult)
+        }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            registerActions(RegisterAction.ResetState)
+            username = ""
+            email = ""
+            password = ""
+            confirmPassword = ""
         }
     }
 
@@ -99,10 +121,10 @@ private fun RegisterContent(
                 color = onBackgroundLight
             )
             AuthTextField(
-                value = userName,
+                value = username,
                 onValueChange = {
-                    userName = it
-                    action(RegisterAction.ValidateUsername(userName))
+                    username = it
+                    registerActions(RegisterAction.ValidateUsername(username))
                 },
                 label = stringResource(R.string.enter_your_username),
                 error = if (state.usernameValidity is ValidationResult.Error) state.usernameValidity.error.toString(context) else "",
@@ -118,7 +140,7 @@ private fun RegisterContent(
                 value = email,
                 onValueChange = {
                     email = it
-                    action(RegisterAction.ValidateEmail(email))
+                    registerActions(RegisterAction.ValidateEmail(email))
                 },
                 label = stringResource(R.string.enter_your_email),
                 error = if (state.emailValidity is ValidationResult.Error) state.emailValidity.error.toString(context) else "",
@@ -134,7 +156,7 @@ private fun RegisterContent(
                 value = password,
                 onValueChange = {
                     password = it
-                    action(RegisterAction.ValidatePassword(password))
+                    registerActions(RegisterAction.ValidatePassword(password))
                 },
                 label = stringResource(R.string.enter_your_password),
                 error = if (state.passwordValidity is ValidationResult.Error) state.passwordValidity.error.toString(context) else "",
@@ -150,7 +172,7 @@ private fun RegisterContent(
                 value = confirmPassword,
                 onValueChange = {
                     confirmPassword = it
-                    action(RegisterAction.ValidatePasswordConfirmation(password, confirmPassword))
+                    registerActions(RegisterAction.ValidatePasswordConfirmation(password, confirmPassword))
                 },
                 label = stringResource(R.string.confirm_your_password),
                 error = if (state.confirmPasswordValidity is ValidationResult.Error) state.confirmPasswordValidity.error.toString(context) else "",
@@ -161,13 +183,14 @@ private fun RegisterContent(
             AuthCustomButton(
                 text = stringResource(R.string.register),
                 onClick = {
-                    action(
+                    registerActions(
                         RegisterAction.Register(
-                            userName,
+                            username,
                             email,
                             password,
                         )
                     )
+                    baseActions(BaseAction.ShowLoading)
                 },
                 enabled = state.usernameValidity is ValidationResult.Success &&
                         state.emailValidity is ValidationResult.Success &&
@@ -184,7 +207,8 @@ private fun RegisterContentsPreview() {
     AppTheme {
         RegisterContent(
             state = RegisterState(),
-            action = { },
+            registerActions = { },
+            baseActions = { },
             navigateBack = { },
             navigateToAccountVerificationScreen = { }
         )

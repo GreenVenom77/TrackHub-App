@@ -1,4 +1,4 @@
-package com.greenvenom.networking.data
+package com.greenvenom.networking.domain
 
 enum class ErrorType {
     REQUEST_TIMEOUT,

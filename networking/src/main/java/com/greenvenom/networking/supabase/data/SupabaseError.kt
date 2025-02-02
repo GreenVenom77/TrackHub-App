@@ -1,8 +1,8 @@
-package com.greenvenom.networking.supabase.util
+package com.greenvenom.networking.supabase.data
 
-import com.greenvenom.networking.data.Error
+import com.greenvenom.networking.domain.NetworkError
 
 data class SupabaseError(
     override val message: String = "",
     val description: String? = null,
-): Error()
+): NetworkError()

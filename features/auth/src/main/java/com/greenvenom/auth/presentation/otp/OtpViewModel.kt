@@ -4,8 +4,9 @@ import androidx.lifecycle.viewModelScope
 import com.greenvenom.auth.data.repository.EmailStateRepository
 import com.greenvenom.auth.domain.repository.OtpRepository
 import com.greenvenom.networking.data.Result
-import com.greenvenom.networking.supabase.util.SupabaseError
+import com.greenvenom.networking.supabase.data.SupabaseError
 import com.greenvenom.networking.data.onError
+import com.greenvenom.ui.presentation.BaseAction
 import com.greenvenom.ui.presentation.BaseViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,14 +21,6 @@ class OtpViewModel(
     private val _otpState = MutableStateFlow(OtpState())
     val otpState = _otpState.asStateFlow()
 
-    private val _otpExceptionHandler = CoroutineExceptionHandler { _, exception ->
-        _otpState.update { _otpState.value.copy(
-            otpResult = Result.Error(SupabaseError(exception.message.toString())),
-        )}
-        hideLoading()
-        _otpState.value.otpResult?.onError { showErrorMessage(it.message) }
-    }
-
     fun otpAction(action: OtpAction) {
         when(action) {
             is OtpAction.OnChangeFieldFocused -> {
@@ -41,30 +34,29 @@ class OtpViewModel(
 
             is OtpAction.OnKeyboardBack -> {
                 val previousIndex = getPreviousFocusedIndex(_otpState.value.focusedIndex)
-                _otpState.update { it.copy(
-                    code = it.code.mapIndexed { index, number ->
-                        if(index == previousIndex) {
-                            null
-                        } else {
-                            number
-                        }
-                    },
-                    focusedIndex = previousIndex
-                ) }
+                _otpState.update {
+                    it.copy(
+                        code = it.code.mapIndexed { index, number ->
+                            if(index == previousIndex) {
+                                null
+                            } else {
+                                number
+                            }
+                        },
+                        focusedIndex = previousIndex
+                    )
+                }
             }
-            is OtpAction.ResetState -> {
-                resetOtpState()
-            }
+            is OtpAction.ResetState -> resetOtpState()
+            is OtpAction.ResetNetworkResult -> resetNetworkResult()
         }
     }
 
     private fun verifyOtp(email: String, otp: String) {
         showLoading()
-        viewModelScope.launch(_otpExceptionHandler) {
-            otpRepository.verifyOtp(email, otp)
-        }.invokeOnCompletion {
-            _otpState.update { it.copy(otpResult = Result.Success(Unit)) }
-            hideLoading()
+        viewModelScope.launch {
+            val result = otpRepository.verifyOtp(email, otp)
+            _otpState.update { it.copy(otpResult = result) }
         }
     }
 
@@ -132,6 +124,10 @@ class OtpViewModel(
     }
 
     private fun resetOtpState() {
-        _otpState.value = OtpState()
+        _otpState.update { OtpState() }
+    }
+
+    private fun resetNetworkResult() {
+        _otpState.update { it.copy(otpResult = null) }
     }
 }
