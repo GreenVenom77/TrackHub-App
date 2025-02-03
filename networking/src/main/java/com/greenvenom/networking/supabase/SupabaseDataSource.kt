@@ -17,12 +17,16 @@ class SupabaseDataSource(
 ): RemoteDataSource {
     private val client = supabaseClient.getClient()
 
-    override suspend fun registerUser(username: String, email: String, password: String): Result<UserInfo?, SupabaseError> {
+    override suspend fun registerUser(
+        displayName: String,
+        email: String,
+        password: String
+    ): Result<UserInfo?, SupabaseError> {
         return supabaseCall<UserInfo?> {
             client.auth.signUpWith(Email) {
                 this.email = email
                 this.password = password
-                this.data = buildJsonObject { put("display_name", username) }
+                this.data = buildJsonObject { put("display_name", displayName) }
             }
         }
     }

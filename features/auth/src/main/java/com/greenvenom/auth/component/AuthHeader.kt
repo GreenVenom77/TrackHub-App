@@ -107,9 +107,6 @@ fun AuthHeader(
                     Text(
                         text = stringResource(R.string.sign_up),
                         color = bluePrimary,
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            textDecoration = TextDecoration.Underline
-                        ),
                         modifier = Modifier
                             .padding(start = 3.dp)
                             .clickable(enabled = true) {

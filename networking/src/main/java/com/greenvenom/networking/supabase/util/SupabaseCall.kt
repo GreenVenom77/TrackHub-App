@@ -7,7 +7,7 @@ import io.github.jan.supabase.exceptions.HttpRequestException
 import io.github.jan.supabase.exceptions.RestException
 import io.ktor.client.plugins.HttpRequestTimeoutException
 
-inline fun <reified T> supabaseCall (
+suspend inline fun <reified T> supabaseCall (
     execute: () -> T
 ): Result<T, SupabaseError> {
     val result = try {
