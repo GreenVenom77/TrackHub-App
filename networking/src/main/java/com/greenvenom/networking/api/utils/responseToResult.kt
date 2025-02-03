@@ -1,12 +1,12 @@
 package com.greenvenom.networking.api.utils
 
 import com.greenvenom.networking.api.APINetworkError
-import com.greenvenom.networking.domain.NetworkError
-import com.greenvenom.networking.domain.ErrorType
 import com.greenvenom.networking.data.Result
-import io.ktor.client.statement.HttpResponse
+import com.greenvenom.networking.domain.ErrorType
+import com.greenvenom.networking.domain.NetworkError
 import io.ktor.client.call.NoTransformationFoundException
 import io.ktor.client.call.body
+import io.ktor.client.statement.HttpResponse
 
 suspend inline fun <reified T> responseToResult(
     response: HttpResponse

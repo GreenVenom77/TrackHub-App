@@ -3,14 +3,10 @@ package com.greenvenom.auth.presentation.reset_password
 import androidx.lifecycle.viewModelScope
 import com.greenvenom.auth.data.repository.EmailStateRepository
 import com.greenvenom.auth.domain.repository.ResetPasswordRepository
+import com.greenvenom.ui.presentation.BaseViewModel
 import com.greenvenom.validation.ValidateInput
 import com.greenvenom.validation.domain.onError
 import com.greenvenom.validation.domain.onSuccess
-import com.greenvenom.networking.data.Result
-import com.greenvenom.networking.supabase.data.SupabaseError
-import com.greenvenom.networking.data.onError
-import com.greenvenom.ui.presentation.BaseViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

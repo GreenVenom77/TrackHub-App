@@ -1,7 +1,7 @@
 package com.greenvenom.networking.domain.datasource
 
-import com.greenvenom.networking.domain.NetworkError
 import com.greenvenom.networking.data.Result
+import com.greenvenom.networking.domain.NetworkError
 
 interface RemoteDataSource {
     suspend fun registerUser(username: String, email: String, password: String): Result<Any?, NetworkError>

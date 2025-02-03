@@ -1,9 +1,9 @@
 package com.greenvenom.networking.supabase
 
 import com.greenvenom.networking.data.Result
-import com.greenvenom.networking.supabase.util.SupabaseClient
 import com.greenvenom.networking.domain.datasource.RemoteDataSource
 import com.greenvenom.networking.supabase.data.SupabaseError
+import com.greenvenom.networking.supabase.util.SupabaseClient
 import com.greenvenom.networking.supabase.util.supabaseCall
 import io.github.jan.supabase.auth.OtpType
 import io.github.jan.supabase.auth.auth

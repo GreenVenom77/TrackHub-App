@@ -1,12 +1,12 @@
 package com.greenvenom.auth.di
 
 import com.greenvenom.auth.data.repository.EmailStateRepository
-import com.greenvenom.auth.data.repository.OtpRepositoryImpl
 import com.greenvenom.auth.data.repository.LoginRepositoryImpl
+import com.greenvenom.auth.data.repository.OtpRepositoryImpl
 import com.greenvenom.auth.data.repository.RegisterRepositoryImpl
 import com.greenvenom.auth.data.repository.ResetPasswordRepositoryImpl
-import com.greenvenom.auth.domain.repository.OtpRepository
 import com.greenvenom.auth.domain.repository.LoginRepository
+import com.greenvenom.auth.domain.repository.OtpRepository
 import com.greenvenom.auth.domain.repository.RegisterRepository
 import com.greenvenom.auth.domain.repository.ResetPasswordRepository
 import com.greenvenom.auth.presentation.login.LoginViewModel

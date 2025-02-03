@@ -1,6 +1,5 @@
 package com.greenvenom.auth.presentation.reset_password.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,23 +24,22 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.greenvenom.validation.domain.ValidationResult
-import com.greenvenom.validation.util.toString
 import com.greenvenom.auth.R
+import com.greenvenom.auth.component.AuthCustomButton
 import com.greenvenom.auth.component.AuthHeader
+import com.greenvenom.auth.component.AuthTextField
 import com.greenvenom.auth.presentation.reset_password.ResetPasswordAction
 import com.greenvenom.auth.presentation.reset_password.ResetPasswordState
 import com.greenvenom.auth.presentation.reset_password.ResetPasswordViewModel
-import com.greenvenom.auth.component.AuthCustomButton
-import com.greenvenom.auth.component.AuthTextField
 import com.greenvenom.networking.data.onError
 import com.greenvenom.networking.data.onSuccess
 import com.greenvenom.networking.utils.toString
 import com.greenvenom.ui.presentation.BaseAction
 import com.greenvenom.ui.presentation.BaseScreen
 import com.greenvenom.ui.theme.AppTheme
-import com.greenvenom.ui.theme.backgroundLight
 import com.greenvenom.ui.theme.onBackgroundLight
+import com.greenvenom.validation.domain.ValidationResult
+import com.greenvenom.validation.util.toString
 
 @Composable
 fun NewPasswordScreen(
@@ -97,7 +95,6 @@ private fun NewPasswordContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = backgroundLight)
     ) {
         AuthHeader(
             title = stringResource(R.string.create_new_password),

@@ -5,8 +5,12 @@ import com.greenvenom.navigation.AppDestination
 import com.greenvenom.navigation.NavigationTarget
 import com.greenvenom.navigation.mappers.fromRoute
 
-class AppNavigator(navControllerHolder: NavHostControllerHolder) {
-    private val navController: NavHostController = navControllerHolder.navController
+class AppNavigator {
+    lateinit var navController: NavHostController
+
+    fun addNavController(navController: NavHostController) {
+        this.navController = navController
+    }
 
     fun navigateTo(target: NavigationTarget): AppDestination {
         navController.navigate(target) {

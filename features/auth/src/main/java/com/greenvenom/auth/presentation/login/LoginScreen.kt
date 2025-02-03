@@ -1,8 +1,12 @@
 package com.greenvenom.auth.presentation.login
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -22,21 +26,20 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.greenvenom.validation.domain.ValidationResult
-import com.greenvenom.validation.util.toString
-import com.greenvenom.networking.data.onSuccess
 import com.greenvenom.auth.R
-import com.greenvenom.auth.component.AuthHeader
 import com.greenvenom.auth.component.AuthCustomButton
+import com.greenvenom.auth.component.AuthHeader
 import com.greenvenom.auth.component.AuthTextField
 import com.greenvenom.networking.data.onError
+import com.greenvenom.networking.data.onSuccess
 import com.greenvenom.networking.utils.toString
 import com.greenvenom.ui.presentation.BaseAction
 import com.greenvenom.ui.presentation.BaseScreen
 import com.greenvenom.ui.theme.AppTheme
-import com.greenvenom.ui.theme.backgroundLight
 import com.greenvenom.ui.theme.bluePrimary
 import com.greenvenom.ui.theme.onBackgroundLight
+import com.greenvenom.validation.domain.ValidationResult
+import com.greenvenom.validation.util.toString
 
 @Composable
 fun LoginScreen(
@@ -96,7 +99,6 @@ private fun LoginContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = backgroundLight)
     ) {
         // Header Section
         AuthHeader(

@@ -1,10 +1,10 @@
 package com.greenvenom.auth.presentation.login
 
 import androidx.compose.runtime.Immutable
-import com.greenvenom.validation.domain.ValidationError
-import com.greenvenom.validation.domain.ValidationResult
 import com.greenvenom.networking.data.Result
 import com.greenvenom.networking.domain.NetworkError
+import com.greenvenom.validation.domain.ValidationError
+import com.greenvenom.validation.domain.ValidationResult
 
 @Immutable
 data class LoginState(

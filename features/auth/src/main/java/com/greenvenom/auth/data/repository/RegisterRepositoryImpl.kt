@@ -1,8 +1,8 @@
 package com.greenvenom.auth.data.repository
 
 import com.greenvenom.auth.domain.repository.RegisterRepository
-import com.greenvenom.networking.domain.NetworkError
 import com.greenvenom.networking.data.Result
+import com.greenvenom.networking.domain.NetworkError
 import com.greenvenom.networking.domain.datasource.RemoteDataSource
 
 class RegisterRepositoryImpl(

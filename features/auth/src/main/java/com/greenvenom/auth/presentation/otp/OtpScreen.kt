@@ -1,6 +1,5 @@
 package com.greenvenom.auth.presentation.otp
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,7 +32,6 @@ import com.greenvenom.networking.utils.toString
 import com.greenvenom.ui.presentation.BaseAction
 import com.greenvenom.ui.presentation.BaseScreen
 import com.greenvenom.ui.theme.AppTheme
-import com.greenvenom.ui.theme.backgroundLight
 
 @Composable
 fun OtpScreen(
@@ -118,10 +116,9 @@ private fun OtpContent(
     }
 
     Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .fillMaxSize()
-            .background(color = backgroundLight),
-        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         AuthHeader(
             title = stringResource(R.string.enter_the_sent_otp),

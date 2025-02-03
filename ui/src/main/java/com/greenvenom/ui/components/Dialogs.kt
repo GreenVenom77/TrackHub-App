@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.greenvenom.ui.R
+import com.greenvenom.ui.theme.AppTheme
 
 @Composable
 fun LoadingDialog(
@@ -58,11 +59,17 @@ fun ErrorDialog(
                 ) {
                     Text(
                         text = stringResource(id = R.string.dismiss),
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             },
-            text = { Text(text = errorMessage) }
+            text = {
+                Text(
+                    text = errorMessage,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            },
+            modifier = modifier
         )
     }
 }
@@ -79,8 +86,10 @@ private fun LoadingDialogPreview() {
 @PreviewLightDark
 @Composable
 private fun ErrorDialogPreview() {
-    ErrorDialog(
-        errorMessage = "Something wrong happened",
-        dismissAction = {  }
-    )
+    AppTheme {
+        ErrorDialog(
+            errorMessage = "Something wrong happened",
+            dismissAction = {  }
+        )
+    }
 }

@@ -1,6 +1,5 @@
 package com.greenvenom.auth.presentation.register
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -35,7 +34,6 @@ import com.greenvenom.networking.utils.toString
 import com.greenvenom.ui.presentation.BaseAction
 import com.greenvenom.ui.presentation.BaseScreen
 import com.greenvenom.ui.theme.AppTheme
-import com.greenvenom.ui.theme.backgroundLight
 import com.greenvenom.ui.theme.onBackgroundLight
 import com.greenvenom.validation.domain.ValidationResult
 import com.greenvenom.validation.util.toString
@@ -99,7 +97,6 @@ private fun RegisterContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = backgroundLight)
     ) {
         // Header Section
         AuthHeader(

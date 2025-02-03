@@ -3,12 +3,7 @@ package com.greenvenom.auth.presentation.otp
 import androidx.lifecycle.viewModelScope
 import com.greenvenom.auth.data.repository.EmailStateRepository
 import com.greenvenom.auth.domain.repository.OtpRepository
-import com.greenvenom.networking.data.Result
-import com.greenvenom.networking.supabase.data.SupabaseError
-import com.greenvenom.networking.data.onError
-import com.greenvenom.ui.presentation.BaseAction
 import com.greenvenom.ui.presentation.BaseViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
