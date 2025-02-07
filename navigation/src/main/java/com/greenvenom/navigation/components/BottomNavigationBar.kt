@@ -1,4 +1,4 @@
-package com.greenvenom.navigation.presentation
+package com.greenvenom.navigation.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically

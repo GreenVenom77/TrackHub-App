@@ -37,7 +37,7 @@ import com.greenvenom.ui.theme.AppTheme
 fun OtpScreen(
     navigateToNewPasswordScreen: () -> Unit,
     navigateBack: () -> Unit
-    ) {
+) {
     BaseScreen<OtpViewModel> { viewModel ->
         val otpState by viewModel.otpState.collectAsStateWithLifecycle()
         val focusRequesters = remember {

@@ -21,6 +21,7 @@
     <string name="enter_your_username">Enter your Username</string>
     <string name="create_new_password">Create New Password</string>
     <string name="next">Next</string>
+    <string name="confirm">Confirm</string>
 
     # Validation Error Messages
     <string name="empty_user_name_error">Username cannot be empty</string>

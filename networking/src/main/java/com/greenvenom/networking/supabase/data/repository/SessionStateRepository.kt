@@ -8,21 +8,27 @@ import io.github.jan.supabase.auth.status.SessionSource
 import io.github.jan.supabase.auth.status.SessionStatus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SessionStateRepository(supabaseClient: SupabaseClient) {
     private val client = supabaseClient.getClient()
-    private val _userSessionState = MutableStateFlow(UserSessionState())
-    val userSessionState = _userSessionState.asStateFlow()
+    private val _userSessionEvents = MutableSharedFlow<SessionDestinations>(
+        replay = 0,
+        extraBufferCapacity = 1
+    )
+    val userSessionEvents = _userSessionEvents.asSharedFlow()
 
     init {
         collectSessionStatus()
     }
 
-    private fun collectSessionStatus() {
+    fun collectSessionStatus() {
         CoroutineScope(Dispatchers.IO).launch {
             client.auth.sessionStatus.collect {
                 handleSessionStatus(it)
@@ -30,7 +36,7 @@ class SessionStateRepository(supabaseClient: SupabaseClient) {
         }
     }
 
-    private fun handleSessionStatus(sessionStatus: SessionStatus) {
+    private suspend fun handleSessionStatus(sessionStatus: SessionStatus) {
         when(sessionStatus) {
             SessionStatus.Initializing -> {  }
             is SessionStatus.Authenticated -> {
@@ -38,35 +44,19 @@ class SessionStateRepository(supabaseClient: SupabaseClient) {
                     is SessionSource.Refresh,
                     is SessionSource.Storage,
                     is SessionSource.SignIn -> {
-                        _userSessionState.update {
-                            it.copy(
-                                wantedDestination = SessionDestinations.HOME
-                            )
-                        }
+                        _userSessionEvents.emit(SessionDestinations.HOME)
                     }
                     is SessionSource.UserChanged -> {
-                        _userSessionState.update {
-                            it.copy(
-                                wantedDestination = SessionDestinations.SIGN_IN
-                            )
-                        }
+                        _userSessionEvents.emit(SessionDestinations.SIGN_IN)
                     }
                     else -> { Log.i("Session Source", sessionStatus.source.toString()) }
                 }
             }
             is SessionStatus.NotAuthenticated -> {
-                _userSessionState.update {
-                    it.copy(
-                        wantedDestination = SessionDestinations.SIGN_IN
-                    )
-                }
+                _userSessionEvents.emit(SessionDestinations.SIGN_IN)
             }
             is SessionStatus.RefreshFailure -> {
-                _userSessionState.update {
-                    it.copy(
-                        wantedDestination = SessionDestinations.SESSION_REFRESH_FAILURE
-                    )
-                }
+                _userSessionEvents.emit(SessionDestinations.SIGN_IN)
             }
         }
     }

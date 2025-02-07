@@ -25,8 +25,8 @@ android {
     buildTypes {
         debug {
             isMinifyEnabled = false
-            buildConfigField("String", "BASE_URL", "\"${localProperties.getProperty("BASE_URL")}\"")
-            buildConfigField("String", "API_KEY", "\"${localProperties.getProperty("API_KEY")}\"")
+            buildConfigField("String", "BASE_URL", "\"${localProperties.getProperty("DEV_URL")}\"")
+            buildConfigField("String", "API_KEY", "\"${localProperties.getProperty("DEV_KEY")}\"")
         }
         release {
             isMinifyEnabled = true
@@ -34,8 +34,8 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField("String", "BASE_URL", "\"${localProperties.getProperty("BASE_URL")}\"")
-            buildConfigField("String", "API_KEY", "\"${localProperties.getProperty("API_KEY")}\"")
+            buildConfigField("String", "BASE_URL", "\"${localProperties.getProperty("PROD_URL")}\"")
+            buildConfigField("String", "API_KEY", "\"${localProperties.getProperty("PROD_KEY")}\"")
         }
     }
     compileOptions {
@@ -52,7 +52,7 @@ android {
 
 dependencies {
     val ktor = "3.0.3"
-    val supabase = "3.1.0"
+    val supabase = "3.1.1"
     val koin = "4.0.0"
 
     implementation(libs.androidx.core.ktx)

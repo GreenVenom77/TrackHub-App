@@ -142,7 +142,7 @@ private fun NewPasswordContent(
             )
             Spacer(modifier = Modifier.height(20.dp))
             AuthCustomButton(
-                text = stringResource(R.string.next),
+                text = stringResource(R.string.confirm),
                 enabled = state.passwordValidity is ValidationResult.Success && state.confirmPasswordValidity is ValidationResult.Success,
                 onClick = {
                     baseActions(BaseAction.ShowLoading)

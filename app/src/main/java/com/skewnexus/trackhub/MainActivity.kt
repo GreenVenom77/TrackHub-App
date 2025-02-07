@@ -10,9 +10,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.compose.rememberNavController
 import com.greenvenom.navigation.AppDestination
-import com.greenvenom.navigation.presentation.BottomNavigationBar
+import com.greenvenom.navigation.components.BottomNavigationBar
 import com.greenvenom.navigation.repository.NavigationStateRepository
 import com.greenvenom.navigation.utils.AppNavigator
 import com.greenvenom.ui.components.TopAppBar
@@ -26,7 +25,6 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val appNavigator = koinInject<AppNavigator>()
-            appNavigator.addNavController(rememberNavController())
             val navigationRepository = koinInject<NavigationStateRepository>()
             val navigationState by navigationRepository.navigationState.collectAsStateWithLifecycle()
 
@@ -44,7 +42,8 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 ) { innerPadding ->
-                    AppNavHost(modifier = Modifier
+                    AppNavHost(
+                        modifier = Modifier
                         .padding(innerPadding)
                         .fillMaxSize()
                     )
