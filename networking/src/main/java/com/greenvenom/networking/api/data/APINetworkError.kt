@@ -1,4 +1,4 @@
-package com.greenvenom.networking.api
+package com.greenvenom.networking.api.data
 
 import com.greenvenom.networking.domain.ErrorType
 import com.greenvenom.networking.domain.NetworkError

@@ -1,19 +1,14 @@
 package com.greenvenom.navigation.utils
 
 import androidx.navigation.NavHostController
-import com.greenvenom.navigation.NavigationTarget
+import com.greenvenom.navigation.domain.NavigationTarget
 import kotlin.reflect.KClass
 
-class AppNavigator<NT : NavigationTarget> {
+class AppNavigator<NT : NavigationTarget>(private val returnDestinationType: KClass<out NavigationTarget>) {
     lateinit var navController: NavHostController
-    private lateinit var navigationTargetType: KClass<out NavigationTarget>
 
-    fun config(
-        navController: NavHostController,
-        navigationTargetType: KClass<out NavigationTarget>
-    ) {
+    fun config(navController: NavHostController) {
         this.navController = navController
-        this.navigationTargetType = navigationTargetType
     }
 
     fun navigateTo(target: NT): NT? {
@@ -49,12 +44,12 @@ class AppNavigator<NT : NavigationTarget> {
 
     fun getCurrentDestination(): NT? {
         val currentDest = navController.currentBackStackEntry?.destination
-        return currentDest.toNavigationTarget(navigationTargetType)
+        return currentDest.toNavigationTarget(returnDestinationType)
     }
 
     fun getPreviousDestination(): NT? {
         val previousDest = navController.previousBackStackEntry?.destination
-        return previousDest.toNavigationTarget(navigationTargetType)
+        return previousDest.toNavigationTarget(returnDestinationType)
     }
 
     private fun hasBackStack(): Boolean {

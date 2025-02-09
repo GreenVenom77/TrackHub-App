@@ -1,6 +1,6 @@
 package com.greenvenom.networking.api.utils
 
-import com.greenvenom.networking.api.APINetworkError
+import com.greenvenom.networking.api.data.APINetworkError
 import com.greenvenom.networking.data.Result
 import com.greenvenom.networking.domain.ErrorType
 import com.greenvenom.networking.domain.NetworkError

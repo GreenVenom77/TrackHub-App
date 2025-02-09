@@ -1,9 +1,9 @@
-package com.skewnexus.trackhub.navigation.components
+package com.greenvenom.navigation.components
 
 import androidx.annotation.DrawableRes
-import com.greenvenom.navigation.NavigationTarget
-import com.skewnexus.trackhub.R
-import com.skewnexus.trackhub.navigation.routes.Screen
+import com.greenvenom.navigation.domain.NavigationTarget
+import com.greenvenom.navigation.R
+import com.greenvenom.navigation.routes.Screen
 
 enum class BottomDestination(
     @DrawableRes val icon: Int,

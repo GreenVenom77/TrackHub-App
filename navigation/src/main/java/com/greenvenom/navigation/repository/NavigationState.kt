@@ -1,7 +1,7 @@
 package com.greenvenom.navigation.repository
 
 import androidx.compose.runtime.Immutable
-import com.greenvenom.navigation.NavigationTarget
+import com.greenvenom.navigation.domain.NavigationTarget
 
 @Immutable
 data class NavigationState(

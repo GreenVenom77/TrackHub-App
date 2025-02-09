@@ -1,4 +1,4 @@
-package com.greenvenom.networking.supabase
+package com.trackhub.data.datasource.remote
 
 import com.greenvenom.networking.data.Result
 import com.greenvenom.networking.domain.datasource.RemoteDataSource

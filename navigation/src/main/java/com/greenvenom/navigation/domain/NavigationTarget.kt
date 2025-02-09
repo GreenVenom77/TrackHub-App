@@ -1,4 +1,4 @@
-package com.greenvenom.navigation
+package com.greenvenom.navigation.domain
 
 import kotlinx.serialization.Serializable
 

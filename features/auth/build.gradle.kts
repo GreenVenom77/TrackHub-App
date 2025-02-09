@@ -37,6 +37,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":data"))
+    implementation(project(":domain"))
     val koin = "4.0.0"
 
     implementation(libs.androidx.core.ktx)

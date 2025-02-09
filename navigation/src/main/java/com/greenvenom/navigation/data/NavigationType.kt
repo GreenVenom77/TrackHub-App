@@ -1,4 +1,6 @@
-package com.greenvenom.navigation
+package com.greenvenom.navigation.data
+
+import com.greenvenom.navigation.domain.NavigationTarget
 
 sealed class NavigationType {
     data object Back : NavigationType()

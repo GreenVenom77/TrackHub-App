@@ -1,4 +1,4 @@
-package com.skewnexus.trackhub.navigation.components
+package com.greenvenom.navigation.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
@@ -11,9 +11,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import com.skewnexus.trackhub.navigation.routes.Screen
-import com.greenvenom.navigation.NavigationTarget
-import com.greenvenom.navigation.NavigationType
+import com.greenvenom.navigation.routes.Screen
+import com.greenvenom.navigation.domain.NavigationTarget
+import com.greenvenom.navigation.data.NavigationType
 
 @Composable
 fun BottomNavigationBar(
@@ -49,7 +49,7 @@ private fun BarContent(
                 icon = {
                     Icon(
                         painter = painterResource(destination.icon),
-                        contentDescription = "${destination.label} Nav Icon"
+                        contentDescription = "${destination.label} Navigation Icon"
                     )
                 },
                 label = { Text(destination.label, style = MaterialTheme.typography.labelLarge) },

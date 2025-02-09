@@ -1,6 +1,6 @@
-package com.skewnexus.trackhub.navigation.routes
+package com.greenvenom.navigation.routes
 
-import com.greenvenom.navigation.NavigationTarget
+import com.greenvenom.navigation.domain.NavigationTarget
 import kotlinx.serialization.Serializable
 
 @Serializable

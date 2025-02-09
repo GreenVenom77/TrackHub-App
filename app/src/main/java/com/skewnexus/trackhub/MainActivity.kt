@@ -10,8 +10,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.skewnexus.trackhub.navigation.routes.Screen
-import com.skewnexus.trackhub.navigation.components.BottomNavigationBar
+import com.greenvenom.navigation.routes.Screen
+import com.greenvenom.navigation.components.BottomNavigationBar
 import com.greenvenom.navigation.repository.NavigationStateRepository
 import com.greenvenom.ui.components.TopAppBar
 import com.greenvenom.ui.theme.AppTheme
