@@ -2,7 +2,7 @@ package com.greenvenom.networking.utils
 
 import android.content.Context
 import com.greenvenom.networking.R
-import com.greenvenom.networking.domain.ErrorType
+import com.greenvenom.networking.data.ErrorType
 
 fun ErrorType.toString(context: Context): String {
     val resId = when (this) {

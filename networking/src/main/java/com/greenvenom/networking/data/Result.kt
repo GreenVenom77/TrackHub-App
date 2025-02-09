@@ -16,10 +16,6 @@ inline fun <T, E: NetworkError, R> Result<T, E>.map(map: (T) -> R): Result<R, E>
     }
 }
 
-fun <T, E: NetworkError> Result<T, E>.asEmptyDataResult(): EmptyResult<E> {
-    return map {  }
-}
-
 inline fun <T, E: NetworkError> Result<T, E>.onSuccess(action: (T) -> Unit): Result<T, E> {
     return when(this) {
         is Result.Error -> this

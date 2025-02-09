@@ -9,5 +9,11 @@ interface RemoteDataSource {
     suspend fun verifyOtp(email: String, otp: String): Result<Any, NetworkError>
     suspend fun sendResetPasswordEmail(email: String): Result<Any, NetworkError>
     suspend fun updatePassword(password: String): Result<Any, NetworkError>
+    suspend fun updateUserDetails(
+        userType: String,
+        phoneNumber: String,
+        birthDate: String,
+        gender: String
+    ): Result<Any, NetworkError>
     suspend fun logoutUser(): Result<Any, NetworkError>
 }

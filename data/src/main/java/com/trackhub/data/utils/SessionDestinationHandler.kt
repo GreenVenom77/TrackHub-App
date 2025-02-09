@@ -9,15 +9,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SessionsHandler(
+class SessionDestinationHandler(
     private val navigationStateRepository: NavigationStateRepository,
     private val sessionStateRepository: SessionStateRepository
 ) {
     init {
-        collectSessionEvents()
+        collectSessionDestinations()
     }
 
-    fun collectSessionEvents() {
+    fun collectSessionDestinations() {
         CoroutineScope(Dispatchers.Main).launch {
             sessionStateRepository.userSessionEvents.collect { wantedDestination ->
                 handleSessionStates(wantedDestination)
