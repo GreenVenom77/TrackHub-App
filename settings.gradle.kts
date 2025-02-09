@@ -22,8 +22,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "Track Hub"
 include(":app")
-include(":domain")
-include(":data")
 include(":validation")
 include(":networking")
 include(":navigation")

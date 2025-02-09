@@ -1,6 +1,6 @@
 package com.skewnexus.trackhub.di
 
-import com.skewnexus.trackhub.navigation.SessionsHandler
+import com.skewnexus.trackhub.navigation.util.SessionsHandler
 import org.koin.dsl.module
 
 val appModule = module {

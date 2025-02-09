@@ -1,12 +1,12 @@
 package com.greenvenom.navigation.repository
 
 import androidx.compose.runtime.Immutable
-import com.greenvenom.navigation.AppDestination
+import com.greenvenom.navigation.NavigationTarget
 
 @Immutable
 data class NavigationState(
-    val currentDestination: AppDestination = AppDestination.Splash,
-    val previousDestination: AppDestination = AppDestination.Splash,
+    val currentDestination: NavigationTarget? = null,
+    val previousDestination: NavigationTarget? = null,
     val bottomBarState: Boolean = false,
     val topBarState: Boolean = false
 )

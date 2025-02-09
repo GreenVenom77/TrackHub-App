@@ -1,26 +1,33 @@
 package com.greenvenom.navigation.repository
 
-import com.greenvenom.navigation.AppDestination
 import com.greenvenom.navigation.NavigationTarget
+import com.greenvenom.navigation.NavigationType
 import com.greenvenom.navigation.utils.AppNavigator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import org.koin.compose.koinInject
 
-class NavigationStateRepository(private val appNavigator: AppNavigator) {
+class NavigationStateRepository {
     private val _navigationState = MutableStateFlow(NavigationState())
     val navigationState = _navigationState.asStateFlow()
 
-    fun updateCurrentDestination(
-        isNavigatingBack: Boolean = false,
-        isClearingBackStack: Boolean = false,
-        wantedDestination: NavigationTarget? = null
+    private lateinit var appNavigator: AppNavigator<NavigationTarget>
+    private lateinit var enableBarsDestinations: Set<NavigationTarget>
+
+    fun config(
+        appNavigator: AppNavigator<NavigationTarget>,
+        enableBarsDestinations: Set<NavigationTarget>
     ) {
-        when {
-            isNavigatingBack -> appNavigator.navigateBack()
-            isClearingBackStack && wantedDestination != null -> appNavigator.navigateAndClearBackStack(wantedDestination)
-            wantedDestination != null -> appNavigator.navigateTo(wantedDestination)
+        this.appNavigator = appNavigator
+        this.enableBarsDestinations = enableBarsDestinations
+    }
+
+    fun updateDestination(navigationType: NavigationType) {
+        when(navigationType) {
+            is NavigationType.Back -> appNavigator.navigateBack()
+            is NavigationType.ClearBackStack -> appNavigator.navigateAndClearBackStack(navigationType.destination)
+            is NavigationType.BottomNavigation -> appNavigator.navigateFromBottomBar(navigationType.destination)
+            is NavigationType.Standard -> appNavigator.navigateTo(navigationType.destination)
         }
         _navigationState.update {
             it.copy(
@@ -28,15 +35,12 @@ class NavigationStateRepository(private val appNavigator: AppNavigator) {
                 previousDestination = appNavigator.getPreviousDestination()
             )
         }
-        updateBarsState(_navigationState.value.currentDestination)
+        updateBarsState()
     }
 
-    private fun updateBarsState(currentDestination: AppDestination) {
-        when (currentDestination) {
-            AppDestination.Home,
-            AppDestination.AIChat,
-            AppDestination.Sessions,
-            AppDestination.Doctors -> {
+    fun updateBarsState() {
+        when (_navigationState.value.currentDestination) {
+            in enableBarsDestinations -> {
                 _navigationState.update {
                     it.copy(
                         bottomBarState = true,

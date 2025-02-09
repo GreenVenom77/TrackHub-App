@@ -1,3 +1,6 @@
 package com.greenvenom.navigation
 
-interface NavigationTarget
+import kotlinx.serialization.Serializable
+
+@Serializable
+abstract class NavigationTarget

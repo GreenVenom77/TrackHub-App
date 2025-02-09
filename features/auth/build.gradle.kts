@@ -46,8 +46,6 @@ dependencies {
     implementation(platform("io.insert-koin:koin-bom:$koin"))
     implementation("io.insert-koin:koin-androidx-compose")
     implementation(project(":ui"))
-    implementation(project(":domain"))
-    implementation(project(":data"))
     implementation(project(":networking"))
     implementation(project(":validation"))
     testImplementation(libs.junit)

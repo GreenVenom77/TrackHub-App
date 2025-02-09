@@ -1,13 +1,12 @@
-package com.skewnexus.trackhub.navigation
+package com.skewnexus.trackhub.navigation.util
 
-import com.greenvenom.navigation.SubGraph
+import com.greenvenom.navigation.NavigationType
+import com.skewnexus.trackhub.navigation.routes.SubGraph
 import com.greenvenom.navigation.repository.NavigationStateRepository
 import com.greenvenom.networking.supabase.data.repository.SessionStateRepository
-import com.greenvenom.networking.supabase.domain.SessionDestinations
+import com.greenvenom.networking.domain.SessionDestinations
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class SessionsHandler(
@@ -15,6 +14,10 @@ class SessionsHandler(
     private val sessionStateRepository: SessionStateRepository
 ) {
     init {
+        collectSessionEvents()
+    }
+
+    fun collectSessionEvents() {
         CoroutineScope(Dispatchers.Main).launch {
             sessionStateRepository.userSessionEvents.collect { wantedDestination ->
                 handleSessionStates(wantedDestination)
@@ -25,17 +28,11 @@ class SessionsHandler(
     private fun handleSessionStates(wantedDestination: SessionDestinations) {
         when (wantedDestination) {
             SessionDestinations.SIGN_IN -> {
-                navigationStateRepository.updateCurrentDestination(
-                    isClearingBackStack = true,
-                    wantedDestination = SubGraph.Auth
-                )
+                navigationStateRepository.updateDestination(NavigationType.ClearBackStack(SubGraph.Auth))
             }
 
             SessionDestinations.HOME -> {
-                navigationStateRepository.updateCurrentDestination(
-                    isClearingBackStack = true,
-                    wantedDestination = SubGraph.Main
-                )
+                navigationStateRepository.updateDestination(NavigationType.ClearBackStack(SubGraph.Main))
             }
         }
     }

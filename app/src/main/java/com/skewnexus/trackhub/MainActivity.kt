@@ -10,10 +10,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.greenvenom.navigation.AppDestination
-import com.greenvenom.navigation.components.BottomNavigationBar
+import com.skewnexus.trackhub.navigation.routes.Screen
+import com.skewnexus.trackhub.navigation.components.BottomNavigationBar
 import com.greenvenom.navigation.repository.NavigationStateRepository
-import com.greenvenom.navigation.utils.AppNavigator
 import com.greenvenom.ui.components.TopAppBar
 import com.greenvenom.ui.theme.AppTheme
 import com.skewnexus.trackhub.navigation.AppNavHost
@@ -24,7 +23,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val appNavigator = koinInject<AppNavigator>()
             val navigationRepository = koinInject<NavigationStateRepository>()
             val navigationState by navigationRepository.navigationState.collectAsStateWithLifecycle()
 
@@ -33,11 +31,8 @@ class MainActivity : ComponentActivity() {
                     topBar = { TopAppBar(isVisible = navigationState.topBarState) },
                     bottomBar = {
                         BottomNavigationBar(
-                            navigateToHome = { appNavigator.navigateAndClearBackStack(AppDestination.Home) },
-                            navigateToSessions = { appNavigator.navigateTo(AppDestination.Sessions) },
-                            navigateToDoctors = { appNavigator.navigateTo(AppDestination.Doctors) },
-                            navigateToAIChat = { appNavigator.navigateTo(AppDestination.AIChat) },
-                            currentDestination = navigationState.currentDestination,
+                            defaultNavigationMethod = navigationRepository::updateDestination,
+                            currentDestination = navigationState.currentDestination ?: Screen.Home,
                             isVisible = navigationState.bottomBarState
                         )
                     }

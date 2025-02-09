@@ -2,12 +2,7 @@ package com.skewnexus.trackhub.navigation
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
@@ -20,107 +15,111 @@ import com.greenvenom.auth.presentation.register.RegisterScreen
 import com.greenvenom.auth.presentation.reset_password.screens.NewPasswordScreen
 import com.greenvenom.auth.presentation.reset_password.screens.VerifyEmailScreen
 import com.greenvenom.auth.presentation.splash.SplashScreen
-import com.greenvenom.navigation.AppDestination
-import com.greenvenom.navigation.SubGraph
+import com.greenvenom.navigation.NavigationTarget
+import com.greenvenom.navigation.NavigationType
+import com.skewnexus.trackhub.navigation.routes.Screen
+import com.skewnexus.trackhub.navigation.routes.SubGraph
 import com.greenvenom.navigation.repository.NavigationStateRepository
 import com.greenvenom.navigation.utils.AppNavigator
-import com.greenvenom.navigation.utils.appDestinationSaver
 import com.greenvenom.networking.supabase.data.repository.SessionStateRepository
-import com.greenvenom.networking.supabase.domain.SessionDestinations
+import com.skewnexus.trackhub.navigation.util.SessionsHandler
 import org.koin.compose.koinInject
 
 @Composable
 fun AppNavHost(modifier: Modifier = Modifier) {
-    val appNavigator = koinInject<AppNavigator>()
+    val appNavigator = koinInject<AppNavigator<NavigationTarget>>()
     val navigationStateRepository = koinInject<NavigationStateRepository>()
     val navigationState by navigationStateRepository.navigationState.collectAsStateWithLifecycle()
 
-    appNavigator.addNavController(rememberNavController())
+    appNavigator.config(
+        navController = rememberNavController(),
+        navigationTargetType = Screen::class
+    )
+    navigationStateRepository.config(
+        appNavigator = appNavigator,
+        enableBarsDestinations = setOf(
+            Screen.Home,
+            Screen.Activity,
+            Screen.Profile
+        )
+    )
     koinInject<SessionStateRepository>()
     koinInject<SessionsHandler>()
 
     NavHost(
         navController = appNavigator.navController,
-        startDestination = SubGraph.Auth,
+        startDestination = Screen.Splash,
         modifier = modifier
     ) {
-        composable<AppDestination.Splash> {
+        composable<Screen.Splash> {
             SplashScreen()
         }
 
-        navigation<SubGraph.Auth>(startDestination = AppDestination.Login) {
-            composable<AppDestination.Login> {
+        navigation<SubGraph.Auth>(startDestination = Screen.Login) {
+            composable<Screen.Login> {
                 LoginScreen(
                     navigateToRegisterScreen = {
-                        navigationStateRepository.updateCurrentDestination(
-                            wantedDestination = AppDestination.Register
-                        )
+                        navigationStateRepository.updateDestination(NavigationType.Standard(Screen.Register))
                     },
                     navigateToEmailVerificationScreen = {
-                        navigationStateRepository.updateCurrentDestination(
-                            wantedDestination = AppDestination.VerifyEmail
-                        )
+                        navigationStateRepository.updateDestination(NavigationType.Standard(Screen.VerifyEmail))
                     },
                     navigateToNextScreen = {  },
                 )
             }
-            composable<AppDestination.Register> {
+            composable<Screen.Register> {
                 RegisterScreen(
                     navigateBack = {
-                        navigationStateRepository.updateCurrentDestination(isNavigatingBack = true)
+                        navigationStateRepository.updateDestination(NavigationType.Back)
                     },
                     navigateToAccountVerificationScreen = {
-                        navigationStateRepository.updateCurrentDestination(
-                            wantedDestination = AppDestination.OTP
-                        )
+                        navigationStateRepository.updateDestination(NavigationType.Standard(Screen.OTP))
                     }
                 )
             }
-            composable<AppDestination.VerifyEmail> {
+            composable<Screen.VerifyEmail> {
                 VerifyEmailScreen(
                     navigateBack = {
-                        navigationStateRepository.updateCurrentDestination(isNavigatingBack = true)
+                        navigationStateRepository.updateDestination(NavigationType.Back)
                     },
                     navigateToOtpScreen = {
-                        navigationStateRepository.updateCurrentDestination(
-                            wantedDestination = AppDestination.OTP
-                        )
+                        navigationStateRepository.updateDestination(NavigationType.Standard(Screen.OTP))
                     }
                 )
             }
-            composable<AppDestination.OTP> {
+            composable<Screen.OTP> {
                 OtpScreen(
                     navigateBack = {
-                        navigationStateRepository.updateCurrentDestination(isNavigatingBack = true)
+                        navigationStateRepository.updateDestination(NavigationType.Back)
                     },
                     navigateToNewPasswordScreen = {
-                        if (navigationState.previousDestination is AppDestination.VerifyEmail) {
-                            navigationStateRepository.updateCurrentDestination(
-                                isClearingBackStack = true,
-                                wantedDestination = AppDestination.NewPassword
-                            )
+                        if (navigationState.previousDestination is Screen.VerifyEmail) {
+                            navigationStateRepository.updateDestination(NavigationType.ClearBackStack(Screen.NewPassword))
                         }
                     }
                 )
             }
-            composable<AppDestination.NewPassword> {
+            composable<Screen.NewPassword> {
                 NewPasswordScreen(
                     navigateBack = {
-                        navigationStateRepository.updateCurrentDestination(isNavigatingBack = true)
+                        navigationStateRepository.updateDestination(NavigationType.Back)
                     },
                     navigateToLoginScreen = {
-                        navigationStateRepository.updateCurrentDestination(
-                            isClearingBackStack = true,
-                            wantedDestination = AppDestination.Login
-                        )
+                        navigationStateRepository.updateDestination(NavigationType.ClearBackStack(Screen.Login))
                     }
                 )
             }
         }
 
-        navigation<SubGraph.Main>(startDestination = AppDestination.Home) {
-            composable<AppDestination.Home> {
+        navigation<SubGraph.Main>(startDestination = Screen.Home) {
+            composable<Screen.Home> {
                 Text(text = "Home")
+            }
+            composable<Screen.Activity> {
+                Text(text = "Activity")
+            }
+            composable<Screen.Profile> {
+                Text(text = "Profile")
             }
         }
     }
