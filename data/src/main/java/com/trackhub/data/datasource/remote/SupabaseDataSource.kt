@@ -1,7 +1,7 @@
 package com.trackhub.data.datasource.remote
 
 import com.greenvenom.networking.data.Result
-import com.greenvenom.networking.domain.datasource.RemoteDataSource
+import com.trackhub.domain.datasource.RemoteDataSource
 import com.greenvenom.networking.supabase.data.SupabaseError
 import com.greenvenom.networking.supabase.util.SupabaseClient
 import com.greenvenom.networking.supabase.util.supabaseCall

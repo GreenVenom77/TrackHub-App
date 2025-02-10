@@ -1,10 +1,10 @@
-package com.trackhub.data.utils
+package com.skewnexus.trackhub.navigation.utils
 
 import com.greenvenom.navigation.data.NavigationType
-import com.greenvenom.navigation.routes.SubGraph
+import com.skewnexus.trackhub.navigation.routes.SubGraph
 import com.greenvenom.navigation.repository.NavigationStateRepository
-import com.greenvenom.networking.supabase.data.repository.SessionStateRepository
-import com.greenvenom.networking.domain.SessionDestinations
+import com.greenvenom.networking.data.SessionDestinations
+import com.greenvenom.networking.domain.repository.SessionStateRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,7 +19,7 @@ class SessionDestinationHandler(
 
     fun collectSessionDestinations() {
         CoroutineScope(Dispatchers.Main).launch {
-            sessionStateRepository.userSessionEvents.collect { wantedDestination ->
+            sessionStateRepository.userSessionDestination.collect { wantedDestination ->
                 handleSessionStates(wantedDestination)
             }
         }

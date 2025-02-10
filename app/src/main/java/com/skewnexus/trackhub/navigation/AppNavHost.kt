@@ -17,10 +17,12 @@ import com.greenvenom.auth.presentation.reset_password.screens.VerifyEmailScreen
 import com.greenvenom.auth.presentation.splash.SplashScreen
 import com.greenvenom.navigation.domain.NavigationTarget
 import com.greenvenom.navigation.data.NavigationType
-import com.greenvenom.navigation.routes.Screen
-import com.greenvenom.navigation.routes.SubGraph
+import com.skewnexus.trackhub.navigation.routes.Screen
+import com.skewnexus.trackhub.navigation.routes.SubGraph
 import com.greenvenom.navigation.repository.NavigationStateRepository
 import com.greenvenom.navigation.utils.AppNavigator
+import com.greenvenom.networking.domain.repository.SessionStateRepository
+import com.skewnexus.trackhub.navigation.utils.SessionDestinationHandler
 import org.koin.compose.koinInject
 
 @Composable
@@ -31,14 +33,18 @@ fun AppNavHost(modifier: Modifier = Modifier) {
 
     appNavigator.config(
         navController = rememberNavController(),
+        returnDestinationType = Screen::class
     )
     navigationStateRepository.config(
+        appNavigator = appNavigator,
         enableBarsDestinations = setOf(
             Screen.Home,
             Screen.Activity,
             Screen.Profile
         )
     )
+    koinInject<SessionStateRepository>()
+    koinInject<SessionDestinationHandler>()
 
     NavHost(
         navController = appNavigator.navController,
