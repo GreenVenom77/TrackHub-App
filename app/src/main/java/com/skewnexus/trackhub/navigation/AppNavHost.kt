@@ -43,7 +43,6 @@ fun AppNavHost(modifier: Modifier = Modifier) {
             Screen.Profile
         )
     )
-    koinInject<SessionStateRepository>()
     koinInject<SessionDestinationHandler>()
 
     NavHost(

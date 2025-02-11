@@ -8,7 +8,10 @@ import org.koin.dsl.module
 
 val supabaseModule = module {
     single<SupabaseClient> { SupabaseClient() }
-    single<SessionStateRepository>(qualifier = named<SupabaseSessionRepository>()) {
+    single<SessionStateRepository>(
+        qualifier = named<SupabaseSessionRepository>(),
+        createdAtStart = true
+    ) {
         SupabaseSessionRepository(supabaseClient = get())
     }
 
