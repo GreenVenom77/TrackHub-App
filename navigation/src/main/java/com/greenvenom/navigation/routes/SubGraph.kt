@@ -1,10 +1,9 @@
-package com.skewnexus.trackhub.navigation.routes
+package com.greenvenom.navigation.routes
 
 import com.greenvenom.navigation.domain.NavigationTarget
 import kotlinx.serialization.Serializable
 
-@Serializable
-sealed class SubGraph: NavigationTarget() {
+sealed class SubGraph: NavigationTarget {
     @Serializable
     data object Auth: SubGraph()
 
