@@ -13,10 +13,6 @@ class SessionDestinationHandler(
     private val navigationStateRepository: NavigationStateRepository,
     private val sessionStateRepository: SessionStateRepository
 ) {
-    init {
-        collectSessionDestinations()
-    }
-
     fun collectSessionDestinations() {
         CoroutineScope(Dispatchers.Main).launch {
             sessionStateRepository.userSessionDestination.collect { wantedDestination ->

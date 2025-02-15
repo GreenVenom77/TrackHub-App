@@ -44,11 +44,13 @@ class AppNavigator {
     }
 
     fun getCurrentDestination(): NavigationTarget? {
-        return navController.currentBackStackEntry?.destination?.toNavigationTarget<NavigationTarget>(Screen::class)
+        return navController.currentBackStackEntry?.destination
+            ?.toNavigationTarget<NavigationTarget>(Screen::class)
     }
 
     fun getPreviousDestination(): NavigationTarget? {
-        return navController.previousBackStackEntry?.destination?.toNavigationTarget<NavigationTarget>(Screen::class)
+        return navController.previousBackStackEntry?.destination
+            ?.toNavigationTarget<NavigationTarget>(Screen::class)
     }
 
     private fun hasBackStack(): Boolean {

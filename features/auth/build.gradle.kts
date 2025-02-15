@@ -37,8 +37,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":data"))
-    implementation(project(":domain"))
+
     val koin = "4.0.0"
 
     implementation(libs.androidx.core.ktx)
@@ -50,6 +49,8 @@ dependencies {
     implementation(project(":ui"))
     implementation(project(":networking"))
     implementation(project(":validation"))
+    implementation(project(":data"))
+    implementation(project(":domain"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

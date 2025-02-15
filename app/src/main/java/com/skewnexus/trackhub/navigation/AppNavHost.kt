@@ -29,6 +29,7 @@ import org.koin.compose.koinInject
 fun AppNavHost(modifier: Modifier = Modifier) {
     val appNavigator = koinInject<AppNavigator>()
     val navigationStateRepository = koinInject<NavigationStateRepository>()
+    val sessionDestinationHandler = koinInject<SessionDestinationHandler>()
     val navigationState by navigationStateRepository.navigationState.collectAsStateWithLifecycle()
 
     appNavigator.config(navController = rememberNavController())
@@ -39,15 +40,17 @@ fun AppNavHost(modifier: Modifier = Modifier) {
             Screen.Profile
         )
     )
-    koinInject<SessionDestinationHandler>()
-
     NavHost(
         navController = appNavigator.navController,
         startDestination = Screen.Splash,
         modifier = modifier
     ) {
         composable<Screen.Splash> {
-            SplashScreen()
+            SplashScreen(
+                onStart = {
+                    sessionDestinationHandler.collectSessionDestinations()
+                }
+            )
         }
 
         navigation<SubGraph.Auth>(startDestination = Screen.Login) {
@@ -89,8 +92,7 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                     },
                     navigateToNewPasswordScreen = {
                         if (navigationState.previousDestination is Screen.VerifyEmail) {
-                            navigationStateRepository.updateDestination(NavigationType.ClearBackStack(
-                                Screen.NewPassword))
+                            navigationStateRepository.updateDestination(NavigationType.ClearBackStack(Screen.NewPassword))
                         }
                     }
                 )
@@ -101,8 +103,7 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                         navigationStateRepository.updateDestination(NavigationType.Back)
                     },
                     navigateToLoginScreen = {
-                        navigationStateRepository.updateDestination(NavigationType.ClearBackStack(
-                            Screen.Login))
+                        navigationStateRepository.updateDestination(NavigationType.ClearBackStack(Screen.Login))
                     }
                 )
             }
