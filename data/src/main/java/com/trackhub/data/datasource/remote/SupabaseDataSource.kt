@@ -1,8 +1,8 @@
 package com.trackhub.data.datasource.remote
 
-import com.greenvenom.networking.data.Result
+import com.greenvenom.networking.data.NetworkError
+import com.greenvenom.networking.data.NetworkResult
 import com.trackhub.domain.datasource.RemoteDataSource
-import com.greenvenom.networking.supabase.data.SupabaseError
 import com.greenvenom.networking.supabase.util.SupabaseClient
 import com.greenvenom.networking.supabase.util.supabaseCall
 import io.github.jan.supabase.auth.OtpType
@@ -21,7 +21,7 @@ class SupabaseDataSource(
         displayName: String,
         email: String,
         password: String
-    ): Result<UserInfo?, SupabaseError> {
+    ): NetworkResult<UserInfo?, NetworkError> {
         return supabaseCall<UserInfo?> {
             client.auth.signUpWith(Email) {
                 this.email = email
@@ -31,19 +31,19 @@ class SupabaseDataSource(
         }
     }
 
-    override suspend fun verifyOtp(email: String, otp: String): Result<Unit, SupabaseError> {
+    override suspend fun verifyOtp(email: String, otp: String): NetworkResult<Unit, NetworkError> {
         return supabaseCall {
             client.auth.verifyEmailOtp(OtpType.Email.EMAIL, email, otp)
         }
     }
 
-    override suspend fun sendResetPasswordEmail(email: String): Result<Unit, SupabaseError> {
+    override suspend fun sendResetPasswordEmail(email: String): NetworkResult<Unit, NetworkError> {
         return supabaseCall {
             client.auth.resetPasswordForEmail(email = email)
         }
     }
 
-    override suspend fun updatePassword(password: String): Result<UserInfo, SupabaseError> {
+    override suspend fun updatePassword(password: String): NetworkResult<UserInfo, NetworkError> {
         return supabaseCall {
             client.auth.updateUser {
                 this.password = password
@@ -51,7 +51,7 @@ class SupabaseDataSource(
         }
     }
 
-    override suspend fun loginUser(email: String, password: String): Result<Unit, SupabaseError> {
+    override suspend fun loginUser(email: String, password: String): NetworkResult<Unit, NetworkError> {
         return supabaseCall {
             client.auth.signInWith(Email) {
                 this.email = email
@@ -60,7 +60,7 @@ class SupabaseDataSource(
         }
     }
 
-    override suspend fun logoutUser(): Result<Unit, SupabaseError> {
+    override suspend fun logoutUser(): NetworkResult<Unit, NetworkError> {
         return supabaseCall {
             client.auth.signOut()
         }
