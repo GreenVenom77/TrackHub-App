@@ -6,6 +6,8 @@ import com.greenvenom.networking.data.NetworkResult
 import com.greenvenom.networking.utils.toNetworkError
 import io.github.jan.supabase.exceptions.HttpRequestException
 import io.github.jan.supabase.exceptions.RestException
+import io.ktor.client.call.NoTransformationFoundException
+import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpRequestTimeoutException
 
 suspend inline fun <reified T> supabaseCall (
@@ -13,7 +15,11 @@ suspend inline fun <reified T> supabaseCall (
 ): NetworkResult<T, NetworkError> {
     val result = try {
         val executionResult = execute()
-        NetworkResult.Success(executionResult)
+        try {
+            NetworkResult.Success(executionResult)
+        } catch (e: NoTransformationFoundException) {
+            NetworkResult.Error(NetworkError(ErrorType.SERIALIZATION_ERROR))
+        }
     } catch (exception: RestException) {
         NetworkResult.Error(toNetworkError(exception.statusCode))
     } catch (exception: HttpRequestException) {

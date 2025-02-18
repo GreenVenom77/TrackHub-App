@@ -10,6 +10,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.greenvenom.navigation.routes.Screen
 import com.greenvenom.navigation.domain.NavigationTarget
@@ -49,10 +50,13 @@ private fun BottomBarContent(
                 icon = {
                     Icon(
                         painter = painterResource(destination.icon),
-                        contentDescription = "${destination.label} Navigation Icon"
+                        contentDescription = "${stringResource(destination.label)} Navigation Icon"
                     )
                 },
-                label = { Text(destination.label, style = MaterialTheme.typography.labelLarge) },
+                label = { Text(
+                    text = stringResource(destination.label),
+                    style = MaterialTheme.typography.labelLarge)
+                },
                 selected = destination.target == currentDestination,
             )
         }

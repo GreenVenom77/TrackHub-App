@@ -46,9 +46,17 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    androidResources {
+        generateLocaleConfig = true
+    }
 }
 
 dependencies {
+    val appcompatVersion = "1.7.0"
+
+    implementation("androidx.appcompat:appcompat:$appcompatVersion")
+    implementation("androidx.appcompat:appcompat-resources:$appcompatVersion")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.bundles.koin)
     implementation(libs.bundles.compose)

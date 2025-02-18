@@ -82,7 +82,7 @@ private fun LoginContent(
         }
         state.loginNetworkResult?.onError {
             baseActions(BaseAction.ShowErrorMessage(
-                it.errorType?.toString(context) ?: "Something went wrong"
+                it.errorType?.toString(context) ?: context.getString(R.string.something_went_wrong)
             ))
             loginActions(LoginAction.ResetNetworkResult)
         }
