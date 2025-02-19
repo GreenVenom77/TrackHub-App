@@ -42,6 +42,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(platform("io.insert-koin:koin-bom:$koin"))
     implementation("io.insert-koin:koin-androidx-compose")
+    implementation("com.valentinilk.shimmer:compose-shimmer:1.3.2")
     implementation(project(":ui"))
     implementation(project(":networking"))
     implementation(project(":validation"))
