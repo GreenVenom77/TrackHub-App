@@ -9,29 +9,33 @@ import io.github.jan.supabase.auth.status.SessionSource
 import io.github.jan.supabase.auth.status.SessionStatus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SupabaseSessionRepository(supabaseClient: SupabaseClient): SessionStateRepository {
     private val client = supabaseClient.getClient()
-    private val _userSessionDestination = Channel<SessionDestinations>(Channel.CONFLATED)
-    override val userSessionDestination: Flow<SessionDestinations> = _userSessionDestination.receiveAsFlow()
+    private val scope = CoroutineScope(Dispatchers.IO)
+
+    private val _userSessionDestination = MutableStateFlow(SessionDestinations.INITIALIZE)
+    override val userSessionDestination = _userSessionDestination
+        .stateIn(scope, SharingStarted.WhileSubscribed(5000), SessionDestinations.INITIALIZE)
 
     init {
         collectSessionStatus()
     }
 
     override fun collectSessionStatus() {
-        CoroutineScope(Dispatchers.IO).launch {
+        scope.launch {
             client.auth.sessionStatus.collect {
                 handleSessionStatus(it)
             }
         }
     }
 
-    private suspend fun handleSessionStatus(sessionStatus: SessionStatus) {
+    private fun handleSessionStatus(sessionStatus: SessionStatus) {
         when(sessionStatus) {
             SessionStatus.Initializing -> {  }
             is SessionStatus.Authenticated -> {
@@ -39,19 +43,19 @@ class SupabaseSessionRepository(supabaseClient: SupabaseClient): SessionStateRep
                     is SessionSource.Refresh,
                     is SessionSource.Storage,
                     is SessionSource.SignIn -> {
-                        _userSessionDestination.send(SessionDestinations.HOME)
+                        _userSessionDestination.update { SessionDestinations.MAIN }
                     }
                     is SessionSource.UserChanged -> {
-                        _userSessionDestination.send(SessionDestinations.SIGN_IN)
+                        _userSessionDestination.update { SessionDestinations.AUTH }
                     }
                     else -> { Log.i("Session Source", sessionStatus.source.toString()) }
                 }
             }
             is SessionStatus.NotAuthenticated -> {
-                _userSessionDestination.send(SessionDestinations.SIGN_IN)
+                _userSessionDestination.update { SessionDestinations.AUTH }
             }
             is SessionStatus.RefreshFailure -> {
-                _userSessionDestination.send(SessionDestinations.SIGN_IN)
+                _userSessionDestination.update { SessionDestinations.AUTH }
             }
         }
     }

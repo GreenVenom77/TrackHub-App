@@ -40,6 +40,7 @@ fun AppNavHost(modifier: Modifier = Modifier) {
             Screen.Profile
         )
     )
+
     NavHost(
         navController = appNavigator.navController,
         startDestination = Screen.Splash,

@@ -23,11 +23,15 @@ class SessionDestinationHandler(
 
     private fun handleSessionStates(wantedDestination: SessionDestinations) {
         when (wantedDestination) {
-            SessionDestinations.SIGN_IN -> {
+            SessionDestinations.INITIALIZE -> {
+
+            }
+
+            SessionDestinations.AUTH -> {
                 navigationStateRepository.updateDestination(NavigationType.ClearBackStack(SubGraph.Auth))
             }
 
-            SessionDestinations.HOME -> {
+            SessionDestinations.MAIN -> {
                 navigationStateRepository.updateDestination(NavigationType.ClearBackStack(SubGraph.Main))
             }
         }
