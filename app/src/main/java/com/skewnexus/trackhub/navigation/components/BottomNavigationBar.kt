@@ -68,6 +68,6 @@ private fun BottomBarContent(
 private fun BottomNavigationBarContent() {
     BottomBarContent(
         defaultNavigationMethod = {  },
-        currentDestination = Screen.Home
+        currentDestination = Screen.MyHubs
     )
 }

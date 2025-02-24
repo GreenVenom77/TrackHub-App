@@ -32,9 +32,9 @@ import com.greenvenom.auth.component.AuthTextField
 import com.greenvenom.networking.data.onError
 import com.greenvenom.networking.data.onSuccess
 import com.greenvenom.networking.utils.toString
-import com.greenvenom.ui.presentation.BaseAction
-import com.greenvenom.ui.presentation.BaseScreen
-import com.greenvenom.ui.theme.AppTheme
+import com.greenvenom.base.presentation.BaseAction
+import com.greenvenom.base.presentation.BaseScreen
+import com.greenvenom.base.theme.AppTheme
 import com.greenvenom.validation.domain.ValidationResult
 import com.greenvenom.validation.util.toString
 

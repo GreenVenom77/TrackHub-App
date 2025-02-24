@@ -33,10 +33,10 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.text.isDigitsOnly
-import com.greenvenom.ui.theme.AppTheme
-import com.greenvenom.ui.theme.onPrimaryContainerLight
-import com.greenvenom.ui.theme.outlineLight
-import com.greenvenom.ui.theme.primaryContainerLight
+import com.greenvenom.base.theme.AppTheme
+import com.greenvenom.base.theme.onPrimaryContainerLight
+import com.greenvenom.base.theme.outlineLight
+import com.greenvenom.base.theme.primaryContainerLight
 
 @Composable
 fun OtpInputField(

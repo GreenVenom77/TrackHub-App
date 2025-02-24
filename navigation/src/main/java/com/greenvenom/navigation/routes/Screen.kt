@@ -23,11 +23,14 @@ sealed class Screen: NavigationTarget {
     data object NewPassword: Screen()
 
     @Serializable
-    data object Home: Screen()
+    data object MyHubs: Screen()
 
     @Serializable
     data object Activity: Screen()
 
     @Serializable
     data object Profile: Screen()
+
+    @Serializable
+    data object SharedHubs: Screen()
 }

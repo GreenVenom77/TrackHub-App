@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">Track Hub</string>
-    <string name="hubs">Hubs</string>
+    <string name="my_hubs">My Hubs</string>
     <string name="activity">Activity</string>
     <string name="profile">Profile</string>
+    <string name="shared_hubs">Shared Hubs</string>
 </resources>

@@ -2,7 +2,7 @@ package com.greenvenom.auth.presentation.login
 
 import androidx.lifecycle.viewModelScope
 import com.greenvenom.auth.domain.repository.AuthRepository
-import com.greenvenom.ui.presentation.BaseViewModel
+import com.greenvenom.base.presentation.BaseViewModel
 import com.greenvenom.validation.ValidateInput
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

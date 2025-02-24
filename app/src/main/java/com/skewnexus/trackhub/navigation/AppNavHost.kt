@@ -15,13 +15,11 @@ import com.greenvenom.auth.presentation.register.RegisterScreen
 import com.greenvenom.auth.presentation.reset_password.screens.NewPasswordScreen
 import com.greenvenom.auth.presentation.reset_password.screens.VerifyEmailScreen
 import com.greenvenom.auth.presentation.splash.SplashScreen
-import com.greenvenom.navigation.domain.NavigationTarget
 import com.greenvenom.navigation.data.NavigationType
 import com.greenvenom.navigation.routes.Screen
 import com.greenvenom.navigation.routes.SubGraph
 import com.greenvenom.navigation.repository.NavigationStateRepository
 import com.greenvenom.navigation.utils.AppNavigator
-import com.greenvenom.networking.domain.repository.SessionStateRepository
 import com.skewnexus.trackhub.navigation.utils.SessionDestinationHandler
 import org.koin.compose.koinInject
 
@@ -35,7 +33,7 @@ fun AppNavHost(modifier: Modifier = Modifier) {
     appNavigator.config(navController = rememberNavController())
     navigationStateRepository.config(
         enableBarsDestinations = setOf(
-            Screen.Home,
+            Screen.MyHubs,
             Screen.Activity,
             Screen.Profile
         )
@@ -110,8 +108,8 @@ fun AppNavHost(modifier: Modifier = Modifier) {
             }
         }
 
-        navigation<SubGraph.Main>(startDestination = Screen.Home) {
-            composable<Screen.Home> {
+        navigation<SubGraph.Main>(startDestination = Screen.MyHubs) {
+            composable<Screen.MyHubs> {
                 Text(text = "Home")
             }
             composable<Screen.Activity> {

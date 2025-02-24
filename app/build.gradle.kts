@@ -52,6 +52,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":features:hub"))
+    implementation(project(":base"))
     val appcompatVersion = "1.7.0"
 
     implementation("androidx.appcompat:appcompat:$appcompatVersion")
@@ -64,7 +66,6 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(project(":navigation"))
     implementation(project(":networking"))
-    implementation(project(":ui"))
     implementation(project(":features:auth"))
     implementation(project(":data"))
     implementation(project(":domain"))

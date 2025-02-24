@@ -11,19 +11,19 @@ enum class BottomDestination(
     @StringRes val label: Int,
     val target: NavigationTarget,
 ) {
-    Home(
+    MyHubs(
         icon = R.drawable.home_ic,
-        label = R.string.hubs,
-        target = Screen.Home
+        label = R.string.my_hubs,
+        target = Screen.MyHubs
+    ),
+    SharedHubs(
+        icon = R.drawable.others_hubs_ic,
+        label = R.string.shared_hubs,
+        target = Screen.SharedHubs
     ),
     Activity(
         icon = R.drawable.activity_ic,
         label = R.string.activity,
         target = Screen.Activity
     ),
-    Profile(
-        icon = R.drawable.person_ic,
-        label = R.string.profile,
-        target = Screen.Profile
-    )
 }
