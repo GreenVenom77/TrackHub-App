@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.trackhub.data"
+    namespace = "com.trackhub.caching"
     compileSdk = 35
 
     defaultConfig {
@@ -14,10 +14,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-
-        ksp {
-            arg("room.schemaLocation", "$projectDir/schemas")
-        }
     }
 
     buildTypes {
@@ -40,38 +36,22 @@ android {
 
 dependencies {
 
-    implementation(project(":networking"))
     implementation(project(":domain"))
-    implementation(project(":navigation"))
+    implementation(project(":data"))
 
-    val ktor = "3.0.3"
-    val supabase = "3.1.1"
-    val koin = "4.0.0"
     val room = "2.6.1"
-
-    implementation(libs.androidx.core.ktx)
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
-
-    implementation("io.ktor:ktor-client-cio:$ktor")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor")
-    implementation("io.ktor:ktor-client-core:$ktor")
-    implementation("io.ktor:ktor-client-okhttp:$ktor")
-    implementation("io.ktor:ktor-client-content-negotiation:$ktor")
-    implementation("io.ktor:ktor-client-logging:$ktor")
-
-    implementation(platform("io.github.jan-tennert.supabase:bom:$supabase"))
-    implementation("io.github.jan-tennert.supabase:postgrest-kt")
-    implementation("io.github.jan-tennert.supabase:auth-kt")
-    implementation("io.github.jan-tennert.supabase:realtime-kt")
+    val koin = "4.0.0"
 
     implementation("androidx.room:room-runtime:$room")
     ksp("androidx.room:room-compiler:$room")
-    implementation("androidx.room:room-ktx:$room")
     implementation("androidx.room:room-paging:$room")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
 
     implementation(platform("io.insert-koin:koin-bom:$koin"))
     implementation("io.insert-koin:koin-androidx-compose")
 
+    implementation(libs.androidx.core.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

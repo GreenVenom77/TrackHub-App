@@ -1,7 +1,7 @@
-package com.trackhub.domain.datasource.cache
+package com.trackhub.domain.cache
 
-import com.trackhub.hub.domain.Hub
-import com.trackhub.hub.domain.HubItem
+import com.trackhub.domain.cache.hub.models.Hub
+import com.trackhub.domain.cache.hub.models.HubItem
 
 interface CacheDataSource {
     suspend fun addNewOwnHub(hub: Hub)

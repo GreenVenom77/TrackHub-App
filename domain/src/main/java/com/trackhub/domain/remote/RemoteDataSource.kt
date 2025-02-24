@@ -1,9 +1,9 @@
-package com.trackhub.domain.datasource.remote
+package com.trackhub.domain.remote
 
 import com.greenvenom.networking.data.NetworkError
 import com.greenvenom.networking.data.NetworkResult
-import com.trackhub.hub.domain.Hub
-import com.trackhub.hub.domain.HubItem
+import com.trackhub.domain.cache.hub.models.Hub
+import com.trackhub.domain.cache.hub.models.HubItem
 
 interface RemoteDataSource {
     // Authentication

@@ -37,8 +37,6 @@ dependencies {
     implementation(project(":networking"))
 
     implementation(libs.androidx.core.ktx)
-    implementation(project(":features:hub"))
-    implementation(project(":features:menu"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

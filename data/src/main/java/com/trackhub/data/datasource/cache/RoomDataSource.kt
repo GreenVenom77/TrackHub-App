@@ -1,41 +1,46 @@
 package com.trackhub.data.datasource.cache
 
-import com.trackhub.domain.datasource.cache.CacheDataSource
-import com.trackhub.hub.domain.Hub
-import com.trackhub.hub.domain.HubItem
+import com.trackhub.domain.cache.CacheDataSource
+import com.trackhub.data.datasource.cache.hub.dao.HubDao
+import com.trackhub.data.datasource.cache.hub.entities.toHub
+import com.trackhub.data.datasource.cache.hub.entities.toHubEntity
+import com.trackhub.data.datasource.cache.hub.entities.toHubItem
+import com.trackhub.data.datasource.cache.hub.entities.toHubItemEntity
+import com.trackhub.domain.cache.hub.models.Hub
+import com.trackhub.domain.cache.hub.models.HubItem
 
 class RoomDataSource(
-
+    private val hubDao: HubDao
 ): CacheDataSource {
     override suspend fun addNewOwnHub(hub: Hub) {
-        TODO("Not yet implemented")
+        hubDao.addNewOwnHub(hub.toHubEntity())
     }
 
     override suspend fun updateOwnHubs(hubs: List<Hub>) {
-        TODO("Not yet implemented")
+        hubDao.updateOwnHubs(hubs.map { it.toHubEntity() })
     }
 
     override suspend fun updateSharedHubs(hubs: List<Hub>) {
-        TODO("Not yet implemented")
+        hubDao.updateSharedHubs(hubs.map { it.toHubEntity(false) })
     }
 
     override suspend fun getOwnHubs(): List<Hub> {
-        TODO("Not yet implemented")
+        return hubDao.getOwnHubs().map { it.toHub() }
     }
 
     override suspend fun getSharedHubs(): List<Hub> {
-        TODO("Not yet implemented")
+        return hubDao.getSharedHubs().map { it.toHub() }
     }
 
     override suspend fun addNewItem(item: HubItem) {
-        TODO("Not yet implemented")
+        hubDao.addNewItem(item.toHubItemEntity())
     }
 
     override suspend fun addNewItems(items: List<HubItem>) {
-        TODO("Not yet implemented")
+        hubDao.addNewItems(items.map { it.toHubItemEntity() })
     }
 
     override suspend fun getItemsFromHub(hubId: Int): List<HubItem> {
-        TODO("Not yet implemented")
+        return hubDao.getItemsFromHub(hubId).map { it.toHubItem() }
     }
 }

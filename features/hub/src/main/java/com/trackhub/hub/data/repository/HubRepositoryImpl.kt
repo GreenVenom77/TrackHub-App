@@ -4,10 +4,10 @@ import com.greenvenom.networking.data.NetworkError
 import com.greenvenom.networking.data.NetworkResult
 import com.greenvenom.networking.data.onError
 import com.greenvenom.networking.data.onSuccess
-import com.trackhub.domain.datasource.cache.CacheDataSource
-import com.trackhub.domain.datasource.remote.RemoteDataSource
-import com.trackhub.hub.domain.Hub
-import com.trackhub.hub.domain.HubItem
+import com.trackhub.domain.cache.CacheDataSource
+import com.trackhub.domain.remote.RemoteDataSource
+import com.trackhub.domain.cache.hub.models.Hub
+import com.trackhub.domain.cache.hub.models.HubItem
 import com.trackhub.hub.domain.repository.HubRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
