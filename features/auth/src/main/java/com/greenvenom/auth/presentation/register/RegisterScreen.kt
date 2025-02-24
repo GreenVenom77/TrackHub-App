@@ -26,9 +26,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.greenvenom.auth.R
-import com.greenvenom.auth.component.AuthCustomButton
-import com.greenvenom.auth.component.AuthHeader
-import com.greenvenom.auth.component.AuthTextField
+import com.greenvenom.auth.presentation.component.AuthCustomButton
+import com.greenvenom.auth.presentation.component.AuthHeader
+import com.greenvenom.auth.presentation.component.AuthTextField
 import com.greenvenom.networking.data.onError
 import com.greenvenom.networking.data.onSuccess
 import com.greenvenom.networking.utils.toString

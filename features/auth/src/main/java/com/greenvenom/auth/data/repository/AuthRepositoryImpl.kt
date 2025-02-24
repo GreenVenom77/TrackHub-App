@@ -3,7 +3,7 @@ package com.greenvenom.auth.data.repository
 import com.greenvenom.auth.domain.repository.AuthRepository
 import com.greenvenom.networking.data.NetworkError
 import com.greenvenom.networking.data.NetworkResult
-import com.trackhub.domain.datasource.RemoteDataSource
+import com.trackhub.domain.datasource.remote.RemoteDataSource
 
 class AuthRepositoryImpl(
     private val remoteDataSource: RemoteDataSource

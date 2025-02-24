@@ -1,18 +1,19 @@
 package com.trackhub.data.datasource.di
 
-import com.trackhub.domain.datasource.RemoteDataSource
+import com.trackhub.data.datasource.cache.RoomDataSource
+import com.trackhub.domain.datasource.remote.RemoteDataSource
 import com.trackhub.data.datasource.remote.SupabaseDataSource
-import org.koin.core.qualifier.named
+import com.trackhub.domain.datasource.cache.CacheDataSource
 import org.koin.dsl.module
 
 val dataSourceModule = module {
-    single<RemoteDataSource>(qualifier = named<SupabaseDataSource>()) {
+    single<RemoteDataSource>() {
         SupabaseDataSource(
             supabaseClient = get()
         )
     }
 
-    single<RemoteDataSource> {
-        get(qualifier = named<SupabaseDataSource>())
+    single<CacheDataSource>() {
+        RoomDataSource()
     }
 }

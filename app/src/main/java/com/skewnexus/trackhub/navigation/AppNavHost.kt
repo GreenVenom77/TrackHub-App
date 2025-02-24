@@ -35,7 +35,7 @@ fun AppNavHost(modifier: Modifier = Modifier) {
         enableBarsDestinations = setOf(
             Screen.MyHubs,
             Screen.Activity,
-            Screen.Profile
+            Screen.SharedHubs
         )
     )
 
@@ -111,6 +111,9 @@ fun AppNavHost(modifier: Modifier = Modifier) {
         navigation<SubGraph.Main>(startDestination = Screen.MyHubs) {
             composable<Screen.MyHubs> {
                 Text(text = "Home")
+            }
+            composable<Screen.SharedHubs> {
+                Text(text = "Shared")
             }
             composable<Screen.Activity> {
                 Text(text = "Activity")

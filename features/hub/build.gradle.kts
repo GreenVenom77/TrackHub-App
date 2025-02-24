@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -34,20 +35,25 @@ android {
 
 dependencies {
 
+    implementation(project(":networking"))
+    implementation(project(":validation"))
+    implementation(project(":data"))
+    implementation(project(":domain"))
     implementation(project(":base"))
+
     val koin = "4.0.0"
 
     implementation(libs.androidx.core.ktx)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.material3)
     implementation(libs.androidx.ui.tooling.preview)
+
     implementation(platform("io.insert-koin:koin-bom:$koin"))
     implementation("io.insert-koin:koin-androidx-compose")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
+
     implementation("com.valentinilk.shimmer:compose-shimmer:1.3.2")
-    implementation(project(":networking"))
-    implementation(project(":validation"))
-    implementation(project(":data"))
-    implementation(project(":domain"))
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

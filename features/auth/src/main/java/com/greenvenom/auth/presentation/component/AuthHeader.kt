@@ -1,4 +1,4 @@
-package com.greenvenom.auth.component
+package com.greenvenom.auth.presentation.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

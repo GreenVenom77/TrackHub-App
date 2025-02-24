@@ -52,8 +52,15 @@ android {
 }
 
 dependencies {
+
+    implementation(project(":navigation"))
+    implementation(project(":networking"))
+    implementation(project(":features:auth"))
+    implementation(project(":data"))
+    implementation(project(":domain"))
     implementation(project(":features:hub"))
     implementation(project(":base"))
+
     val appcompatVersion = "1.7.0"
 
     implementation("androidx.appcompat:appcompat:$appcompatVersion")
@@ -64,11 +71,6 @@ dependencies {
     implementation(libs.bundles.compose)
 
     implementation(libs.kotlinx.serialization.json)
-    implementation(project(":navigation"))
-    implementation(project(":networking"))
-    implementation(project(":features:auth"))
-    implementation(project(":data"))
-    implementation(project(":domain"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

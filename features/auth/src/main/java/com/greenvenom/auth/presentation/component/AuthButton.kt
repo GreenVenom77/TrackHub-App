@@ -1,4 +1,4 @@
-package com.greenvenom.auth.component
+package com.greenvenom.auth.presentation.component
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
