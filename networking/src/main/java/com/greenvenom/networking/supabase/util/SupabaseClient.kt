@@ -1,7 +1,6 @@
 package com.greenvenom.networking.supabase.util
 
 import com.greenvenom.networking.BuildConfig
-import io.github.jan.supabase.SupabaseClientBuilder
 import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.coil.Coil3Integration
 import io.github.jan.supabase.createSupabaseClient

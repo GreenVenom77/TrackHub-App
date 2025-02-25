@@ -12,9 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import com.greenvenom.navigation.routes.Screen
-import com.greenvenom.navigation.domain.NavigationTarget
 import com.greenvenom.navigation.data.NavigationType
+import com.greenvenom.navigation.domain.NavigationTarget
+import com.greenvenom.navigation.routes.Screen
 
 @Composable
 fun BottomNavigationBar(

@@ -1,8 +1,8 @@
 package com.greenvenom.networking.api.utils
 
-import com.greenvenom.networking.data.NetworkResult
 import com.greenvenom.networking.data.ErrorType
 import com.greenvenom.networking.data.NetworkError
+import com.greenvenom.networking.data.NetworkResult
 import io.ktor.client.statement.HttpResponse
 import io.ktor.util.network.UnresolvedAddressException
 import kotlinx.coroutines.ensureActive

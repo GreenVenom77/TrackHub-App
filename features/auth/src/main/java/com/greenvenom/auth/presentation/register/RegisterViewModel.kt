@@ -1,10 +1,10 @@
 package com.greenvenom.auth.presentation.register
 
 import androidx.lifecycle.viewModelScope
-import com.greenvenom.auth.data.repository.EmailStateRepository
+import com.greenvenom.auth.data.EmailStateRepository
 import com.greenvenom.auth.domain.repository.AuthRepository
-import com.greenvenom.networking.data.onSuccess
 import com.greenvenom.base.presentation.BaseViewModel
+import com.greenvenom.networking.data.onSuccess
 import com.greenvenom.validation.ValidateInput
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

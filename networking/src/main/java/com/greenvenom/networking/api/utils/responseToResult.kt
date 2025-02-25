@@ -1,8 +1,8 @@
 package com.greenvenom.networking.api.utils
 
-import com.greenvenom.networking.data.NetworkResult
 import com.greenvenom.networking.data.ErrorType
 import com.greenvenom.networking.data.NetworkError
+import com.greenvenom.networking.data.NetworkResult
 import com.greenvenom.networking.utils.toNetworkError
 import io.ktor.client.call.NoTransformationFoundException
 import io.ktor.client.call.body

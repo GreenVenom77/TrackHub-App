@@ -31,13 +31,13 @@ import com.greenvenom.auth.R
 import com.greenvenom.auth.presentation.component.AuthCustomButton
 import com.greenvenom.auth.presentation.component.AuthHeader
 import com.greenvenom.auth.presentation.component.AuthTextField
-import com.greenvenom.networking.data.onError
-import com.greenvenom.networking.data.onSuccess
-import com.greenvenom.networking.utils.toString
 import com.greenvenom.base.presentation.BaseAction
 import com.greenvenom.base.presentation.BaseScreen
 import com.greenvenom.base.theme.AppTheme
 import com.greenvenom.base.theme.bluePrimary
+import com.greenvenom.networking.data.onError
+import com.greenvenom.networking.data.onSuccess
+import com.greenvenom.networking.utils.toString
 import com.greenvenom.validation.domain.ValidationResult
 import com.greenvenom.validation.util.toString
 

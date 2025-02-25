@@ -32,12 +32,12 @@ import com.greenvenom.auth.presentation.component.AuthTextField
 import com.greenvenom.auth.presentation.reset_password.ResetPasswordAction
 import com.greenvenom.auth.presentation.reset_password.ResetPasswordState
 import com.greenvenom.auth.presentation.reset_password.ResetPasswordViewModel
-import com.greenvenom.networking.data.onError
-import com.greenvenom.networking.data.onSuccess
-import com.greenvenom.networking.utils.toString
 import com.greenvenom.base.presentation.BaseAction
 import com.greenvenom.base.presentation.BaseScreen
 import com.greenvenom.base.theme.AppTheme
+import com.greenvenom.networking.data.onError
+import com.greenvenom.networking.data.onSuccess
+import com.greenvenom.networking.utils.toString
 import com.greenvenom.validation.domain.ValidationResult
 import com.greenvenom.validation.util.toString
 

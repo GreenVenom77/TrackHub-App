@@ -40,8 +40,6 @@ dependencies {
 
     implementation(project(":networking"))
     implementation(project(":validation"))
-    implementation(project(":data"))
-    implementation(project(":domain"))
     implementation(project(":base"))
 
     val koin = "4.0.0"

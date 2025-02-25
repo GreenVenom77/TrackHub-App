@@ -7,7 +7,6 @@ import com.greenvenom.networking.utils.toNetworkError
 import io.github.jan.supabase.exceptions.HttpRequestException
 import io.github.jan.supabase.exceptions.RestException
 import io.ktor.client.call.NoTransformationFoundException
-import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpRequestTimeoutException
 
 suspend inline fun <reified T> supabaseCall (

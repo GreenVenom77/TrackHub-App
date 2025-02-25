@@ -1,6 +1,6 @@
 package com.trackhub.hub.presentation.models
 
-import com.trackhub.domain.cache.hub.models.HubItem
+import com.trackhub.hub.domain.models.HubItem
 
 data class HubItemUI(
     val id: Int? = null,
