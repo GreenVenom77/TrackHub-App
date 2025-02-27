@@ -1,4 +1,4 @@
-package com.skewnexus.trackhub.domain.remote
+package com.trackhub.core.domain.remote
 
 import com.greenvenom.networking.data.NetworkError
 import com.greenvenom.networking.data.NetworkResult

@@ -1,4 +1,4 @@
-package com.skewnexus.trackhub.data.cache.db
+package com.trackhub.core.data.cache.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

@@ -1,6 +1,6 @@
-package com.skewnexus.trackhub.data.cache
+package com.trackhub.core.data.cache
 
-import com.skewnexus.trackhub.domain.cache.CacheDataSource
+import com.trackhub.core.domain.cache.CacheDataSource
 import com.trackhub.hub.data.cache.dao.HubDao
 import com.trackhub.hub.data.cache.entities.toHub
 import com.trackhub.hub.data.cache.entities.toHubEntity

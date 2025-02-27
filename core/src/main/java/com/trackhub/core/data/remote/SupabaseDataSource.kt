@@ -1,11 +1,11 @@
-package com.skewnexus.trackhub.data.remote
+package com.trackhub.core.data.remote
 
 import com.greenvenom.networking.data.NetworkError
 import com.greenvenom.networking.data.NetworkResult
 import com.greenvenom.networking.data.map
 import com.greenvenom.networking.supabase.util.SupabaseClient
 import com.greenvenom.networking.supabase.util.supabaseCall
-import com.skewnexus.trackhub.domain.remote.RemoteDataSource
+import com.trackhub.core.domain.remote.RemoteDataSource
 import com.trackhub.hub.data.remote.dto.HubDto
 import com.trackhub.hub.data.remote.dto.HubItemDto
 import com.trackhub.hub.data.remote.dto.toHub

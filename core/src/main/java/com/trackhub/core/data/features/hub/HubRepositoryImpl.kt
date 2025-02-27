@@ -1,11 +1,11 @@
-package com.skewnexus.trackhub.data.features.hub
+package com.trackhub.core.data.features.hub
 
 import com.greenvenom.networking.data.NetworkError
 import com.greenvenom.networking.data.NetworkResult
 import com.greenvenom.networking.data.onError
 import com.greenvenom.networking.data.onSuccess
-import com.skewnexus.trackhub.domain.cache.CacheDataSource
-import com.skewnexus.trackhub.domain.remote.RemoteDataSource
+import com.trackhub.core.domain.cache.CacheDataSource
+import com.trackhub.core.domain.remote.RemoteDataSource
 import com.trackhub.hub.domain.models.Hub
 import com.trackhub.hub.domain.models.HubItem
 import com.trackhub.hub.domain.repository.HubRepository

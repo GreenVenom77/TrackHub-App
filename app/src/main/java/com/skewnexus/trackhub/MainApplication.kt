@@ -5,6 +5,7 @@ import com.greenvenom.auth.di.authenticationModule
 import com.greenvenom.navigation.di.navigationModule
 import com.greenvenom.networking.supabase.di.supabaseModule
 import com.skewnexus.trackhub.di.appModule
+import com.trackhub.core.di.coreModule
 import com.trackhub.hub.di.hubModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -20,6 +21,7 @@ class MainApplication: Application() {
             modules(
                 appModule,
                 supabaseModule,
+                coreModule,
                 authenticationModule,
                 hubModule,
                 navigationModule

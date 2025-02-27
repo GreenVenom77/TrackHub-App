@@ -1,9 +1,9 @@
-package com.skewnexus.trackhub.data.features.auth
+package com.trackhub.core.data.features.auth
 
 import com.greenvenom.auth.domain.repository.AuthRepository
 import com.greenvenom.networking.data.NetworkError
 import com.greenvenom.networking.data.NetworkResult
-import com.skewnexus.trackhub.domain.remote.RemoteDataSource
+import com.trackhub.core.domain.remote.RemoteDataSource
 
 class AuthRepositoryImpl(
     private val remoteDataSource: RemoteDataSource

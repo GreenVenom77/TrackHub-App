@@ -1,4 +1,4 @@
-package com.skewnexus.trackhub.domain.cache
+package com.trackhub.core.domain.cache
 
 import com.trackhub.hub.domain.models.Hub
 import com.trackhub.hub.domain.models.HubItem
