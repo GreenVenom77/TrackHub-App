@@ -25,7 +25,7 @@ class AppNavigator {
     }
 
     fun navigateBack(): NavigationTarget? {
-        if (hasBackStack()) navController.popBackStack()
+        navController.navigateUp()
         return getCurrentDestination()
     }
 
@@ -56,9 +56,5 @@ class AppNavigator {
     fun getPreviousDestination(): NavigationTarget? {
         return navController.previousBackStackEntry?.destination
             ?.toNavigationTarget<NavigationTarget>(navigationType)
-    }
-
-    private fun hasBackStack(): Boolean {
-        return navController.currentBackStackEntry != null
     }
 }
