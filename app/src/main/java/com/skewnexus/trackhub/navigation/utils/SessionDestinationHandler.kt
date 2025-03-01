@@ -2,9 +2,9 @@ package com.skewnexus.trackhub.navigation.utils
 
 import com.greenvenom.navigation.data.NavigationType
 import com.greenvenom.navigation.repository.NavigationStateRepository
-import com.greenvenom.navigation.routes.SubGraph
 import com.greenvenom.networking.data.SessionDestinations
 import com.greenvenom.networking.domain.repository.SessionStateRepository
+import com.skewnexus.trackhub.navigation.routes.SubGraph
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

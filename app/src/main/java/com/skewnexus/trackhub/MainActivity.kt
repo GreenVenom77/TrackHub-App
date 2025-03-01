@@ -12,10 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.greenvenom.base.theme.AppTheme
 import com.greenvenom.navigation.repository.NavigationStateRepository
-import com.greenvenom.navigation.routes.Screen
 import com.skewnexus.trackhub.navigation.AppNavHost
 import com.skewnexus.trackhub.navigation.components.BottomNavigationBar
 import com.skewnexus.trackhub.navigation.components.TopAppBar
+import com.skewnexus.trackhub.navigation.routes.Screen
 import org.koin.compose.koinInject
 
 class MainActivity : AppCompatActivity() {
