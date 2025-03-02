@@ -9,7 +9,7 @@ import io.github.jan.supabase.exceptions.RestException
 import io.ktor.client.call.NoTransformationFoundException
 import io.ktor.client.plugins.HttpRequestTimeoutException
 
-suspend inline fun <reified T> supabaseCall (
+inline fun <reified T> supabaseCall (
     execute: () -> T
 ): NetworkResult<T, NetworkError> {
     val result = try {

@@ -4,6 +4,7 @@ import com.greenvenom.networking.data.NetworkError
 import com.greenvenom.networking.data.NetworkResult
 import com.trackhub.hub.domain.models.Hub
 import com.trackhub.hub.domain.models.HubItem
+import kotlinx.coroutines.flow.Flow
 
 interface RemoteDataSource {
     // Authentication
@@ -19,5 +20,5 @@ interface RemoteDataSource {
     suspend fun getOwnHubs(): NetworkResult<List<Hub>, NetworkError>
     suspend fun getSharedHubs(): NetworkResult<List<Hub>, NetworkError>
     suspend fun addItemToHub(hubItem: HubItem): NetworkResult<Unit, NetworkError>
-    suspend fun getItemsFromHub(hubId: Int): NetworkResult<List<HubItem>, NetworkError>
+    fun getItemsFromHub(hubId: String): Flow<NetworkResult<List<HubItem>, NetworkError>>
 }

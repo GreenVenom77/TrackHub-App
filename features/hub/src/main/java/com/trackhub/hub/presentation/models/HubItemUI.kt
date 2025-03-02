@@ -3,8 +3,8 @@ package com.trackhub.hub.presentation.models
 import com.trackhub.hub.domain.models.HubItem
 
 data class HubItemUI(
-    val id: Int? = null,
-    val hubId: Int,
+    val id: Int = 0,
+    val hubId: String,
     val name: String,
     val stockCount: String,
     val unit: String,

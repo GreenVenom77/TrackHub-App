@@ -5,6 +5,7 @@ import androidx.room.Query
 import androidx.room.Upsert
 import com.trackhub.hub.data.cache.entities.HubEntity
 import com.trackhub.hub.data.cache.entities.HubItemEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface HubDao {
@@ -18,10 +19,10 @@ interface HubDao {
     suspend fun updateSharedHubs(hubs: List<HubEntity>)
 
     @Query("SELECT * FROM hubs Where is_owned = 1")
-    suspend fun getOwnHubs(): List<HubEntity>
+    fun getOwnHubs(): Flow<List<HubEntity>>
 
     @Query("SELECT * FROM hubs Where is_owned = 0")
-    suspend fun getSharedHubs(): List<HubEntity>
+    fun getSharedHubs(): Flow<List<HubEntity>>
 
     @Upsert
     suspend fun addNewItem(item: HubItemEntity)
@@ -30,5 +31,5 @@ interface HubDao {
     suspend fun addNewItems(items: List<HubItemEntity>)
 
     @Query("SELECT * FROM hub_items Where hub_id = :hubId")
-    suspend fun getItemsFromHub(hubId: Int): List<HubItemEntity>
+    suspend fun getItemsFromHub(hubId: String): List<HubItemEntity>
 }

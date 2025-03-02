@@ -1,7 +1,7 @@
 package com.trackhub.hub.domain.models
 
 data class Hub(
-    val id: Int? = null,
+    val id: String = "",
     val userId: String,
     val name: String,
     val createdAt: String? = null,

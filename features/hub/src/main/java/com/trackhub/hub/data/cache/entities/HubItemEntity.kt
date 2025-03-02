@@ -25,9 +25,9 @@ import com.trackhub.hub.domain.models.HubItem
 data class HubItemEntity(
     @PrimaryKey
     @ColumnInfo(name = "id")
-    val id: Int? = null,
+    val id: Int = 0,
     @ColumnInfo(name = "hub_id")
-    val hubId: Int,
+    val hubId: String,
     @ColumnInfo(name = "name")
     val name: String,
     @ColumnInfo(name = "stock_count")

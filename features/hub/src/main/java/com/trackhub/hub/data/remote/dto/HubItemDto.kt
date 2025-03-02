@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class HubItemDto(
-    val id: Int? = null,
-    val hubId: Int,
+    val id: Int = 0,
+    val hubId: String,
     val name: String,
     val stockCount: String,
     val unit: String,

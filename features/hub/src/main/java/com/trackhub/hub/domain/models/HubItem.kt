@@ -3,8 +3,8 @@ package com.trackhub.hub.domain.models
 import java.math.BigDecimal
 
 data class HubItem(
-    val id: Int? = null,
-    val hubId: Int,
+    val id: Int = 0,
+    val hubId: String,
     val name: String,
     val stockCount: BigDecimal,
     val unit: String,

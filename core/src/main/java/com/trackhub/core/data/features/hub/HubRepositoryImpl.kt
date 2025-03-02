@@ -10,7 +10,9 @@ import com.trackhub.hub.domain.models.Hub
 import com.trackhub.hub.domain.models.HubItem
 import com.trackhub.hub.domain.repository.HubRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onEach
 
 class HubRepositoryImpl(
     private val remoteDataSource: RemoteDataSource,
@@ -23,8 +25,19 @@ class HubRepositoryImpl(
     }
 
     override fun getHubs(isOwned: Boolean): Flow<NetworkResult<List<Hub>, NetworkError>> = flow {
-        val cachedHubs = if (isOwned) cacheDataSource.getOwnHubs() else cacheDataSource.getSharedHubs()
-        if (cachedHubs.isNotEmpty()) emit(NetworkResult.Success(cachedHubs))
+        var cachedHubs: List<Hub> = emptyList()
+
+        if (isOwned) {
+            cacheDataSource.getOwnHubs().collect { cachedOwnedHubs ->
+                cachedHubs = cachedOwnedHubs
+                emit(NetworkResult.Success(cachedOwnedHubs))
+            }
+        } else {
+            cacheDataSource.getSharedHubs().collect { cachedSharedHubs ->
+                cachedHubs = cachedSharedHubs
+                emit(NetworkResult.Success(cachedSharedHubs))
+            }
+        }
 
         val remoteHubs = if (isOwned) remoteDataSource.getOwnHubs() else remoteDataSource.getSharedHubs()
         remoteHubs.onSuccess {
@@ -44,16 +57,17 @@ class HubRepositoryImpl(
         return remoteResult
     }
 
-    override fun getItemsFromHub(hubId: Int): Flow<NetworkResult<List<HubItem>, NetworkError>> = flow {
+    override fun getItemsFromHub(hubId: String): Flow<NetworkResult<List<HubItem>, NetworkError>> = flow {
         val cachedItems = cacheDataSource.getItemsFromHub(hubId)
         if (cachedItems.isNotEmpty()) emit(NetworkResult.Success(cachedItems))
 
-        val remoteItems = remoteDataSource.getItemsFromHub(hubId)
-        remoteItems.onSuccess {
-            val newItems = it.toSet().filter { item -> !cachedItems.toSet().contains(item) }
-            if (newItems.isNotEmpty()) cacheDataSource.addItems(newItems)
-            emit(NetworkResult.Success(it))
+        remoteDataSource.getItemsFromHub(hubId).onEach { remoteItems ->
+            remoteItems.onSuccess { items ->
+                emit(NetworkResult.Success(items))
+                val newItems = items.toSet().filter { item -> !cachedItems.toSet().contains(item) }
+                if (newItems.isNotEmpty()) cacheDataSource.addItems(newItems)
+            }
+            remoteItems.onError { emit(NetworkResult.Error(it)) }
         }
-        remoteItems.onError { emit(NetworkResult.Error(it)) }
     }
 }

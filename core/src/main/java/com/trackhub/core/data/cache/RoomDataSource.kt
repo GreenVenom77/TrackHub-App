@@ -8,6 +8,8 @@ import com.trackhub.hub.data.cache.entities.toHubItem
 import com.trackhub.hub.data.cache.entities.toHubItemEntity
 import com.trackhub.hub.domain.models.Hub
 import com.trackhub.hub.domain.models.HubItem
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class RoomDataSource(
     private val hubDao: HubDao
@@ -24,12 +26,12 @@ class RoomDataSource(
         hubDao.updateSharedHubs(hubs.map { it.toHubEntity(false) })
     }
 
-    override suspend fun getOwnHubs(): List<Hub> {
-        return hubDao.getOwnHubs().map { it.toHub() }
+    override fun getOwnHubs(): Flow<List<Hub>> {
+        return hubDao.getOwnHubs().map { it.map { hubEntity -> hubEntity.toHub() } }
     }
 
-    override suspend fun getSharedHubs(): List<Hub> {
-        return hubDao.getSharedHubs().map { it.toHub() }
+    override fun getSharedHubs(): Flow<List<Hub>> {
+        return hubDao.getSharedHubs().map { it.map { hubEntity -> hubEntity.toHub() } }
     }
 
     override suspend fun addItem(item: HubItem) {
@@ -40,7 +42,7 @@ class RoomDataSource(
         hubDao.addNewItems(items.map { it.toHubItemEntity() })
     }
 
-    override suspend fun getItemsFromHub(hubId: Int): List<HubItem> {
+    override suspend fun getItemsFromHub(hubId: String): List<HubItem> {
         return hubDao.getItemsFromHub(hubId).map { it.toHubItem() }
     }
 }

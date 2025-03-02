@@ -3,7 +3,7 @@ package com.trackhub.hub.presentation.models
 import com.trackhub.hub.domain.models.Hub
 
 data class HubUI(
-    val id: Int? = null,
+    val id: String = "",
     val userId: String,
     val name: String,
     val createdAt: String? = null,

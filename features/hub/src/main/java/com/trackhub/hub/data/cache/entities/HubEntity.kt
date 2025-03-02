@@ -9,7 +9,7 @@ import com.trackhub.hub.domain.models.Hub
 data class HubEntity(
     @PrimaryKey
     @ColumnInfo(name = "id")
-    val id: Int? = null,
+    val id: String = "",
     @ColumnInfo(name = "user_id")
     val userId: String,
     @ColumnInfo(name = "name")

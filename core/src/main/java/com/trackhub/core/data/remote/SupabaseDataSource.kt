@@ -5,6 +5,7 @@ import com.greenvenom.networking.data.NetworkResult
 import com.greenvenom.networking.data.map
 import com.greenvenom.networking.supabase.util.SupabaseClient
 import com.greenvenom.networking.supabase.util.supabaseCall
+import com.greenvenom.networking.supabase.util.supabaseLiveCall
 import com.trackhub.core.domain.remote.RemoteDataSource
 import com.trackhub.hub.data.remote.dto.HubDto
 import com.trackhub.hub.data.remote.dto.HubItemDto
@@ -14,15 +15,23 @@ import com.trackhub.hub.data.remote.dto.toHubItem
 import com.trackhub.hub.data.remote.dto.toHubItemDto
 import com.trackhub.hub.domain.models.Hub
 import com.trackhub.hub.domain.models.HubItem
+import io.github.jan.supabase.annotations.SupabaseExperimental
 import io.github.jan.supabase.auth.OtpType
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.auth.user.UserInfo
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.postgrest
+import io.github.jan.supabase.postgrest.query.Columns
+import io.github.jan.supabase.postgrest.query.filter.FilterOperation
+import io.github.jan.supabase.postgrest.query.filter.FilterOperator
+import io.github.jan.supabase.realtime.selectAsFlow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 
+@OptIn(SupabaseExperimental::class)
 class SupabaseDataSource(
     supabaseClient: SupabaseClient
 ): RemoteDataSource {
@@ -107,13 +116,16 @@ class SupabaseDataSource(
         }
     }
 
-    override suspend fun getItemsFromHub(hubId: Int): NetworkResult<List<HubItem>, NetworkError> {
-        return supabaseCall {
-            client.from("items").select() {
-                filter { HubItemDto::hubId eq hubId }
-            }.decodeList<HubItemDto>()
-        }.map { response ->
-            response.map{ it.toHubItem() }
+    override fun getItemsFromHub(hubId: String): Flow<NetworkResult<List<HubItem>, NetworkError>> {
+        return supabaseLiveCall {
+            client.from("items").selectAsFlow(
+                primaryKey = HubItemDto::id,
+                filter = FilterOperation(
+                    column = "hub_id",
+                    operator = FilterOperator.EQ,
+                    value = hubId
+                )
+            ).map { items -> items.map { it.toHubItem() } }
         }
     }
 }

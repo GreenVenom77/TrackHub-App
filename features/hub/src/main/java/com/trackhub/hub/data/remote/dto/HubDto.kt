@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class HubDto(
-    val id: Int? = null,
+    val id: String = "",
     val userId: String,
     val name: String,
     val createdAt: String? = null,
