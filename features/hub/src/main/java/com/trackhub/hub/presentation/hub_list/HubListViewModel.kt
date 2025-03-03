@@ -2,10 +2,8 @@ package com.trackhub.hub.presentation.hub_list
 
 import androidx.lifecycle.viewModelScope
 import com.greenvenom.base.presentation.BaseViewModel
-import com.greenvenom.networking.data.map
 import com.trackhub.hub.domain.models.Hub
 import com.trackhub.hub.domain.repository.HubRepository
-import com.trackhub.hub.presentation.models.toHubUI
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onEach
@@ -29,9 +27,7 @@ class HubListViewModel(
             hubRepository.getHubs().onEach { ownedHubsResult ->
                 _hubListState.update {
                     it.copy(
-                        ownedHubsResult = ownedHubsResult.map { hubs ->
-                            hubs.map { hub -> hub.toHubUI() }
-                        }
+                        ownedHubsResult = ownedHubsResult
                     )
                 }
             }
@@ -41,9 +37,7 @@ class HubListViewModel(
             hubRepository.getHubs(isOwned = false).onEach { sharedHubsResult ->
                 _hubListState.update {
                     it.copy(
-                        sharedHubsResult = sharedHubsResult.map { hubs ->
-                            hubs.map { hub -> hub.toHubUI() }
-                        }
+                        sharedHubsResult = sharedHubsResult
                     )
                 }
             }
