@@ -10,7 +10,9 @@ import com.trackhub.hub.presentation.hub_details.HubDetailsState
 import com.trackhub.hub.presentation.hub_details.HubDetailsViewModel
 
 @Composable
-fun HubDetailsScreen() {
+fun HubDetailsScreen(
+    hubId: String
+) {
     BaseScreen<HubDetailsViewModel> { viewModel ->
         val hubDetailsState by viewModel.hubDetailsState.collectAsStateWithLifecycle()
 

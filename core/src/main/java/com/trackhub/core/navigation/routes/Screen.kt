@@ -1,4 +1,4 @@
-package com.skewnexus.trackhub.navigation.routes
+package com.trackhub.core.navigation.routes
 
 import com.greenvenom.navigation.domain.NavigationTarget
 import kotlinx.serialization.Serializable
@@ -26,11 +26,17 @@ sealed class Screen: NavigationTarget {
     data object MyHubs: Screen()
 
     @Serializable
+    data object SharedHubs: Screen()
+
+    @Serializable
+    data class HubDetails(val hubId: String = ""): Screen()
+
+    @Serializable
     data object Activity: Screen()
 
     @Serializable
-    data object Profile: Screen()
+    data object More: Screen()
 
     @Serializable
-    data object SharedHubs: Screen()
+    data object Profile: Screen()
 }

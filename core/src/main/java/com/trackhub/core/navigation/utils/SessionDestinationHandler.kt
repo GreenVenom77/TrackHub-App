@@ -1,10 +1,10 @@
-package com.skewnexus.trackhub.navigation.utils
+package com.trackhub.core.navigation.utils
 
 import com.greenvenom.navigation.data.NavigationType
 import com.greenvenom.navigation.repository.NavigationStateRepository
 import com.greenvenom.networking.data.SessionDestinations
 import com.greenvenom.networking.domain.repository.SessionStateRepository
-import com.skewnexus.trackhub.navigation.routes.SubGraph
+import com.trackhub.core.navigation.routes.SubGraph
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,11 +28,15 @@ class SessionDestinationHandler(
             }
 
             SessionDestinations.AUTH -> {
-                navigationStateRepository.updateDestination(NavigationType.ClearBackStack(SubGraph.Auth))
+                navigationStateRepository.updateDestination(
+                    NavigationType.ClearBackStack(SubGraph.Auth)
+                )
             }
 
             SessionDestinations.MAIN -> {
-                navigationStateRepository.updateDestination(NavigationType.ClearBackStack(SubGraph.Main))
+                navigationStateRepository.updateDestination(
+                    NavigationType.ClearBackStack(SubGraph.Main)
+                )
             }
         }
     }

@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.greenvenom.navigation.domain.NavigationTarget
 import com.skewnexus.trackhub.R
-import com.skewnexus.trackhub.navigation.routes.Screen
+import com.trackhub.core.navigation.routes.Screen
 
 enum class BottomDestination(
     @DrawableRes val icon: Int,
@@ -17,7 +17,7 @@ enum class BottomDestination(
         target = Screen.MyHubs
     ),
     SharedHubs(
-        icon = R.drawable.others_hubs_ic,
+        icon = R.drawable.shared_ic,
         label = R.string.shared_hubs,
         target = Screen.SharedHubs
     ),
@@ -26,4 +26,9 @@ enum class BottomDestination(
         label = R.string.activity,
         target = Screen.Activity
     ),
+    More(
+        icon = R.drawable.more_ic,
+        label = R.string.more,
+        target = Screen.More
+    );
 }

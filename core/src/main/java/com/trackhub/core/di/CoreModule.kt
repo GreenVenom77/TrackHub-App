@@ -9,11 +9,19 @@ import com.trackhub.core.data.features.hub.HubRepositoryImpl
 import com.trackhub.core.data.remote.SupabaseDataSource
 import com.trackhub.core.domain.cache.CacheDataSource
 import com.trackhub.core.domain.remote.RemoteDataSource
+import com.trackhub.core.navigation.utils.SessionDestinationHandler
 import com.trackhub.hub.domain.repository.HubRepository
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val coreModule = module {
+    single {
+        SessionDestinationHandler(
+            navigationStateRepository = get(),
+            sessionStateRepository = get()
+        )
+    }
+
     single<AuthRepository> {
         AuthRepositoryImpl(remoteDataSource = get())
     }

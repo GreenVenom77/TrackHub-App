@@ -7,25 +7,30 @@ import com.greenvenom.base.presentation.BaseAction
 import com.greenvenom.base.presentation.BaseScreen
 
 @Composable
-fun HubListScreen() {
+fun HubListScreen(
+    showOwnedHubs: Boolean,
+    navigateToHubDetails: (String) -> Unit
+) {
     BaseScreen<HubListViewModel> { viewModel ->
         val hubListState by viewModel.hubListState.collectAsStateWithLifecycle()
 
         HubListContent(
+            showOwnedHubs = showOwnedHubs,
             hubListState = hubListState,
             hubListAction = viewModel::hubListAction,
             baseAction = viewModel::baseAction,
-            navigateToHubDetails = {  }
+            navigateToHubDetails = navigateToHubDetails
         )
     }
 }
 
 @Composable
 fun HubListContent(
+    showOwnedHubs: Boolean,
     hubListState: HubListState,
     hubListAction: (HubListAction) -> Unit,
     baseAction: (BaseAction) -> Unit,
-    navigateToHubDetails: () -> Unit
+    navigateToHubDetails: (String) -> Unit
 ) {
 
 }

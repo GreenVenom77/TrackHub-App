@@ -16,7 +16,7 @@ interface RemoteDataSource {
     suspend fun logoutUser(): NetworkResult<Any, NetworkError>
 
     // Hubs
-    suspend fun addHub(hub: Hub): NetworkResult<Unit, NetworkError>
+    suspend fun addHub(hub: Hub): NetworkResult<Hub, NetworkError>
     suspend fun getOwnHubs(): NetworkResult<List<Hub>, NetworkError>
     suspend fun getSharedHubs(): NetworkResult<List<Hub>, NetworkError>
     suspend fun addItemToHub(hubItem: HubItem): NetworkResult<Unit, NetworkError>

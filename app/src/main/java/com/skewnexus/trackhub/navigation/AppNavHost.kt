@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.greenvenom.auth.presentation.login.LoginScreen
 import com.greenvenom.auth.presentation.otp.OtpScreen
 import com.greenvenom.auth.presentation.register.RegisterScreen
@@ -18,9 +19,11 @@ import com.greenvenom.auth.presentation.splash.SplashScreen
 import com.greenvenom.navigation.data.NavigationType
 import com.greenvenom.navigation.repository.NavigationStateRepository
 import com.greenvenom.navigation.utils.AppNavigator
-import com.skewnexus.trackhub.navigation.routes.Screen
-import com.skewnexus.trackhub.navigation.routes.SubGraph
-import com.skewnexus.trackhub.navigation.utils.SessionDestinationHandler
+import com.trackhub.core.navigation.routes.Screen
+import com.trackhub.core.navigation.routes.SubGraph
+import com.trackhub.core.navigation.utils.SessionDestinationHandler
+import com.trackhub.hub.presentation.hub_details.screens.HubDetailsScreen
+import com.trackhub.hub.presentation.hub_list.HubListScreen
 import org.koin.compose.koinInject
 
 @Composable
@@ -37,8 +40,9 @@ fun AppNavHost(modifier: Modifier = Modifier) {
     navigationStateRepository.config(
         enableBarsDestinations = setOf(
             Screen.MyHubs,
+            Screen.SharedHubs,
             Screen.Activity,
-            Screen.SharedHubs
+            Screen.More
         )
     )
 
@@ -59,10 +63,14 @@ fun AppNavHost(modifier: Modifier = Modifier) {
             composable<Screen.Login> {
                 LoginScreen(
                     navigateToRegisterScreen = {
-                        navigationStateRepository.updateDestination(NavigationType.Standard(Screen.Register))
+                        navigationStateRepository.updateDestination(
+                            NavigationType.Standard(Screen.Register)
+                        )
                     },
                     navigateToEmailVerificationScreen = {
-                        navigationStateRepository.updateDestination(NavigationType.Standard(Screen.VerifyEmail))
+                        navigationStateRepository.updateDestination(
+                            NavigationType.Standard(Screen.VerifyEmail)
+                        )
                     },
                     navigateToNextScreen = {  },
                 )
@@ -73,7 +81,9 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                         navigationStateRepository.updateDestination(NavigationType.Back)
                     },
                     navigateToAccountVerificationScreen = {
-                        navigationStateRepository.updateDestination(NavigationType.Standard(Screen.OTP))
+                        navigationStateRepository.updateDestination(
+                            NavigationType.Standard(Screen.OTP)
+                        )
                     }
                 )
             }
@@ -83,7 +93,9 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                         navigationStateRepository.updateDestination(NavigationType.Back)
                     },
                     navigateToOtpScreen = {
-                        navigationStateRepository.updateDestination(NavigationType.Standard(Screen.OTP))
+                        navigationStateRepository.updateDestination(
+                            NavigationType.Standard(Screen.OTP)
+                        )
                     }
                 )
             }
@@ -94,8 +106,9 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                     },
                     navigateToNewPasswordScreen = {
                         if (navigationState.previousDestination is Screen.VerifyEmail) {
-                            navigationStateRepository.updateDestination(NavigationType.ClearBackStack(
-                                Screen.NewPassword))
+                            navigationStateRepository.updateDestination(
+                                NavigationType.ClearBackStack(Screen.NewPassword)
+                            )
                         }
                     }
                 )
@@ -106,8 +119,9 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                         navigationStateRepository.updateDestination(NavigationType.Back)
                     },
                     navigateToLoginScreen = {
-                        navigationStateRepository.updateDestination(NavigationType.ClearBackStack(
-                            Screen.Login))
+                        navigationStateRepository.updateDestination(
+                            NavigationType.ClearBackStack(Screen.Login)
+                        )
                     }
                 )
             }
@@ -115,10 +129,31 @@ fun AppNavHost(modifier: Modifier = Modifier) {
 
         navigation<SubGraph.Main>(startDestination = Screen.MyHubs) {
             composable<Screen.MyHubs> {
-                Text(text = "Home")
+                HubListScreen(
+                    showOwnedHubs = true,
+                    navigateToHubDetails = { hubId ->
+                        navigationStateRepository.updateDestination(
+                            NavigationType.Standard(Screen.HubDetails(hubId))
+                        )
+                    }
+                )
             }
             composable<Screen.SharedHubs> {
-                Text(text = "Shared")
+                HubListScreen(
+                    showOwnedHubs = false,
+                    navigateToHubDetails = { hubId ->
+                        navigationStateRepository.updateDestination(
+                            NavigationType.Standard(Screen.HubDetails(hubId))
+                        )
+                    }
+                )
+            }
+            composable<Screen.HubDetails> {
+                val args = it.toRoute<Screen.HubDetails>()
+
+                HubDetailsScreen(
+                    hubId = args.hubId
+                )
             }
             composable<Screen.Activity> {
                 Text(text = "Activity")

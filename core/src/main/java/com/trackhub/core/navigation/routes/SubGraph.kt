@@ -1,4 +1,4 @@
-package com.skewnexus.trackhub.navigation.routes
+package com.trackhub.core.navigation.routes
 
 import com.greenvenom.navigation.domain.NavigationTarget
 import kotlinx.serialization.Serializable

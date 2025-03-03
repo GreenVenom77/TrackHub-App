@@ -7,6 +7,8 @@ import com.trackhub.hub.domain.models.HubItem
 import kotlinx.coroutines.flow.Flow
 
 interface HubRepository {
+    fun refreshHubs()
+    fun refreshItems(hubId: String)
     suspend fun addHub(hub: Hub): NetworkResult<Unit, NetworkError>
     fun getHubs(isOwned: Boolean = true): Flow<NetworkResult<List<Hub>, NetworkError>>
     suspend fun addItemToHub(hubItem: HubItem): NetworkResult<Unit, NetworkError>

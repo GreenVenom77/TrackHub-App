@@ -14,7 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.greenvenom.navigation.data.NavigationType
 import com.greenvenom.navigation.domain.NavigationTarget
-import com.skewnexus.trackhub.navigation.routes.Screen
+import com.trackhub.core.navigation.routes.Screen
 
 @Composable
 fun BottomNavigationBar(

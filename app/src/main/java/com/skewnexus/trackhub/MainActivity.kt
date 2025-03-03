@@ -15,7 +15,7 @@ import com.greenvenom.navigation.repository.NavigationStateRepository
 import com.skewnexus.trackhub.navigation.AppNavHost
 import com.skewnexus.trackhub.navigation.components.BottomNavigationBar
 import com.skewnexus.trackhub.navigation.components.TopAppBar
-import com.skewnexus.trackhub.navigation.routes.Screen
+import com.trackhub.core.navigation.routes.Screen
 import org.koin.compose.koinInject
 
 class MainActivity : AppCompatActivity() {

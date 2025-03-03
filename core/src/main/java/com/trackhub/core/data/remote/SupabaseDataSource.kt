@@ -3,6 +3,7 @@ package com.trackhub.core.data.remote
 import com.greenvenom.networking.data.NetworkError
 import com.greenvenom.networking.data.NetworkResult
 import com.greenvenom.networking.data.map
+import com.greenvenom.networking.data.onSuccess
 import com.greenvenom.networking.supabase.util.SupabaseClient
 import com.greenvenom.networking.supabase.util.supabaseCall
 import com.greenvenom.networking.supabase.util.supabaseLiveCall
@@ -88,10 +89,14 @@ class SupabaseDataSource(
     }
 
     // Hubs
-    override suspend fun addHub(hub: Hub): NetworkResult<Unit, NetworkError> {
-        return supabaseCall {
-            client.from("hubs").insert(hub.toHubDto())
+    override suspend fun addHub(hub: Hub): NetworkResult<Hub, NetworkError> {
+        val userId = client.auth.currentUserOrNull()?.id as String
+        val updatedHub = hub.copy(userId = userId)
+        val result = supabaseCall {
+            client.from("hubs").insert(updatedHub.toHubDto()).decodeSingle<HubDto>()
         }
+
+        return result.map { returnedHub -> returnedHub.toHub()}
     }
 
     override suspend fun getOwnHubs(): NetworkResult<List<Hub>, NetworkError> {

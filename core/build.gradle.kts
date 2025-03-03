@@ -40,6 +40,7 @@ dependencies {
     implementation(project(":features:menu"))
     implementation(project(":features:auth"))
     implementation(project(":networking"))
+    implementation(project(":navigation"))
 
     val room = "2.6.1"
 
