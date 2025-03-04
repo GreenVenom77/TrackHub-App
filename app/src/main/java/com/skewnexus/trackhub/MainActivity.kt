@@ -15,6 +15,7 @@ import com.greenvenom.core_navigation.data.repository.NavigationStateRepository
 import com.skewnexus.trackhub.navigation.AppNavHost
 import com.skewnexus.trackhub.navigation.components.BottomNavigationBar
 import com.skewnexus.trackhub.navigation.components.TopAppBar
+import com.trackhub.feat_navigation.routes.Screen
 import org.koin.compose.koinInject
 
 class MainActivity : AppCompatActivity() {
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity() {
                     bottomBar = {
                         BottomNavigationBar(
                             defaultNavigationMethod = navigationRepository::updateDestination,
-                            currentDestination = navigationState.currentDestination ?: com.greenvenom.feat_navigation.routes.Screen.MyHubs,
+                            currentDestination = navigationState.currentDestination ?: Screen.MyHubs,
                             isVisible = navigationState.bottomBarState
                         )
                     }

@@ -82,7 +82,8 @@ private fun VerifyEmailContent(
             navigateToOtpScreen()
         }
         resetPasswordState.emailSentNetworkResult?.onError {
-            baseActions(BaseAction.ShowErrorMessage(
+            baseActions(
+                BaseAction.ShowErrorMessage(
                 it.errorType?.toString(context)?: context.getString(R.string.something_went_wrong)
             ))
             resetPasswordActions(ResetPasswordAction.ResetEmailResult)

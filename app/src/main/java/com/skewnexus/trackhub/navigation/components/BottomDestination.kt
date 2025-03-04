@@ -13,21 +13,21 @@ enum class BottomDestination(
     MyHubs(
         icon = R.drawable.home_ic,
         label = R.string.my_hubs,
-        target = com.greenvenom.feat_navigation.routes.Screen.MyHubs
+        target = com.trackhub.feat_navigation.routes.Screen.MyHubs
     ),
     SharedHubs(
         icon = R.drawable.shared_ic,
         label = R.string.shared_hubs,
-        target = com.greenvenom.feat_navigation.routes.Screen.SharedHubs
+        target = com.trackhub.feat_navigation.routes.Screen.SharedHubs
     ),
     Activity(
         icon = R.drawable.activity_ic,
         label = R.string.activity,
-        target = com.greenvenom.feat_navigation.routes.Screen.Activity
+        target = com.trackhub.feat_navigation.routes.Screen.Activity
     ),
     More(
         icon = R.drawable.more_ic,
         label = R.string.more,
-        target = com.greenvenom.feat_navigation.routes.Screen.More
+        target = com.trackhub.feat_navigation.routes.Screen.More
     );
 }

@@ -67,6 +67,6 @@ private fun BottomBarContent(
 private fun BottomNavigationBarContent() {
     BottomBarContent(
         defaultNavigationMethod = {  },
-        currentDestination = com.greenvenom.feat_navigation.routes.Screen.MyHubs
+        currentDestination = com.trackhub.feat_navigation.routes.Screen.MyHubs
     )
 }

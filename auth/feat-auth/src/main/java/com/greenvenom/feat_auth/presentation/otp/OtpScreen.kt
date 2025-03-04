@@ -102,7 +102,8 @@ private fun OtpContent(
             navigateToNewPasswordScreen()
         }
         state.otpNetworkResult?.onError {
-            baseActions(BaseAction.ShowErrorMessage(
+            baseActions(
+                BaseAction.ShowErrorMessage(
                 it.errorType?.toString(context)?: context.getString(R.string.something_went_wrong)
             ))
             otpActions(OtpAction.ResetNetworkResult)

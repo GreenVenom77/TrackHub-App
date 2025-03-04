@@ -77,7 +77,8 @@ private fun NewPasswordContent(
             navigateToLoginScreen()
         }
         state.passwordUpdatedNetworkResult?.onError {
-            baseActions(BaseAction.ShowErrorMessage(
+            baseActions(
+                BaseAction.ShowErrorMessage(
                 it.errorType?.toString(context)?: context.getString(R.string.something_went_wrong)
             ))
             resetPasswordActions(ResetPasswordAction.ResetPasswordResult)

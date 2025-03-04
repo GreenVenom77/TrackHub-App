@@ -14,16 +14,16 @@ import com.greenvenom.core_navigation.data.NavigationType
 import com.greenvenom.core_navigation.data.repository.NavigationStateRepository
 import com.greenvenom.core_navigation.utils.AppNavigator
 import com.skewnexus.trackhub.navigation.utils.SessionDestinationHandler
-import com.greenvenom.feat_hub.presentation.hub_details.screens.HubDetailsScreen
-import com.greenvenom.feat_hub.presentation.hub_list.HubListScreen
+import com.trackhub.feat_hub.presentation.hub_details.screens.HubDetailsScreen
+import com.trackhub.feat_hub.presentation.hub_list.HubListScreen
 import com.greenvenom.feat_auth.presentation.login.LoginScreen
 import com.greenvenom.feat_auth.presentation.otp.OtpScreen
 import com.greenvenom.feat_auth.presentation.register.RegisterScreen
 import com.greenvenom.feat_auth.presentation.reset_password.screens.NewPasswordScreen
 import com.greenvenom.feat_auth.presentation.reset_password.screens.VerifyEmailScreen
 import com.greenvenom.feat_auth.presentation.splash.SplashScreen
-import com.greenvenom.feat_navigation.routes.Screen
-import com.greenvenom.feat_navigation.routes.SubGraph
+import com.trackhub.feat_navigation.routes.Screen
+import com.trackhub.feat_navigation.routes.SubGraph
 import org.koin.compose.koinInject
 
 @Composable
