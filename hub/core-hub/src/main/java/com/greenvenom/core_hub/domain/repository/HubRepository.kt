@@ -1,0 +1,16 @@
+package com.greenvenom.core_hub.domain.repository
+
+import com.greenvenom.core_network.data.NetworkError
+import com.greenvenom.core_network.data.NetworkResult
+import com.greenvenom.core_hub.domain.models.Hub
+import com.greenvenom.core_hub.domain.models.HubItem
+import kotlinx.coroutines.flow.Flow
+
+interface HubRepository {
+    fun refreshHubs()
+    fun refreshItems(hubId: String)
+    suspend fun addHub(hub: Hub): NetworkResult<Unit, NetworkError>
+    fun getHubs(isOwned: Boolean = true): Flow<NetworkResult<List<Hub>, NetworkError>>
+    suspend fun addItemToHub(hubItem: HubItem): NetworkResult<Unit, NetworkError>
+    fun getItemsFromHub(hubId: String): Flow<NetworkResult<List<HubItem>, NetworkError>>
+}

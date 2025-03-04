@@ -53,13 +53,15 @@ android {
 
 dependencies {
 
-    implementation(project(":core"))
-    implementation(project(":navigation"))
-    implementation(project(":networking"))
-    implementation(project(":features:auth"))
-    implementation(project(":features:hub"))
-    implementation(project(":base"))
-    implementation(project(":features:menu"))
+    implementation(project(":network:core-network"))
+    implementation(project(":network:feat-network"))
+    implementation(project(":navigation:core-navigation"))
+    implementation(project(":navigation:feat-navigation"))
+
+    implementation(project(":core-ui"))
+    implementation(project(":auth:feat-auth"))
+    implementation(project(":hub:feat-hub"))
+    implementation(project(":more:feat-more"))
 
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)

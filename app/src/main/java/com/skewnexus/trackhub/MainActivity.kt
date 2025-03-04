@@ -10,12 +10,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.greenvenom.base.theme.AppTheme
-import com.greenvenom.navigation.repository.NavigationStateRepository
+import com.greenvenom.core_ui.theme.AppTheme
+import com.greenvenom.core_navigation.data.repository.NavigationStateRepository
 import com.skewnexus.trackhub.navigation.AppNavHost
 import com.skewnexus.trackhub.navigation.components.BottomNavigationBar
 import com.skewnexus.trackhub.navigation.components.TopAppBar
-import com.trackhub.core.navigation.routes.Screen
 import org.koin.compose.koinInject
 
 class MainActivity : AppCompatActivity() {
@@ -32,7 +31,7 @@ class MainActivity : AppCompatActivity() {
                     bottomBar = {
                         BottomNavigationBar(
                             defaultNavigationMethod = navigationRepository::updateDestination,
-                            currentDestination = navigationState.currentDestination ?: Screen.MyHubs,
+                            currentDestination = navigationState.currentDestination ?: com.greenvenom.feat_navigation.routes.Screen.MyHubs,
                             isVisible = navigationState.bottomBarState
                         )
                     }

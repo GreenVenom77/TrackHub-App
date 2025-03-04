@@ -10,20 +10,20 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.greenvenom.auth.presentation.login.LoginScreen
-import com.greenvenom.auth.presentation.otp.OtpScreen
-import com.greenvenom.auth.presentation.register.RegisterScreen
-import com.greenvenom.auth.presentation.reset_password.screens.NewPasswordScreen
-import com.greenvenom.auth.presentation.reset_password.screens.VerifyEmailScreen
-import com.greenvenom.auth.presentation.splash.SplashScreen
-import com.greenvenom.navigation.data.NavigationType
-import com.greenvenom.navigation.repository.NavigationStateRepository
-import com.greenvenom.navigation.utils.AppNavigator
-import com.trackhub.core.navigation.routes.Screen
-import com.trackhub.core.navigation.routes.SubGraph
-import com.trackhub.core.navigation.utils.SessionDestinationHandler
-import com.trackhub.hub.presentation.hub_details.screens.HubDetailsScreen
-import com.trackhub.hub.presentation.hub_list.HubListScreen
+import com.greenvenom.core_navigation.data.NavigationType
+import com.greenvenom.core_navigation.data.repository.NavigationStateRepository
+import com.greenvenom.core_navigation.utils.AppNavigator
+import com.skewnexus.trackhub.navigation.utils.SessionDestinationHandler
+import com.greenvenom.feat_hub.presentation.hub_details.screens.HubDetailsScreen
+import com.greenvenom.feat_hub.presentation.hub_list.HubListScreen
+import com.greenvenom.feat_auth.presentation.login.LoginScreen
+import com.greenvenom.feat_auth.presentation.otp.OtpScreen
+import com.greenvenom.feat_auth.presentation.register.RegisterScreen
+import com.greenvenom.feat_auth.presentation.reset_password.screens.NewPasswordScreen
+import com.greenvenom.feat_auth.presentation.reset_password.screens.VerifyEmailScreen
+import com.greenvenom.feat_auth.presentation.splash.SplashScreen
+import com.greenvenom.feat_navigation.routes.Screen
+import com.greenvenom.feat_navigation.routes.SubGraph
 import org.koin.compose.koinInject
 
 @Composable
@@ -34,7 +34,7 @@ fun AppNavHost(modifier: Modifier = Modifier) {
     val navigationState by navigationStateRepository.navigationState.collectAsStateWithLifecycle()
 
     appNavigator.config(
-        navigationType = Screen::class,
+        returnedNavigationType = Screen::class,
         navController = rememberNavController()
     )
     navigationStateRepository.config(

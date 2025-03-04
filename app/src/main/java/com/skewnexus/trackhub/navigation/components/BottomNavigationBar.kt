@@ -12,9 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import com.greenvenom.navigation.data.NavigationType
-import com.greenvenom.navigation.domain.NavigationTarget
-import com.trackhub.core.navigation.routes.Screen
+import com.greenvenom.core_navigation.data.NavigationType
+import com.greenvenom.core_navigation.domain.NavigationTarget
 
 @Composable
 fun BottomNavigationBar(
@@ -68,6 +67,6 @@ private fun BottomBarContent(
 private fun BottomNavigationBarContent() {
     BottomBarContent(
         defaultNavigationMethod = {  },
-        currentDestination = Screen.MyHubs
+        currentDestination = com.greenvenom.feat_navigation.routes.Screen.MyHubs
     )
 }
