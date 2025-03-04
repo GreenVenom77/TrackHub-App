@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.skewnexus.trackhub.navigation.components
+package com.trackhub.feat_navigation.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
@@ -26,7 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.greenvenom.core_ui.R
+import com.trackhub.feat_navigation.R
 import com.greenvenom.core_ui.theme.AppTheme
 
 @Composable

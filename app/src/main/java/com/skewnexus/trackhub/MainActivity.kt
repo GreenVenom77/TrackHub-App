@@ -13,8 +13,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.greenvenom.core_ui.theme.AppTheme
 import com.greenvenom.core_navigation.data.repository.NavigationStateRepository
 import com.skewnexus.trackhub.navigation.AppNavHost
-import com.skewnexus.trackhub.navigation.components.BottomNavigationBar
-import com.skewnexus.trackhub.navigation.components.TopAppBar
+import com.trackhub.feat_navigation.components.BottomNavigationBar
+import com.trackhub.feat_navigation.components.TopAppBar
 import com.trackhub.feat_navigation.routes.Screen
 import org.koin.compose.koinInject
 

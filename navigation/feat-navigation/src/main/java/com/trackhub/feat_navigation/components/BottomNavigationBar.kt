@@ -1,4 +1,4 @@
-package com.skewnexus.trackhub.navigation.components
+package com.trackhub.feat_navigation.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.greenvenom.core_navigation.data.NavigationType
 import com.greenvenom.core_navigation.domain.NavigationTarget
+import com.trackhub.feat_navigation.routes.Screen
 
 @Composable
 fun BottomNavigationBar(
@@ -67,6 +68,6 @@ private fun BottomBarContent(
 private fun BottomNavigationBarContent() {
     BottomBarContent(
         defaultNavigationMethod = {  },
-        currentDestination = com.trackhub.feat_navigation.routes.Screen.MyHubs
+        currentDestination = Screen.MyHubs
     )
 }
