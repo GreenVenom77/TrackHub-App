@@ -44,7 +44,7 @@ fun HubListCard(
             ) {
                 Text(
                     text = hub.name,
-                    style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold)
+                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
                 )
                 Text(
                     text = hub.createdAt,

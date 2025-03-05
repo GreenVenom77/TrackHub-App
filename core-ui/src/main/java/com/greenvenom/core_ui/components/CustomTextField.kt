@@ -73,7 +73,7 @@ fun CustomTextField(
             Text(
                 text = error,
                 color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium)
+                style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium)
             )
         }
     }
