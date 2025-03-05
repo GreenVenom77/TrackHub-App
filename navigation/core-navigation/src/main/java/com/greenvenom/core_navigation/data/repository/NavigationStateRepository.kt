@@ -18,13 +18,18 @@ class NavigationStateRepository(private var appNavigator: AppNavigator) {
         this.enableBarsDestinations = enableBarsDestinations
     }
 
-    fun updateDestination(navigationType: NavigationType) {
+    fun navigate(navigationType: NavigationType) {
         when(navigationType) {
             is NavigationType.Back -> appNavigator.navigateBack()
             is NavigationType.ClearBackStack -> appNavigator.navigateAndClearBackStack(navigationType.destination)
             is NavigationType.BottomNavigation -> appNavigator.navigateFromBottomBar(navigationType.destination)
             is NavigationType.Standard -> appNavigator.navigateTo(navigationType.destination)
         }
+
+        updateStoredDestinations()
+    }
+
+    fun updateStoredDestinations() {
         _navigationState.update {
             it.copy(
                 currentDestination = appNavigator.getCurrentDestination(),

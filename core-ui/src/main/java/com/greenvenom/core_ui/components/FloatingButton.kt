@@ -1,7 +1,7 @@
 package com.greenvenom.core_ui.components
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import androidx.compose.ui.unit.dp
 import com.greenvenom.core_ui.R
 import com.greenvenom.core_ui.theme.AppTheme
 
@@ -19,10 +18,7 @@ fun FloatingButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(
-        modifier = modifier
-        .padding(12.dp)
-    ) {
+    Box(modifier = modifier) {
         FloatingActionButton(
             onClick = { onClick() },
             content = {
@@ -31,7 +27,8 @@ fun FloatingButton(
                     contentDescription = stringResource(R.string.add)
                 )
             },
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            modifier = Modifier.fillMaxSize()
         )
     }
 }

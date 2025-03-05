@@ -24,7 +24,7 @@ class HubListViewModel(
 
     init {
         viewModelScope.launch {
-            hubRepository.getHubs().onEach { ownedHubsResult ->
+            hubRepository.getHubs().collect { ownedHubsResult ->
                 _hubListState.update {
                     it.copy(
                         ownedHubsResult = ownedHubsResult
@@ -34,7 +34,7 @@ class HubListViewModel(
         }
 
         viewModelScope.launch {
-            hubRepository.getHubs(isOwned = false).onEach { sharedHubsResult ->
+            hubRepository.getHubs(isOwned = false).collect { sharedHubsResult ->
                 _hubListState.update {
                     it.copy(
                         sharedHubsResult = sharedHubsResult
@@ -46,13 +46,22 @@ class HubListViewModel(
 
     fun hubListAction(action: HubListAction) {
         when (action) {
-
+            is HubListAction.AddHub -> addHub(action.hubName, action.hubDescription)
         }
     }
 
-    private fun addHub(hub: Hub) {
+    private fun addHub(hubName: String, hubDescription: String) {
         viewModelScope.launch {
-            hubRepository.addHub(hub)
+            _hubListState.update {
+                it.copy(
+                    addHubResult = hubRepository.addHub(
+                        Hub(
+                            name = hubName,
+                            description = hubDescription
+                        )
+                    )
+                )
+            }
         }
     }
 }

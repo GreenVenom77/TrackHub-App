@@ -14,12 +14,12 @@ data class HubEntity(
     val userId: String,
     @ColumnInfo(name = "name")
     val name: String,
+    @ColumnInfo(name = "description")
+    val description: String? = null,
     @ColumnInfo(name = "is_owned")
     val isOwned: Boolean = true,
     @ColumnInfo(name = "created_at")
-    val createdAt: String? = null,
-    @ColumnInfo(name = "updated_at")
-    val updatedAt: String? = null
+    val createdAt: String = "",
 )
 
 fun Hub.toHubEntity(isOwned: Boolean = true): HubEntity {
@@ -27,9 +27,9 @@ fun Hub.toHubEntity(isOwned: Boolean = true): HubEntity {
         id = this.id,
         userId = this.userId,
         name = this.name,
+        description = this.description,
         isOwned = isOwned,
         createdAt = this.createdAt,
-        updatedAt = this.updatedAt
     )
 }
 
@@ -38,7 +38,7 @@ fun HubEntity.toHub(): Hub {
         id = this.id,
         userId = this.userId,
         name = this.name,
+        description = this.description,
         createdAt = this.createdAt,
-        updatedAt = this.updatedAt
     )
 }

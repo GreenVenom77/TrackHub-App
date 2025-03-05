@@ -14,7 +14,7 @@ import com.greenvenom.core_navigation.data.NavigationType
 import com.greenvenom.core_navigation.data.repository.NavigationStateRepository
 import com.greenvenom.core_navigation.utils.AppNavigator
 import com.skewnexus.trackhub.navigation.utils.SessionDestinationHandler
-import com.trackhub.feat_hub.presentation.hub_details.screens.HubDetailsScreen
+import com.trackhub.feat_hub.presentation.hub_details.screens.HubItemsScreen
 import com.trackhub.feat_hub.presentation.hub_list.HubListScreen
 import com.greenvenom.feat_auth.presentation.login.LoginScreen
 import com.greenvenom.feat_auth.presentation.otp.OtpScreen
@@ -63,12 +63,12 @@ fun AppNavHost(modifier: Modifier = Modifier) {
             composable<Screen.Login> {
                 LoginScreen(
                     navigateToRegisterScreen = {
-                        navigationStateRepository.updateDestination(
+                        navigationStateRepository.navigate(
                             NavigationType.Standard(Screen.Register)
                         )
                     },
                     navigateToEmailVerificationScreen = {
-                        navigationStateRepository.updateDestination(
+                        navigationStateRepository.navigate(
                             NavigationType.Standard(Screen.VerifyEmail)
                         )
                     },
@@ -78,10 +78,10 @@ fun AppNavHost(modifier: Modifier = Modifier) {
             composable<Screen.Register> {
                 RegisterScreen(
                     navigateBack = {
-                        navigationStateRepository.updateDestination(NavigationType.Back)
+                        navigationStateRepository.navigate(NavigationType.Back)
                     },
                     navigateToAccountVerificationScreen = {
-                        navigationStateRepository.updateDestination(
+                        navigationStateRepository.navigate(
                             NavigationType.Standard(Screen.OTP)
                         )
                     }
@@ -90,10 +90,10 @@ fun AppNavHost(modifier: Modifier = Modifier) {
             composable<Screen.VerifyEmail> {
                 VerifyEmailScreen(
                     navigateBack = {
-                        navigationStateRepository.updateDestination(NavigationType.Back)
+                        navigationStateRepository.navigate(NavigationType.Back)
                     },
                     navigateToOtpScreen = {
-                        navigationStateRepository.updateDestination(
+                        navigationStateRepository.navigate(
                             NavigationType.Standard(Screen.OTP)
                         )
                     }
@@ -102,11 +102,11 @@ fun AppNavHost(modifier: Modifier = Modifier) {
             composable<Screen.OTP> {
                 OtpScreen(
                     navigateBack = {
-                        navigationStateRepository.updateDestination(NavigationType.Back)
+                        navigationStateRepository.navigate(NavigationType.Back)
                     },
                     navigateToNewPasswordScreen = {
                         if (navigationState.previousDestination is Screen.VerifyEmail) {
-                            navigationStateRepository.updateDestination(
+                            navigationStateRepository.navigate(
                                 NavigationType.ClearBackStack(Screen.NewPassword)
                             )
                         }
@@ -116,10 +116,10 @@ fun AppNavHost(modifier: Modifier = Modifier) {
             composable<Screen.NewPassword> {
                 NewPasswordScreen(
                     navigateBack = {
-                        navigationStateRepository.updateDestination(NavigationType.Back)
+                        navigationStateRepository.navigate(NavigationType.Back)
                     },
                     navigateToLoginScreen = {
-                        navigationStateRepository.updateDestination(
+                        navigationStateRepository.navigate(
                             NavigationType.ClearBackStack(Screen.Login)
                         )
                     }
@@ -132,27 +132,30 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                 HubListScreen(
                     showOwnedHubs = true,
                     navigateToHubDetails = { hubId ->
-                        navigationStateRepository.updateDestination(
+                        navigationStateRepository.navigate(
                             NavigationType.Standard(Screen.HubDetails(hubId))
                         )
-                    }
+                    },
+                    onPhysicalBack = { navigationStateRepository.updateStoredDestinations() }
                 )
             }
             composable<Screen.SharedHubs> {
                 HubListScreen(
                     showOwnedHubs = false,
                     navigateToHubDetails = { hubId ->
-                        navigationStateRepository.updateDestination(
+                        navigationStateRepository.navigate(
                             NavigationType.Standard(Screen.HubDetails(hubId))
                         )
-                    }
+                    },
+                    onPhysicalBack = { navigationStateRepository.updateStoredDestinations() }
                 )
             }
             composable<Screen.HubDetails> {
                 val args = it.toRoute<Screen.HubDetails>()
 
-                HubDetailsScreen(
-                    hubId = args.hubId
+                HubItemsScreen(
+                    hubId = args.hubId,
+                    onPhysicalBack = { navigationStateRepository.updateStoredDestinations() }
                 )
             }
             composable<Screen.Activity> {

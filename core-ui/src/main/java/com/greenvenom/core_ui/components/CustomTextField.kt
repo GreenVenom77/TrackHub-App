@@ -1,4 +1,4 @@
-package com.greenvenom.feat_auth.presentation.component
+package com.greenvenom.core_ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -23,21 +23,23 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.greenvenom.feat_auth.R
+import com.greenvenom.core_ui.R
 import com.greenvenom.core_ui.theme.AppTheme
 
 @Composable
-fun AuthTextField(
+fun CustomTextField(
     value: String,
     label: String,
     error: String,
+    modifier: Modifier = Modifier,
     isPasswordField: Boolean = false,
+    trailingIcon: @Composable (() -> Unit)? = null,
     onValueChange: (String) -> Unit,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
 ) {
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
-    Column {
+    Column() {
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
@@ -60,12 +62,11 @@ fun AuthTextField(
                         modifier = Modifier.clickable { passwordVisible = !passwordVisible }
                     )
                 }
-            } else null,
+            } else trailingIcon,
             isError = error.isNotEmpty(),
             shape = RoundedCornerShape(15.dp),
             keyboardOptions = keyboardOptions,
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = modifier
         )
         if (error.isNotEmpty()) {
             Text(
@@ -81,7 +82,7 @@ fun AuthTextField(
 @Composable
 fun CustomTextFieldPreview() {
     AppTheme {
-        AuthTextField(
+        CustomTextField(
             value = "",
             label = "Password",
             error = "",

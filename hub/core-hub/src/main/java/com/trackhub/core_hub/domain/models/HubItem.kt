@@ -9,6 +9,6 @@ data class HubItem(
     val stockCount: BigDecimal,
     val unit: String,
     val imageUrl: String? = null,
-    val createdAt: String? = null,
+    val createdAt: String = "",
     val updatedAt: String? = null
 )

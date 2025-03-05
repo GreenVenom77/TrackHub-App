@@ -11,7 +11,7 @@ data class HubItemDto(
     val stockCount: String,
     val unit: String,
     val imageUrl: String? = null,
-    val createdAt: String? = null,
+    val createdAt: String = "",
     val updatedAt: String? = null
 )
 

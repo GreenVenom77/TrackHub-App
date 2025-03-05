@@ -55,7 +55,7 @@ class HubDetailsViewModel(
                 hubRepository.getItemsFromHub(hubUI.id).onEach { itemsResult ->
                     _hubDetailsState.update {
                         it.copy(
-                            hubItemsResult = itemsResult
+                            hubItemsResult = itemsResult.map { hubs -> hubs.toSet() }
                         )
                     }
                 }

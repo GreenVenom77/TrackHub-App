@@ -28,13 +28,13 @@ class SessionDestinationHandler(
             }
 
             SessionDestinations.AUTH -> {
-                navigationStateRepository.updateDestination(
+                navigationStateRepository.navigate(
                     NavigationType.ClearBackStack(SubGraph.Auth)
                 )
             }
 
             SessionDestinations.MAIN -> {
-                navigationStateRepository.updateDestination(
+                navigationStateRepository.navigate(
                     NavigationType.ClearBackStack(SubGraph.Main)
                 )
             }

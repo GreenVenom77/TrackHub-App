@@ -91,7 +91,10 @@ class SupabaseDataSource(
         val userId = client.auth.currentUserOrNull()?.id as String
         val updatedHub = hub.copy(userId = userId)
         val result = supabaseCall {
-            client.from("hubs").insert(updatedHub.toHubDto()).decodeSingle<HubDto>()
+            client.from("hubs")
+                .upsert(updatedHub.toHubDto()){
+                    select()
+                }.decodeSingle<HubDto>()
         }
 
         return result.map { returnedHub -> returnedHub.toHub()}

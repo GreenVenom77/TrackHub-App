@@ -1,4 +1,4 @@
-package com.greenvenom.feat_auth.presentation.component
+package com.greenvenom.core_ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,11 +15,11 @@ import androidx.compose.ui.unit.sp
 import com.greenvenom.core_ui.theme.AppTheme
 
 @Composable
-fun AuthCustomButton(
+fun CustomButton(
     text: String,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    modifier: Modifier = Modifier
 ) {
     FilledTonalButton (
         onClick = onClick,
@@ -44,7 +44,7 @@ fun AuthCustomButton(
 @Composable
 private fun ButtonPreview() {
     AppTheme {
-        AuthCustomButton(
+        CustomButton(
             text = "Login",
             onClick = {  }
         )

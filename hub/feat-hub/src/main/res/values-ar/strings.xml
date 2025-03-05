@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="something_went_wrong">حدث شيء غير متوقع</string>
+    <string name="hub_name">اسم المخزن</string>
+    <string name="hub_description">وصف المخزن</string>
+    <string name="add_hub">أضف المخزن</string>
+</resources>

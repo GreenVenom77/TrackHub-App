@@ -35,6 +35,7 @@ android {
 }
 
 dependencies {
+    val koin = "4.0.0"
 
     implementation(project(":navigation:core-navigation"))
     implementation(project(":core-ui"))
@@ -45,6 +46,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
+    implementation(platform("io.insert-koin:koin-bom:$koin"))
+    implementation("io.insert-koin:koin-androidx-compose")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

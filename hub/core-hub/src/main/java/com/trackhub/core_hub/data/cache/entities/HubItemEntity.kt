@@ -37,7 +37,7 @@ data class HubItemEntity(
     @ColumnInfo(name = "image_url")
     val imageUrl: String? = null,
     @ColumnInfo(name = "created_at")
-    val createdAt: String? = null,
+    val createdAt: String = "",
     @ColumnInfo(name = "updated_at")
     val updatedAt: String? = null
 )

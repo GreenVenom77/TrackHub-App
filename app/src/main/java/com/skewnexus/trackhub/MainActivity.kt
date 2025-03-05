@@ -1,6 +1,7 @@
 package com.skewnexus.trackhub
 
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +17,7 @@ import com.skewnexus.trackhub.navigation.AppNavHost
 import com.trackhub.feat_navigation.components.BottomNavigationBar
 import com.trackhub.feat_navigation.components.TopAppBar
 import com.trackhub.feat_navigation.routes.Screen
+import org.koin.android.ext.android.getKoin
 import org.koin.compose.koinInject
 
 class MainActivity : AppCompatActivity() {
@@ -31,7 +33,7 @@ class MainActivity : AppCompatActivity() {
                     topBar = { TopAppBar(isVisible = navigationState.topBarState) },
                     bottomBar = {
                         BottomNavigationBar(
-                            defaultNavigationMethod = navigationRepository::updateDestination,
+                            defaultNavigationMethod = navigationRepository::navigate,
                             currentDestination = navigationState.currentDestination ?: Screen.MyHubs,
                             isVisible = navigationState.bottomBarState
                         )

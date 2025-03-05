@@ -1,6 +1,9 @@
 package com.trackhub.feat_hub.presentation.models
 
 import com.trackhub.core_hub.domain.models.HubItem
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 data class HubItemUI(
     val id: Int = 0,
@@ -21,7 +24,19 @@ fun HubItem.toHubItemUI(): HubItemUI {
         stockCount = this.stockCount.toString(),
         unit = this.unit,
         imageUrl = this.imageUrl,
-        createdAt = this.createdAt,
-        updatedAt = this.updatedAt
+        createdAt = formatHubItemDate(this.createdAt),
+        updatedAt = this.updatedAt?.let { formatHubItemDate(it) }
     )
+}
+
+fun formatHubItemDate(timestamp: String): String {
+    // Parse the Supabase timestamp
+    val instant = Instant.parse(timestamp)
+
+    val readableDateFormatter = DateTimeFormatter
+        .ofPattern("MMMM d, yyyy at h:mm a")
+        .withZone(ZoneId.systemDefault())
+
+    // Return the formatted timestamp
+    return readableDateFormatter.format(instant)
 }

@@ -8,17 +8,17 @@ data class HubDto(
     val id: String = "",
     val userId: String,
     val name: String,
-    val createdAt: String? = null,
-    val updatedAt: String? = null
+    val description: String? = null,
+    val createdAt: String = "",
 )
 
 fun Hub.toHubDto(): HubDto {
     return HubDto(
         id = this.id,
-        name = this.name,
         userId = this.userId,
+        name = this.name,
+        description = this.description,
         createdAt = this.createdAt,
-        updatedAt = this.updatedAt
     )
 }
 
@@ -27,7 +27,7 @@ fun HubDto.toHub(): Hub {
         id = this.id,
         userId = this.userId,
         name = this.name,
+        description = this.description,
         createdAt = this.createdAt,
-        updatedAt = this.updatedAt
     )
 }
