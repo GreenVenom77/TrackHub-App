@@ -64,7 +64,7 @@ fun CustomTextField(
                 }
             } else trailingIcon,
             isError = error.isNotEmpty(),
-            shape = RoundedCornerShape(15.dp),
+            shape = RoundedCornerShape(16.dp),
             keyboardOptions = keyboardOptions,
             modifier = modifier
         )

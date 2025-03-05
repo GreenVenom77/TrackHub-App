@@ -24,11 +24,10 @@ fun CustomButton(
     FilledTonalButton (
         onClick = onClick,
         enabled = enabled,
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(16.dp),
 
         modifier = modifier
             .fillMaxWidth()
-            .padding(8.dp)
     ) {
         Text(
             text = text,
