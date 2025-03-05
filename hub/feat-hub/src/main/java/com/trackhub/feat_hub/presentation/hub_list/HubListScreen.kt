@@ -114,7 +114,7 @@ private fun HubListContent(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(22.dp)
-                    .size(68.dp)
+                    .size(64.dp)
             )
         }
 
@@ -128,7 +128,7 @@ private fun HubListContent(
                             HubListCard(
                                 hub = hubUI,
                                 onClick = { navigateToHubDetails(hubUI.id) },
-                                modifier = Modifier.padding(6.dp)
+                                modifier = Modifier.padding(8.dp)
                             )
                         }
                     }
@@ -157,11 +157,11 @@ private fun HubListContent(
                         onValueChanged = { hubDescription = it },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clip(RoundedCornerShape(12.dp))
+                            .clip(RoundedCornerShape(16.dp))
                             .background(MaterialTheme.colorScheme.surfaceContainer)
                             .padding(12.dp)
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(40.dp))
                     CustomButton(
                         text = stringResource(R.string.add_hub),
                         onClick = { hubListAction(HubListAction.AddHub(hubName, hubDescription)) },

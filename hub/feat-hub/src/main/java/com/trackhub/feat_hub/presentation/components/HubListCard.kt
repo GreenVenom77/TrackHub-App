@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.trackhub.feat_hub.presentation.models.HubUI
@@ -41,11 +42,20 @@ fun HubListCard(
                     .fillMaxWidth()
                     .padding(bottom = 20.dp)
             ) {
-                Text(text = hub.name, style = MaterialTheme.typography.titleLarge)
-                Text(text = hub.createdAt, style = MaterialTheme.typography.labelLarge)
+                Text(
+                    text = hub.name,
+                    style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold)
+                )
+                Text(
+                    text = hub.createdAt,
+                    style = MaterialTheme.typography.labelLarge
+                )
             }
             hub.description?.let {
-                Text(text = it, style = MaterialTheme.typography.bodyLarge)
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.bodyLarge
+                )
             }
         }
     }

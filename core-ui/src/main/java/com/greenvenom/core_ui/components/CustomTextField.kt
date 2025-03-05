@@ -17,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -72,7 +73,7 @@ fun CustomTextField(
             Text(
                 text = error,
                 color = MaterialTheme.colorScheme.error,
-                fontSize = 12.sp
+                style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium)
             )
         }
     }
@@ -85,7 +86,7 @@ fun CustomTextFieldPreview() {
         CustomTextField(
             value = "",
             label = "Password",
-            error = "",
+            error = "Something Went Wrong",
             isPasswordField = true,
             onValueChange = {},
             keyboardOptions = KeyboardOptions()
