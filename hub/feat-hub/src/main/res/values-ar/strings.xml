@@ -4,4 +4,8 @@
     <string name="hub_name">اسم المخزن</string>
     <string name="hub_description">وصف المخزن</string>
     <string name="add_hub">أضف المخزن</string>
+    <string name="delete_hub">حذف المخزن</string>
+    <string name="edit_hub_Details">تعديل معلومات المخزن</string>
+    <string name="hub_id">كود المخزن</string>
+    <string name="update_hub">حدث المخزن</string>
 </resources>

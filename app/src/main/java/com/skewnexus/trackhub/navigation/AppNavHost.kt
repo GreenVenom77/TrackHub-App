@@ -13,8 +13,8 @@ import androidx.navigation.toRoute
 import com.greenvenom.core_navigation.data.NavigationType
 import com.greenvenom.core_navigation.data.repository.NavigationStateRepository
 import com.greenvenom.core_navigation.utils.AppNavigator
-import com.skewnexus.trackhub.navigation.utils.SessionDestinationHandler
-import com.trackhub.feat_hub.presentation.hub_details.screens.HubItemsScreen
+import com.trackhub.feat_navigation.data.DestinationHandler
+import com.trackhub.feat_hub.presentation.hub_details.screens.HubDetailsScreen
 import com.trackhub.feat_hub.presentation.hub_list.HubListScreen
 import com.greenvenom.feat_auth.presentation.login.LoginScreen
 import com.greenvenom.feat_auth.presentation.otp.OtpScreen
@@ -30,20 +30,12 @@ import org.koin.compose.koinInject
 fun AppNavHost(modifier: Modifier = Modifier) {
     val appNavigator = koinInject<AppNavigator>()
     val navigationStateRepository = koinInject<NavigationStateRepository>()
-    val sessionDestinationHandler = koinInject<SessionDestinationHandler>()
+    val destinationHandler = koinInject<DestinationHandler>()
     val navigationState by navigationStateRepository.navigationState.collectAsStateWithLifecycle()
 
     appNavigator.config(
-        returnedNavigationType = Screen::class,
+        returnedDestination = Screen::class,
         navController = rememberNavController()
-    )
-    navigationStateRepository.config(
-        enableBarsDestinations = setOf(
-            Screen.MyHubs,
-            Screen.SharedHubs,
-            Screen.Activity,
-            Screen.More
-        )
     )
 
     NavHost(
@@ -54,7 +46,7 @@ fun AppNavHost(modifier: Modifier = Modifier) {
         composable<Screen.Splash> {
             SplashScreen(
                 onStart = {
-                    sessionDestinationHandler.collectSessionDestinations()
+                    destinationHandler.collectSessionDestinations()
                 }
             )
         }
@@ -133,7 +125,7 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                     showOwnedHubs = true,
                     navigateToHubDetails = { hubId ->
                         navigationStateRepository.navigate(
-                            NavigationType.Standard(Screen.HubDetails(hubId))
+                            NavigationType.Standard(Screen.HubItems(hubId))
                         )
                     },
                     onPhysicalBack = { navigationStateRepository.updateStoredDestinations() }
@@ -144,18 +136,21 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                     showOwnedHubs = false,
                     navigateToHubDetails = { hubId ->
                         navigationStateRepository.navigate(
-                            NavigationType.Standard(Screen.HubDetails(hubId))
+                            NavigationType.Standard(Screen.HubItems(hubId))
                         )
                     },
                     onPhysicalBack = { navigationStateRepository.updateStoredDestinations() }
                 )
             }
-            composable<Screen.HubDetails> {
-                val args = it.toRoute<Screen.HubDetails>()
+            composable<Screen.HubItems> {
+                val args = it.toRoute<Screen.HubItems>()
 
-                HubItemsScreen(
+                HubDetailsScreen(
                     hubId = args.hubId,
-                    onPhysicalBack = { navigationStateRepository.updateStoredDestinations() }
+                    onPhysicalBack = { navigationStateRepository.updateStoredDestinations() },
+                    onHubRetrieval = { hub ->
+                        destinationHandler.updateDestinationState(hub)
+                    }
                 )
             }
             composable<Screen.Activity> {

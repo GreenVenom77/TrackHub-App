@@ -3,58 +3,77 @@ package com.trackhub.feat_hub.presentation.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.trackhub.feat_hub.R
 import com.trackhub.feat_hub.presentation.models.HubUI
 
 @Composable
 fun HubListCard(
     hub: HubUI,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     ElevatedCard(
         elevation = CardDefaults.cardElevation(12.dp),
         onClick = onClick,
         modifier = modifier
             .fillMaxWidth()
-            .defaultMinSize(minHeight = 100.dp)
+            .height(110.dp)
     ) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.Start,
-            modifier = Modifier.padding(12.dp)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
         ) {
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
+            Column(
+                horizontalAlignment = Alignment.Start,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 20.dp)
+                    .weight(1f)
+                    .fillMaxHeight()
             ) {
                 Text(
                     text = hub.name,
                     style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
                 )
+                Spacer(modifier = Modifier.height(8.dp))
+                hub.description?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
+            }
+            Column(
+                verticalArrangement = Arrangement.Top,
+                modifier = Modifier.fillMaxHeight()
+            ) {
                 Text(
                     text = hub.createdAt,
-                    style = MaterialTheme.typography.labelLarge
-                )
-            }
-            hub.description?.let {
-                Text(
-                    text = it,
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.labelLarge,
+                    modifier = Modifier
                 )
             }
         }
@@ -70,7 +89,7 @@ private fun HubListCardPreview() {
             userId = "1",
             name = "Test Hub",
             description = "This is a test hub",
-            createdAt = "2023-01-01"
+            createdAt = "May 5 2025"
         ),
         onClick = {  },
         modifier = Modifier.padding(12.dp)

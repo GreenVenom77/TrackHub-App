@@ -18,6 +18,14 @@ class RoomDataSource(
         hubDao.addHub(hub.toHubEntity())
     }
 
+    override suspend fun updateHub(hub: Hub) {
+        hubDao.updateHub(hub.toHubEntity())
+    }
+
+    override suspend fun deleteHub(hubId: String) {
+        hubDao.deleteHub(hubId)
+    }
+
     override suspend fun updateOwnHubs(hubs: List<Hub>) {
         hubDao.updateOwnHubs(hubs.map { it.toHubEntity() })
     }
@@ -34,15 +42,15 @@ class RoomDataSource(
         return hubDao.getSharedHubs().map { it.map { hubEntity -> hubEntity.toHub() } }
     }
 
-    override suspend fun addItem(item: HubItem) {
-        hubDao.addNewItem(item.toHubItemEntity())
+    override suspend fun updateHubItems(items: List<HubItem>) {
+        hubDao.updateHubItems(items.map { it.toHubItemEntity() })
     }
 
-    override suspend fun addItems(items: List<HubItem>) {
-        hubDao.addNewItems(items.map { it.toHubItemEntity() })
+    override suspend fun deleteItems(items: List<HubItem>) {
+        hubDao.deleteItems(items.map { it.toHubItemEntity() })
     }
 
-    override suspend fun getItemsFromHub(hubId: String): List<HubItem> {
-        return hubDao.getItemsFromHub(hubId).map { it.toHubItem() }
+    override fun getItemsFromHub(hubId: String): Flow<List<HubItem>> {
+        return hubDao.getItemsFromHub(hubId).map { it.map{ hubItemEntity -> hubItemEntity.toHubItem() } }
     }
 }

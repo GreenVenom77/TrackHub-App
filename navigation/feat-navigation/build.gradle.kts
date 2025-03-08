@@ -38,6 +38,8 @@ dependencies {
     val koin = "4.0.0"
 
     implementation(project(":navigation:core-navigation"))
+    implementation(project(":network:core-network"))
+    implementation(project(":hub:core-hub"))
     implementation(project(":core-ui"))
 
     implementation(libs.androidx.core.ktx)

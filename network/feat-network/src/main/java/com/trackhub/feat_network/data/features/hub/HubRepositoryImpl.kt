@@ -10,30 +10,27 @@ import com.trackhub.feat_network.domain.remote.RemoteDataSource
 import com.trackhub.core_hub.domain.models.Hub
 import com.trackhub.core_hub.domain.models.HubItem
 import com.trackhub.core_hub.domain.repository.HubRepository
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.drop
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.take
+import java.math.BigDecimal
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class HubRepositoryImpl(
     private val remoteDataSource: RemoteDataSource,
     private val cacheDataSource: CacheDataSource
 ): HubRepository {
-    private val refreshTrigger = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
-    private val refreshItemsTrigger = MutableSharedFlow<String>(extraBufferCapacity = 1)
+    private val refreshHubsTrigger = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+
+    private val ownedHubs: MutableSet<Hub> = mutableSetOf()
+    private val sharedHubs: MutableSet<Hub> = mutableSetOf()
+    private val cachedItems: MutableSet<HubItem> = mutableSetOf()
 
     override fun refreshHubs() {
-        refreshTrigger.tryEmit(Unit)
-    }
-
-    override fun refreshItems(hubId: String) {
-        refreshItemsTrigger.tryEmit(hubId)
+        refreshHubsTrigger.tryEmit(Unit)
     }
 
     override suspend fun addHub(hub: Hub): NetworkResult<Unit, NetworkError> {
@@ -42,90 +39,121 @@ class HubRepositoryImpl(
         return remoteResult.map {  }
     }
 
-    override fun getHubs(isOwned: Boolean): Flow<NetworkResult<List<Hub>, NetworkError>> {
-        return refreshTrigger
-            .onStart { emit(Unit) } // Initial load
-            .flatMapLatest { _ ->
-                flow {
-                    // Get the cache flow
-                    val cacheFlow = if (isOwned) {
-                        cacheDataSource.getOwnHubs()
-                    } else {
-                        cacheDataSource.getSharedHubs()
-                    }
-
-                    // Collect the first value from cache to emit immediately
-                    var cachedHubs: List<Hub> = emptyList()
-                    cacheFlow.take(1).collect {
-                        cachedHubs = it
-                        emit(NetworkResult.Success(it))
-                    }
-
-                    // Fetch remote data
-                    val remoteHubs = if (isOwned) remoteDataSource.getOwnHubs() else remoteDataSource.getSharedHubs()
-
-                    remoteHubs.onSuccess { fetchedHubs ->
-                        val newHubs = fetchedHubs.filter { hub -> hub !in cachedHubs }
-                        if (newHubs.isNotEmpty()) {
-                            if (isOwned) cacheDataSource.updateOwnHubs(newHubs)
-                            else cacheDataSource.updateSharedHubs(newHubs)
-                        }
-
-                        emit(NetworkResult.Success(fetchedHubs))
-                    }
-
-                    remoteHubs.onError { error ->
-                        emit(NetworkResult.Error(error))
-                    }
-
-                    // Continue emitting from cache after the remote fetch
-                    cacheFlow.drop(1).collect {
-                        emit(NetworkResult.Success(it))
-                    }
-                }
-            }
+    override suspend fun updateHub(hub: Hub): NetworkResult<Unit, NetworkError> {
+        val remoteResult = remoteDataSource.updateHub(hub)
+        remoteResult.onSuccess { returnedHub -> cacheDataSource.updateHub(returnedHub) }
+        return remoteResult.map {  }
     }
 
-    override suspend fun addItemToHub(hubItem: HubItem): NetworkResult<Unit, NetworkError> {
-        val remoteResult = remoteDataSource.addItemToHub(hubItem)
-        remoteResult.onSuccess { cacheDataSource.addItem(hubItem) }
+    override suspend fun deleteHub(hubId: String): NetworkResult<Unit, NetworkError> {
+        val remoteResult = remoteDataSource.deleteHub(hubId)
+        remoteResult.onSuccess { cacheDataSource.deleteHub(hubId) }
         return remoteResult
     }
 
-    override fun getItemsFromHub(hubId: String): Flow<NetworkResult<List<HubItem>, NetworkError>> {
-        return flow {
-            // First emit from cache immediately
-            val cachedItems = cacheDataSource.getItemsFromHub(hubId)
-            if (cachedItems.isNotEmpty()) {
-                emit(NetworkResult.Success(cachedItems))
+    override fun getHubs(isOwned: Boolean): Flow<NetworkResult<List<Hub>, NetworkError>> {
+        return channelFlow {
+            val cachedHubsFlow = if (isOwned) {
+                cacheDataSource.getOwnHubs()
+            } else {
+                cacheDataSource.getSharedHubs()
             }
 
-            // Create a flow that will emit when initial load or refresh is triggered
-            val triggerFlow = refreshItemsTrigger
-                .filter { it == hubId }
-                .onStart { emit(hubId) }
+            cachedHubsFlow
+                .onEach {
+                    if (isOwned) {
+                        ownedHubs.addAll(it)
+                        send(NetworkResult.Success(it))
+                    } else {
+                        sharedHubs.addAll(it)
+                        send(NetworkResult.Success(it))
+                    }
+                }
+                .launchIn(this)
 
-            // Process each trigger (initial or refresh)
-            triggerFlow.collect { _ ->
-                remoteDataSource.getItemsFromHub(hubId)
-                    .collect { remoteItems ->
-                        remoteItems.onSuccess { items ->
-                            emit(NetworkResult.Success(items))
+            refreshHubsTrigger
+                .onStart { emit(Unit) }
+                .onEach {
+                    // Fetch remote data and update cache
+                    val remoteHubs = if (isOwned) {
+                        remoteDataSource.getOwnHubs()
+                    } else {
+                        remoteDataSource.getSharedHubs()
+                    }
 
-                            // Get fresh cached items for comparison
-                            val currentCachedItems = cacheDataSource.getItemsFromHub(hubId)
-                            val newItems = items.filter { item -> item !in currentCachedItems }
-
-                            if (newItems.isNotEmpty()) {
-                                cacheDataSource.addItems(newItems)
+                    remoteHubs
+                        .onSuccess { fetchedHubs ->
+                            val newHubs = fetchedHubs.filter {
+                                hub -> hub !in if (isOwned) ownedHubs else sharedHubs
+                            }
+                            if (newHubs.isNotEmpty()) {
+                                if (isOwned) cacheDataSource.updateOwnHubs(newHubs)
+                                else cacheDataSource.updateSharedHubs(newHubs)
                             }
                         }
-
-                        remoteItems.onError { error ->
-                            emit(NetworkResult.Error(error))
+                        .onError { error ->
+                            send(NetworkResult.Error(error))
                         }
-                    }
-            }
+                }
+                .launchIn(this)
         }
+    }
+
+    override suspend fun addItemToHub(hubItem: HubItem): NetworkResult<Unit, NetworkError> {
+        return remoteDataSource.addItemToHub(hubItem)
+    }
+
+    override suspend fun updateItem(
+        itemId: Int,
+        itemName: String,
+        itemStock: BigDecimal,
+        unit: String
+    ): NetworkResult<Unit, NetworkError> {
+        val updatedItem = cachedItems.find { it.id == itemId }
+            ?.copy(name = itemName, stockCount = itemStock, unit = unit) as HubItem
+
+        return remoteDataSource.updateItem(updatedItem)
+    }
+
+    override suspend fun deleteHubItem(hubItemId: Int): NetworkResult<Unit, NetworkError> {
+        return remoteDataSource.deleteItem(hubItemId)
+    }
+
+    override fun getItemsFromHub(hubId: String): Flow<NetworkResult<List<HubItem>, NetworkError>> {
+        return channelFlow {
+            val cachedItemsFlow = cacheDataSource.getItemsFromHub(hubId)
+
+            // First emit from cache immediately
+            cachedItemsFlow
+                .onEach {
+                    cachedItems.addAll(it)
+                    send(NetworkResult.Success(it))
+                }
+                .launchIn(this)
+
+
+            // Start fetching remote data
+            remoteDataSource.getItemsFromHub(hubId)
+                .onEach { remoteItems ->
+                    remoteItems
+                        .onSuccess { items ->
+                            // Compare the new items to the cached items
+                            val newItems = items.filter { item -> item !in cachedItems }
+                            val deletedItems = cachedItems.filter { item -> item !in items }
+
+                            if (newItems.isNotEmpty()) {
+                                cacheDataSource.updateHubItems(newItems)
+                            }
+
+                            if (deletedItems.isNotEmpty()) {
+                                cacheDataSource.deleteItems(deletedItems)
+                            }
+                        }
+                        .onError { error ->
+                        send(NetworkResult.Error(error))
+                    }
+                }
+                .launchIn(this)
+        }.onCompletion { cachedItems.clear() }
     }
 }

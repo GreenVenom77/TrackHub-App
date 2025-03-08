@@ -17,8 +17,12 @@ interface RemoteDataSource {
 
     // Hubs
     suspend fun addHub(hub: Hub): NetworkResult<Hub, NetworkError>
+    suspend fun updateHub(hub: Hub): NetworkResult<Hub, NetworkError>
+    suspend fun deleteHub(hubId: String): NetworkResult<Unit, NetworkError>
     suspend fun getOwnHubs(): NetworkResult<List<Hub>, NetworkError>
     suspend fun getSharedHubs(): NetworkResult<List<Hub>, NetworkError>
     suspend fun addItemToHub(hubItem: HubItem): NetworkResult<Unit, NetworkError>
+    suspend fun updateItem(hubItem: HubItem): NetworkResult<Unit, NetworkError>
+    suspend fun deleteItem(itemId: Int): NetworkResult<Unit, NetworkError>
     fun getItemsFromHub(hubId: String): Flow<NetworkResult<List<HubItem>, NetworkError>>
 }

@@ -2,6 +2,7 @@ package com.trackhub.feat_network.di
 
 import androidx.room.Room
 import com.greenvenom.core_auth.domain.repository.AuthRepository
+import com.greenvenom.core_network.domain.SessionRepository
 import com.trackhub.feat_network.data.cache.RoomDataSource
 import com.trackhub.feat_network.data.cache.db.TrackHubDatabase
 import com.trackhub.feat_network.data.features.auth.AuthRepositoryImpl
@@ -15,7 +16,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val networkFeatureModule = module {
-    single<SupabaseSessionRepository>(createdAtStart = true) {
+    single<SessionRepository>(createdAtStart = true) {
         SupabaseSessionRepository(supabaseClient = get())
     }
 

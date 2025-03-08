@@ -1,8 +1,11 @@
 package com.greenvenom.core_ui.components
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,12 +25,15 @@ fun CustomButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    contentPadding: PaddingValues = PaddingValues(6.dp),
+    colors: ButtonColors = ButtonDefaults.filledTonalButtonColors()
 ) {
     FilledTonalButton (
         onClick = onClick,
         enabled = enabled,
         shape = RoundedCornerShape(16.dp),
-
+        contentPadding = contentPadding,
+        colors = colors,
         modifier = modifier
             .fillMaxWidth()
     ) {
@@ -36,8 +42,7 @@ fun CustomButton(
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.titleMedium.copy(
                 fontWeight = FontWeight.SemiBold
-            ),
-            modifier = Modifier.padding(6.dp)
+            )
         )
     }
 }

@@ -1,4 +1,4 @@
-package com.trackhub.feat_network.data.remote
+package com.greenvenom.core_network.domain
 
 enum class SessionDestinations {
     INITIALIZE,

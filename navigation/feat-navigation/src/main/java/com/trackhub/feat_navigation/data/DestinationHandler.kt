@@ -1,18 +1,31 @@
-package com.skewnexus.trackhub.navigation.utils
+package com.trackhub.feat_navigation.data
 
 import com.greenvenom.core_navigation.data.NavigationType
 import com.greenvenom.core_navigation.data.repository.NavigationStateRepository
-import com.trackhub.feat_network.data.remote.SessionDestinations
-import com.trackhub.feat_network.data.remote.repository.SupabaseSessionRepository
+import com.greenvenom.core_network.domain.SessionDestinations
+import com.greenvenom.core_network.domain.SessionRepository
+import com.trackhub.core_hub.domain.models.Hub
 import com.trackhub.feat_navigation.routes.SubGraph
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class SessionDestinationHandler(
+class DestinationHandler(
     private val navigationStateRepository: NavigationStateRepository,
-    private val sessionStateRepository: SupabaseSessionRepository
+    private val sessionStateRepository: SessionRepository
 ) {
+    private val _destinationState = MutableStateFlow(DestinationState())
+    val destinationState = _destinationState.asStateFlow()
+
+    fun updateDestinationState(hub: Hub) {
+        _destinationState.update {
+            it.copy(currentHub = hub)
+        }
+    }
+
     fun collectSessionDestinations() {
         CoroutineScope(Dispatchers.Main).launch {
             sessionStateRepository.userSessionDestination.collect { wantedDestination ->

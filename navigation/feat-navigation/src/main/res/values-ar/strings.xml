@@ -5,4 +5,5 @@
     <string name="profile">الملف الشخصي</string>
     <string name="shared_hubs">مخازن الآخرين</string>
     <string name="more">المزيد</string>
+    <string name="back_button">الرجوع للخلف</string>
 </resources>

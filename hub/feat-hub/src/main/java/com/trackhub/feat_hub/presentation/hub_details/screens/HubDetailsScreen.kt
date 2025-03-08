@@ -13,21 +13,42 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.greenvenom.core_ui.presentation.BaseAction
 import com.greenvenom.core_ui.presentation.BaseScreen
+import com.trackhub.core_hub.domain.models.Hub
 import com.trackhub.feat_hub.presentation.hub_details.HubDetailsAction
 import com.trackhub.feat_hub.presentation.hub_details.HubDetailsState
 import com.trackhub.feat_hub.presentation.hub_details.HubDetailsViewModel
 
 @Composable
-fun HubItemsScreen(
+fun HubDetailsScreen(
     hubId: String,
-    onPhysicalBack: () -> Unit
+    onPhysicalBack: () -> Unit,
+    onHubRetrieval: (Hub) -> Unit
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
 
     BaseScreen<HubDetailsViewModel> { viewModel ->
         val hubDetailsState by viewModel.hubDetailsState.collectAsStateWithLifecycle()
 
-        HubItemsContent(
+        DisposableEffect(lifecycleOwner) {
+            val observer = LifecycleEventObserver { _, event ->
+                when (event) {
+                    Lifecycle.Event.ON_STOP -> {
+                        viewModel.hubDetailsAction(HubDetailsAction.StopCollectingHubItems)
+                        onPhysicalBack()
+                    }
+                    Lifecycle.Event.ON_START -> {
+                        viewModel.hubDetailsAction(HubDetailsAction.StartCollectingHubItems(hubId))
+                    }
+                    else -> { /* Ignore other events */ }
+                }
+            }
+            lifecycleOwner.lifecycle.addObserver(observer)
+            onDispose {
+                lifecycleOwner.lifecycle.removeObserver(observer)
+            }
+        }
+
+        HubDetailsContent(
             hubDetailsState = hubDetailsState,
             hubDetailsAction = viewModel::hubDetailsAction,
             baseAction = viewModel::baseAction,
@@ -35,23 +56,13 @@ fun HubItemsScreen(
                 .fillMaxSize()
                 .padding(12.dp)
         )
-    }
 
-    DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_STOP) {
-                onPhysicalBack()
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(observer)
-        }
+        hubDetailsState.hub?.let { onHubRetrieval(it) }
     }
 }
 
 @Composable
-private fun HubItemsContent(
+private fun HubDetailsContent(
     hubDetailsState: HubDetailsState,
     hubDetailsAction: (HubDetailsAction) -> Unit,
     baseAction: (BaseAction) -> Unit,

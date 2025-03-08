@@ -33,6 +33,7 @@ fun CustomTextField(
     label: String,
     error: String,
     modifier: Modifier = Modifier,
+    readOnly: Boolean = false,
     isPasswordField: Boolean = false,
     trailingIcon: @Composable (() -> Unit)? = null,
     onValueChange: (String) -> Unit,
@@ -43,6 +44,7 @@ fun CustomTextField(
     Column() {
         OutlinedTextField(
             value = value,
+            readOnly = readOnly,
             onValueChange = onValueChange,
             label = {
                 Text(

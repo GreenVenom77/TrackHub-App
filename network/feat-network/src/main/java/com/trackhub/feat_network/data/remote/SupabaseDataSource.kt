@@ -92,12 +92,30 @@ class SupabaseDataSource(
         val updatedHub = hub.copy(userId = userId)
         val result = supabaseCall {
             client.from("hubs")
-                .upsert(updatedHub.toHubDto()){
+                .insert(updatedHub.toHubDto()){
                     select()
                 }.decodeSingle<HubDto>()
         }
 
         return result.map { returnedHub -> returnedHub.toHub()}
+    }
+
+    override suspend fun updateHub(hub: Hub): NetworkResult<Hub, NetworkError> {
+        val result = supabaseCall {
+            client.from("hubs").update(hub.toHubDto()) {
+                select()
+            }.decodeSingle<HubDto>()
+        }
+
+        return result.map { returnedHub -> returnedHub.toHub() }
+    }
+
+    override suspend fun deleteHub(hubId: String): NetworkResult<Unit, NetworkError> {
+        return supabaseCall {
+            client.from("hubs").delete {
+                filter { eq("id", hubId) }
+            }
+        }
     }
 
     override suspend fun getOwnHubs(): NetworkResult<List<Hub>, NetworkError> {
@@ -119,6 +137,20 @@ class SupabaseDataSource(
     override suspend fun addItemToHub(hubItem: HubItem): NetworkResult<Unit, NetworkError> {
         return supabaseCall {
             client.from("items").insert(hubItem.toHubItemDto())
+        }
+    }
+
+    override suspend fun updateItem(hubItem: HubItem): NetworkResult<Unit, NetworkError> {
+        return supabaseCall {
+            client.from("items").update(hubItem)
+        }
+    }
+
+    override suspend fun deleteItem(itemId: Int): NetworkResult<Unit, NetworkError> {
+        return supabaseCall {
+            client.from("items").delete {
+                filter { eq("id", itemId) }
+            }
         }
     }
 

@@ -61,6 +61,7 @@ dependencies {
     implementation(project(":core-ui"))
     implementation(project(":auth:feat-auth"))
     implementation(project(":hub:feat-hub"))
+    implementation(project(":hub:core-hub"))
     implementation(project(":more:feat-more"))
 
     implementation(libs.androidx.appcompat)

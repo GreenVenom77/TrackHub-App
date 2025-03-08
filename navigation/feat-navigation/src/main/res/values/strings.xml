@@ -5,4 +5,5 @@
     <string name="profile">Profile</string>
     <string name="shared_hubs">Shared Hubs</string>
     <string name="more">More</string>
+    <string name="back_button">Back Button</string>
 </resources>

@@ -4,9 +4,9 @@ import androidx.lifecycle.viewModelScope
 import com.greenvenom.core_ui.presentation.BaseViewModel
 import com.trackhub.core_hub.domain.models.Hub
 import com.trackhub.core_hub.domain.repository.HubRepository
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -22,31 +22,24 @@ class HubListViewModel(
             HubListState()
         )
 
-    init {
-        viewModelScope.launch {
-            hubRepository.getHubs().collect { ownedHubsResult ->
-                _hubListState.update {
-                    it.copy(
-                        ownedHubsResult = ownedHubsResult
-                    )
-                }
-            }
-        }
-
-        viewModelScope.launch {
-            hubRepository.getHubs(isOwned = false).collect { sharedHubsResult ->
-                _hubListState.update {
-                    it.copy(
-                        sharedHubsResult = sharedHubsResult
-                    )
-                }
-            }
-        }
-    }
+    private var ownedHubsJob: Job? = null
+    private var sharedHubsJob: Job?  = null
 
     fun hubListAction(action: HubListAction) {
         when (action) {
             is HubListAction.AddHub -> addHub(action.hubName, action.hubDescription)
+            is HubListAction.StartCollectingHubs -> {
+                if (action.isOwned) ownedHubsJob = getHubs(true) else sharedHubsJob = getHubs(false)
+            }
+            is HubListAction.StopCollectingHubs -> {
+                if (action.isOwned){
+                    ownedHubsJob?.cancel()
+                    ownedHubsJob = null
+                } else{
+                    sharedHubsJob?.cancel()
+                    sharedHubsJob = null
+                }
+            }
         }
     }
 
@@ -61,6 +54,20 @@ class HubListViewModel(
                         )
                     )
                 )
+            }
+        }
+    }
+
+    private fun getHubs(isOwned: Boolean): Job {
+        return viewModelScope.launch {
+            hubRepository.getHubs(isOwned = isOwned).collect { hubsResult ->
+                _hubListState.update {
+                    if (isOwned) {
+                        it.copy(ownedHubsResult = hubsResult)
+                    } else {
+                        it.copy(sharedHubsResult = hubsResult)
+                    }
+                }
             }
         }
     }
