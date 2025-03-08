@@ -7,10 +7,8 @@ import com.trackhub.core_hub.domain.models.HubItem
 
 data class HubDetailsState(
     val hub: Hub? = null,
-    val updatingHubResult: NetworkResult<Unit, NetworkError>? = null,
-    val deletingHubResult: NetworkResult<Unit, NetworkError>? = null,
-    val addingItemResult: NetworkResult<Unit, NetworkError>? = null,
-    val updatingItemResult: NetworkResult<Unit, NetworkError>? = null,
-    val deletingItemResult: NetworkResult<Unit, NetworkError>? = null,
-    val hubItemsResult: NetworkResult<Set<HubItem>, NetworkError>? = null
+    val hubDeletionResult: NetworkResult<Unit, NetworkError>? = null,
+    val operationResult: NetworkResult<Unit, NetworkError>? = null,
+    val itemDeletionResult: NetworkResult<Unit, NetworkError>? = null,
+    val hubItemsResult: NetworkResult<List<HubItem>, NetworkError>? = null
 )

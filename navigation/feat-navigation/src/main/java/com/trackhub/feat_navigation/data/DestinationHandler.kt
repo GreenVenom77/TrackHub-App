@@ -17,14 +17,7 @@ class DestinationHandler(
     private val navigationStateRepository: NavigationStateRepository,
     private val sessionStateRepository: SessionRepository
 ) {
-    private val _destinationState = MutableStateFlow(DestinationState())
-    val destinationState = _destinationState.asStateFlow()
-
-    fun updateDestinationState(hub: Hub) {
-        _destinationState.update {
-            it.copy(currentHub = hub)
-        }
-    }
+    val destinationState = MutableStateFlow(DestinationState())
 
     fun collectSessionDestinations() {
         CoroutineScope(Dispatchers.Main).launch {

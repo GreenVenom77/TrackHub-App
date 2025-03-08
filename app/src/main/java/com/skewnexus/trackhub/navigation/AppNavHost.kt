@@ -24,14 +24,16 @@ import com.greenvenom.feat_auth.presentation.reset_password.screens.VerifyEmailS
 import com.greenvenom.feat_auth.presentation.splash.SplashScreen
 import com.trackhub.feat_navigation.routes.Screen
 import com.trackhub.feat_navigation.routes.SubGraph
+import kotlinx.coroutines.flow.update
 import org.koin.compose.koinInject
 
 @Composable
 fun AppNavHost(modifier: Modifier = Modifier) {
     val appNavigator = koinInject<AppNavigator>()
     val navigationStateRepository = koinInject<NavigationStateRepository>()
-    val destinationHandler = koinInject<DestinationHandler>()
     val navigationState by navigationStateRepository.navigationState.collectAsStateWithLifecycle()
+    val destinationHandler = koinInject<DestinationHandler>()
+    val destinationState by destinationHandler.destinationState.collectAsStateWithLifecycle()
 
     appNavigator.config(
         returnedDestination = Screen::class,
@@ -148,8 +150,25 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                 HubDetailsScreen(
                     hubId = args.hubId,
                     onPhysicalBack = { navigationStateRepository.updateStoredDestinations() },
+                    onHubDeletion = {
+                        navigationStateRepository.navigate(NavigationType.Back)
+                        destinationHandler.destinationState.update { state ->
+                            state.copy(
+                                currentHub = null,
+                                bottomSheetState = false
+                            )
+                        }
+                    },
                     onHubRetrieval = { hub ->
-                        destinationHandler.updateDestinationState(hub)
+                        destinationHandler.destinationState.update { state ->
+                            state.copy(currentHub = hub)
+                        }
+                    },
+                    hubBottomSheetState = destinationState.bottomSheetState,
+                    onHubBottomSheetDismiss = {
+                        destinationHandler.destinationState.update { state ->
+                            state.copy(bottomSheetState = false)
+                        }
                     }
                 )
             }

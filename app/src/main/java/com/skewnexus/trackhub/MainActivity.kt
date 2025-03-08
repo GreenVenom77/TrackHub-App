@@ -24,6 +24,7 @@ import com.trackhub.feat_navigation.components.BottomNavigationBar
 import com.trackhub.feat_navigation.components.TopAppBar
 import com.trackhub.feat_navigation.data.DestinationHandler
 import com.trackhub.feat_navigation.routes.Screen
+import kotlinx.coroutines.flow.update
 import org.koin.compose.koinInject
 
 class MainActivity : AppCompatActivity() {
@@ -43,12 +44,25 @@ class MainActivity : AppCompatActivity() {
                             title = destinationState.currentHub?.name ?: stringResource(R.string.app_name),
                             isVisible = navigationState.topBarState,
                             isSideDestination = navigationState.isCurrentDestinationSide,
-                            navigateBack = { navigationRepository.navigate(NavigationType.Back) },
+                            navigateBack = {
+                                navigationRepository.navigate(NavigationType.Back)
+                                destinationHandler.destinationState.update {
+                                    it.copy(
+                                        currentHub = null
+                                    )
+                                }
+                            },
                             isActionEnabled = navigationState.currentDestination is Screen.HubItems,
                             action = {
                                 if (navigationState.currentDestination is Screen.HubItems) {
                                     IconButton(
-                                        onClick = {},
+                                        onClick = {
+                                            destinationHandler.destinationState.update {
+                                                it.copy(
+                                                    bottomSheetState = true
+                                                )
+                                            }
+                                        },
                                         modifier = Modifier
                                             .size(48.dp)
                                             .padding(8.dp)

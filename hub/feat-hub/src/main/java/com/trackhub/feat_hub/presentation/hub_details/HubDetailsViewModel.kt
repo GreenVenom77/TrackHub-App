@@ -6,6 +6,7 @@ import com.greenvenom.core_network.data.map
 import com.trackhub.core_hub.domain.models.Hub
 import com.trackhub.core_hub.domain.models.HubItem
 import com.trackhub.core_hub.domain.repository.HubRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HubDetailsViewModel(
     private val hubRepository: HubRepository
@@ -67,10 +69,12 @@ class HubDetailsViewModel(
         ) as Hub
 
         viewModelScope.launch {
-            val updateHubResult = hubRepository.updateHub(updatedHub)
+            val updateHubResult = withContext(Dispatchers.IO) {
+                hubRepository.updateHub(updatedHub)
+            }
             _hubDetailsState.update {
                 it.copy(
-                    updatingHubResult = updateHubResult
+                    operationResult = updateHubResult
                 )
             }
         }
@@ -78,10 +82,12 @@ class HubDetailsViewModel(
 
     private fun deleteHub(hubId: String) {
         viewModelScope.launch {
-            val deleteHubResult = hubRepository.deleteHub(hubId)
+            val deleteHubResult = withContext(Dispatchers.IO) {
+                hubRepository.deleteHub(hubId)
+            }
             _hubDetailsState.update {
                 it.copy(
-                    deletingHubResult = deleteHubResult
+                    hubDeletionResult = deleteHubResult
                 )
             }
         }
@@ -93,17 +99,19 @@ class HubDetailsViewModel(
         unit: String
     ) {
         viewModelScope.launch {
-            val addItemResult = hubRepository.addItemToHub(
-                HubItem(
-                    hubId = _hubDetailsState.value.hub?.id ?: "",
-                    name = itemName,
-                    stockCount = itemStock.toBigDecimal(),
-                    unit = unit
+            val addItemResult = withContext(Dispatchers.IO) {
+                hubRepository.addItemToHub(
+                    HubItem(
+                        hubId = _hubDetailsState.value.hub?.id ?: "",
+                        name = itemName,
+                        stockCount = itemStock.toBigDecimal(),
+                        unit = unit
+                    )
                 )
-            )
+            }
             _hubDetailsState.update {
                 it.copy(
-                    addingItemResult = addItemResult
+                    operationResult = addItemResult
                 )
             }
         }
@@ -116,15 +124,17 @@ class HubDetailsViewModel(
         unit: String
     ) {
         viewModelScope.launch {
-            val updateItemResult = hubRepository.updateItem(
-                itemId = itemId,
-                itemName = itemName,
-                itemStock = itemStock.toBigDecimal(),
-                unit = unit
-            )
+            val updateItemResult = withContext(Dispatchers.IO) {
+                hubRepository.updateItem(
+                    itemId = itemId,
+                    itemName = itemName,
+                    itemStock = itemStock.toBigDecimal(),
+                    unit = unit
+                )
+            }
             _hubDetailsState.update {
                 it.copy(
-                    updatingItemResult = updateItemResult
+                    operationResult = updateItemResult
                 )
             }
         }
@@ -132,10 +142,12 @@ class HubDetailsViewModel(
 
     private fun deleteItem(itemId: Int) {
         viewModelScope.launch {
-            val deleteItemResult = hubRepository.deleteHubItem(itemId)
+            val deleteItemResult = withContext(Dispatchers.IO) {
+                hubRepository.deleteHubItem(itemId)
+            }
             _hubDetailsState.update {
                 it.copy(
-                    deletingItemResult = deleteItemResult
+                    itemDeletionResult = deleteItemResult
                 )
             }
         }
@@ -143,12 +155,14 @@ class HubDetailsViewModel(
 
     private fun getHubItems(hubID: String): Job {
         return viewModelScope.launch {
-            hubRepository.getHubs().first().let { hubsResult ->
-                hubsResult.map { hubs ->
-                    _hubDetailsState.update {
-                        it.copy(
-                            hub = hubs.first { hub -> hub.id == hubID }
-                        )
+            withContext(Dispatchers.IO) {
+                hubRepository.getHubs().first().let { hubsResult ->
+                    hubsResult.map { hubs ->
+                        _hubDetailsState.update {
+                            it.copy(
+                                hub = hubs.first { hub -> hub.id == hubID }
+                            )
+                        }
                     }
                 }
             }
@@ -157,7 +171,7 @@ class HubDetailsViewModel(
                 hubRepository.getItemsFromHub(hub.id).collect { itemsResult ->
                     _hubDetailsState.update {
                         it.copy(
-                            hubItemsResult = itemsResult.map { items -> items.toSet() }
+                            hubItemsResult = itemsResult
                         )
                     }
                 }

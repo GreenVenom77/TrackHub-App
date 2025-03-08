@@ -1,7 +1,6 @@
 package com.trackhub.feat_hub.presentation.hub_list
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -103,23 +102,45 @@ private fun HubListContent(
                 error.errorType?.toString(context) ?: context.getString(R.string.something_went_wrong)))
         }
 
+    hubListState.addHubResult
+        ?.onSuccess {
+            baseAction(BaseAction.HideLoading)
+            isSheetShown = false
+        }
+        ?.onError { error ->
+            baseAction(BaseAction.HideLoading)
+            baseAction(BaseAction.ShowErrorMessage(
+                error.errorType?.toString(context) ?: context.getString(R.string.something_went_wrong)))
+        }
+
     Box(modifier = modifier) {
-        Column() {
-            hubsResult?.onSuccess { hubs ->
-                LazyColumn(
-                    contentPadding = PaddingValues(8.dp),
-                ) {
-                    items(hubs) { hub ->
-                        hub.toHubUI().let { hubUI ->
-                            HubListCard(
-                                hub = hubUI,
-                                onClick = { navigateToHubDetails(hubUI.id) },
-                                modifier = Modifier.padding(8.dp)
-                            )
-                        }
+        hubsResult?.onSuccess { hubs ->
+            LazyColumn(
+                contentPadding = PaddingValues(8.dp),
+            ) {
+                items(
+                    items = hubs,
+                    key = { hub -> hub.id }
+                ) { hub ->
+                    hub.toHubUI().let { hubUI ->
+                        HubListCard(
+                            hub = hubUI,
+                            onClick = { navigateToHubDetails(hubUI.id) },
+                            modifier = Modifier.padding(8.dp)
+                        )
                     }
                 }
             }
+        }
+
+        if (showOwnedHubs) {
+            FloatingButton(
+                onClick = { isSheetShown = true },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(22.dp)
+                    .size(64.dp)
+            )
         }
 
         if (isSheetShown) {
@@ -133,16 +154,6 @@ private fun HubListContent(
                     baseAction(BaseAction.ShowLoading)
                     hubListAction(HubListAction.AddHub(hubName, hubDescription))
                 }
-            )
-        }
-
-        if (showOwnedHubs) {
-            FloatingButton(
-                onClick = { isSheetShown = true },
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(22.dp)
-                    .size(64.dp)
             )
         }
     }
