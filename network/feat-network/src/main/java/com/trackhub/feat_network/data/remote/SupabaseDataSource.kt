@@ -5,7 +5,7 @@ import com.greenvenom.core_network.data.NetworkResult
 import com.greenvenom.core_network.data.map
 import com.greenvenom.core_network.supabase.util.SupabaseClient
 import com.greenvenom.core_network.supabase.util.supabaseCall
-import com.greenvenom.core_network.supabase.util.supabaseLiveCall
+import com.greenvenom.core_network.supabase.util.supabaseRealtimeCall
 import com.trackhub.feat_network.domain.remote.RemoteDataSource
 import com.trackhub.core_hub.data.remote.dto.HubDto
 import com.trackhub.core_hub.data.remote.dto.HubItemDto
@@ -24,22 +24,15 @@ import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.postgrest.query.filter.FilterOperation
 import io.github.jan.supabase.postgrest.query.filter.FilterOperator
-import io.github.jan.supabase.realtime.PostgresAction
 import io.github.jan.supabase.realtime.channel
-import io.github.jan.supabase.realtime.postgresChangeFlow
 import io.github.jan.supabase.realtime.postgresListDataFlow
 import io.github.jan.supabase.realtime.realtime
-import io.github.jan.supabase.realtime.selectAsFlow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 
@@ -179,7 +172,7 @@ class SupabaseDataSource(
         val itemsChannel = client.realtime.channel("public:items")
         CoroutineScope(Dispatchers.IO).launch { itemsChannel.subscribe() }
 
-        return supabaseLiveCall {
+        return supabaseRealtimeCall {
             itemsChannel.postgresListDataFlow(
                 table = "items",
                 primaryKey = HubItemDto::id,

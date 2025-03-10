@@ -133,9 +133,7 @@ class HubRepositoryImpl(
                 }
                 .launchIn(this)
 
-
             // Start fetching remote data
-
             remoteDataSource.getItemsFromHub(hubId)
                 .onEach { remoteItems ->
                     remoteItems

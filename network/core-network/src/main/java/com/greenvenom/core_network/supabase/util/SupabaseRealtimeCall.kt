@@ -10,9 +10,8 @@ import io.ktor.client.call.NoTransformationFoundException
 import io.ktor.client.plugins.HttpRequestTimeoutException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.flow
 
-inline fun <reified T> supabaseLiveCall (
+inline fun <reified T> supabaseRealtimeCall (
     crossinline execute: () -> Flow<T>
 ): Flow<NetworkResult<T, NetworkError>> {
     return channelFlow {
