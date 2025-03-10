@@ -37,7 +37,7 @@ android {
 dependencies {
 
     implementation(project(":hub:core-hub"))
-    implementation(project(":more:core-more"))
+    implementation(project(":menu:core-menu"))
     implementation(project(":auth:core-auth"))
     implementation(project(":network:core-network"))
     implementation(project(":navigation:core-navigation"))

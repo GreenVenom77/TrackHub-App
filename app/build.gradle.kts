@@ -62,7 +62,7 @@ dependencies {
     implementation(project(":auth:feat-auth"))
     implementation(project(":hub:feat-hub"))
     implementation(project(":hub:core-hub"))
-    implementation(project(":more:feat-more"))
+    implementation(project(":menu:feat-menu"))
 
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
