@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
-import java.math.BigDecimal
 
 class HubRepositoryImpl(
     private val remoteDataSource: RemoteDataSource,
@@ -27,7 +26,7 @@ class HubRepositoryImpl(
 
     private val ownedHubs: MutableSet<Hub> = mutableSetOf()
     private val sharedHubs: MutableSet<Hub> = mutableSetOf()
-    private val cachedItems: MutableSet<HubItem> = mutableSetOf()
+    private val currentItems: MutableSet<HubItem> = mutableSetOf()
 
     override fun refreshHubs() {
         refreshHubsTrigger.tryEmit(Unit)
@@ -106,10 +105,10 @@ class HubRepositoryImpl(
     override suspend fun updateItem(
         itemId: Int,
         itemName: String,
-        itemStock: BigDecimal,
+        itemStock: Float,
         unit: String
     ): NetworkResult<Unit, NetworkError> {
-        val updatedItem = cachedItems.find { it.id == itemId }
+        val updatedItem = currentItems.find { it.id == itemId }
             ?.copy(name = itemName, stockCount = itemStock, unit = unit) as HubItem
 
         return remoteDataSource.updateItem(updatedItem)
@@ -125,21 +124,27 @@ class HubRepositoryImpl(
 
             // First emit from cache immediately
             cachedItemsFlow
-                .onEach {
-                    cachedItems.addAll(it)
-                    send(NetworkResult.Success(it))
+                .onEach { cachedItems ->
+                    currentItems.removeIf { currentItem ->
+                        currentItem.id in cachedItems.map { it.id }
+                    }
+                    currentItems.addAll(cachedItems)
+                    send(NetworkResult.Success(cachedItems))
                 }
                 .launchIn(this)
 
 
             // Start fetching remote data
+
             remoteDataSource.getItemsFromHub(hubId)
                 .onEach { remoteItems ->
                     remoteItems
-                        .onSuccess { items ->
+                        .onSuccess { fetchedItems ->
                             // Compare the new items to the cached items
-                            val newItems = items.filter { item -> item !in cachedItems }
-                            val deletedItems = cachedItems.filter { item -> item !in items }
+                            val newItems = fetchedItems.filter { item -> item !in currentItems }
+                            val deletedItems = currentItems.filter { currentItem ->
+                                currentItem.id !in fetchedItems.map { it.id }
+                            }
 
                             if (newItems.isNotEmpty()) {
                                 cacheDataSource.updateHubItems(newItems)
@@ -147,6 +152,7 @@ class HubRepositoryImpl(
 
                             if (deletedItems.isNotEmpty()) {
                                 cacheDataSource.deleteItems(deletedItems)
+                                currentItems.removeAll(deletedItems.toSet())
                             }
                         }
                         .onError { error ->
@@ -154,6 +160,6 @@ class HubRepositoryImpl(
                     }
                 }
                 .launchIn(this)
-        }.onCompletion { cachedItems.clear() }
+        }.onCompletion { currentItems.clear() }
     }
 }

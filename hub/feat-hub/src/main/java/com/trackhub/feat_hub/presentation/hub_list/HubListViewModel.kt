@@ -40,6 +40,7 @@ class HubListViewModel(
                     sharedHubsJob = null
                 }
             }
+            is HubListAction.ClearNetworkOperations -> clearNetworkOperations()
         }
     }
 
@@ -69,6 +70,14 @@ class HubListViewModel(
                     }
                 }
             }
+        }
+    }
+
+    private fun clearNetworkOperations() {
+        _hubListState.update {
+            it.copy(
+                addHubResult = null
+            )
         }
     }
 }

@@ -7,6 +7,7 @@ import com.trackhub.core_hub.domain.models.HubItem
 
 data class HubDetailsState(
     val hub: Hub? = null,
+    val currentItem: HubItem? = null,
     val hubDeletionResult: NetworkResult<Unit, NetworkError>? = null,
     val operationResult: NetworkResult<Unit, NetworkError>? = null,
     val itemDeletionResult: NetworkResult<Unit, NetworkError>? = null,

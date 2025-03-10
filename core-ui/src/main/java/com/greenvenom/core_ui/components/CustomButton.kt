@@ -34,8 +34,7 @@ fun CustomButton(
         shape = RoundedCornerShape(16.dp),
         contentPadding = contentPadding,
         colors = colors,
-        modifier = modifier
-            .fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         Text(
             text = text,

@@ -127,10 +127,19 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                     showOwnedHubs = true,
                     navigateToHubDetails = { hubId ->
                         navigationStateRepository.navigate(
-                            NavigationType.Standard(Screen.HubItems(hubId))
+                            NavigationType.Standard(Screen.HubDetails(hubId))
                         )
                     },
-                    onPhysicalBack = { navigationStateRepository.updateStoredDestinations() }
+                    onPhysicalBack = { navigationStateRepository.updateStoredDestinations() },
+                    hubBottomSheetState = destinationState.hubBottomSheetState,
+                    onSheetDismiss = {
+                        destinationHandler.destinationState.update { state ->
+                            state.copy(
+                                hubBottomSheetState = false,
+                                itemBottomSheetState = false
+                            )
+                        }
+                    }
                 )
             }
             composable<Screen.SharedHubs> {
@@ -138,14 +147,23 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                     showOwnedHubs = false,
                     navigateToHubDetails = { hubId ->
                         navigationStateRepository.navigate(
-                            NavigationType.Standard(Screen.HubItems(hubId))
+                            NavigationType.Standard(Screen.HubDetails(hubId))
                         )
                     },
-                    onPhysicalBack = { navigationStateRepository.updateStoredDestinations() }
+                    onPhysicalBack = { navigationStateRepository.updateStoredDestinations() },
+                    hubBottomSheetState = destinationState.hubBottomSheetState,
+                    onSheetDismiss = {
+                        destinationHandler.destinationState.update { state ->
+                            state.copy(
+                                hubBottomSheetState = false,
+                                itemBottomSheetState = false
+                            )
+                        }
+                    }
                 )
             }
-            composable<Screen.HubItems> {
-                val args = it.toRoute<Screen.HubItems>()
+            composable<Screen.HubDetails> {
+                val args = it.toRoute<Screen.HubDetails>()
 
                 HubDetailsScreen(
                     hubId = args.hubId,
@@ -155,7 +173,7 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                         destinationHandler.destinationState.update { state ->
                             state.copy(
                                 currentHub = null,
-                                bottomSheetState = false
+                                hubBottomSheetState = false
                             )
                         }
                     },
@@ -164,16 +182,31 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                             state.copy(currentHub = hub)
                         }
                     },
-                    hubBottomSheetState = destinationState.bottomSheetState,
-                    onHubBottomSheetDismiss = {
+                    hubBottomSheetState = destinationState.hubBottomSheetState,
+                    itemBottomSheetState = destinationState.itemBottomSheetState,
+                    onSheetDismiss = {
                         destinationHandler.destinationState.update { state ->
-                            state.copy(bottomSheetState = false)
+                            state.copy(
+                                hubBottomSheetState = false,
+                                itemBottomSheetState = false
+                            )
+                        }
+                    },
+                    onEditItem = {
+                        destinationHandler.destinationState.update { state ->
+                            state.copy(
+                                hubBottomSheetState = false,
+                                itemBottomSheetState = true
+                            )
                         }
                     }
                 )
             }
             composable<Screen.Activity> {
                 Text(text = "Activity")
+            }
+            composable<Screen.More> {
+                Text(text = "More")
             }
             composable<Screen.Profile> {
                 Text(text = "Profile")

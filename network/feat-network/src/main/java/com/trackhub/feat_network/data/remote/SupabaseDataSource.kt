@@ -24,9 +24,22 @@ import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.postgrest.query.filter.FilterOperation
 import io.github.jan.supabase.postgrest.query.filter.FilterOperator
+import io.github.jan.supabase.realtime.PostgresAction
+import io.github.jan.supabase.realtime.channel
+import io.github.jan.supabase.realtime.postgresChangeFlow
+import io.github.jan.supabase.realtime.postgresListDataFlow
+import io.github.jan.supabase.realtime.realtime
 import io.github.jan.supabase.realtime.selectAsFlow
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 
@@ -71,7 +84,10 @@ class SupabaseDataSource(
         }
     }
 
-    override suspend fun loginUser(email: String, password: String): NetworkResult<Unit, NetworkError> {
+    override suspend fun loginUser(
+        email: String,
+        password: String
+    ): NetworkResult<Unit, NetworkError> {
         return supabaseCall {
             client.auth.signInWith(Email) {
                 this.email = email
@@ -142,21 +158,29 @@ class SupabaseDataSource(
 
     override suspend fun updateItem(hubItem: HubItem): NetworkResult<Unit, NetworkError> {
         return supabaseCall {
-            client.from("items").update(hubItem)
+            client.from("items").update(hubItem) {
+                filter { HubItemDto::id eq hubItem.id }
+            }
         }
     }
 
     override suspend fun deleteItem(itemId: Int): NetworkResult<Unit, NetworkError> {
         return supabaseCall {
             client.from("items").delete {
-                filter { eq("id", itemId) }
+                filter { HubItemDto::id eq itemId }
             }
         }
     }
 
-    override fun getItemsFromHub(hubId: String): Flow<NetworkResult<List<HubItem>, NetworkError>> {
+    override suspend fun getItemsFromHub(
+        hubId: String
+    ): Flow<NetworkResult<List<HubItem>, NetworkError>> {
+        val itemsChannel = client.realtime.channel("public:items")
+        CoroutineScope(Dispatchers.IO).launch { itemsChannel.subscribe() }
+
         return supabaseLiveCall {
-            client.from("items").selectAsFlow(
+            itemsChannel.postgresListDataFlow(
+                table = "items",
                 primaryKey = HubItemDto::id,
                 filter = FilterOperation(
                     column = "hub_id",
@@ -164,6 +188,6 @@ class SupabaseDataSource(
                     value = hubId
                 )
             ).map { items -> items.map { it.toHubItem() } }
-        }
+        }.onCompletion { client.realtime.removeChannel(itemsChannel) }
     }
 }

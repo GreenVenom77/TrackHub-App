@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -19,6 +20,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.greenvenom.core_navigation.data.NavigationType
 import com.greenvenom.core_ui.theme.AppTheme
 import com.greenvenom.core_navigation.data.repository.NavigationStateRepository
+import com.greenvenom.core_ui.components.FloatingButton
 import com.skewnexus.trackhub.navigation.AppNavHost
 import com.trackhub.feat_navigation.components.BottomNavigationBar
 import com.trackhub.feat_navigation.components.TopAppBar
@@ -52,14 +54,14 @@ class MainActivity : AppCompatActivity() {
                                     )
                                 }
                             },
-                            isActionEnabled = navigationState.currentDestination is Screen.HubItems,
+                            isActionEnabled = navigationState.currentDestination is Screen.HubDetails,
                             action = {
-                                if (navigationState.currentDestination is Screen.HubItems) {
+                                if (navigationState.currentDestination is Screen.HubDetails) {
                                     IconButton(
                                         onClick = {
                                             destinationHandler.destinationState.update {
                                                 it.copy(
-                                                    bottomSheetState = true
+                                                    hubBottomSheetState = true
                                                 )
                                             }
                                         },
@@ -83,7 +85,27 @@ class MainActivity : AppCompatActivity() {
                             currentDestination = navigationState.currentDestination ?: Screen.MyHubs,
                             isVisible = navigationState.bottomBarState
                         )
-                    }
+                    },
+                    floatingActionButton = {
+                        FloatingButton(
+                            onClick = {
+                                destinationHandler.destinationState.update {
+                                    if (navigationState.currentDestination is Screen.HubDetails) {
+                                        it.copy(
+                                            itemBottomSheetState = true
+                                        )
+                                    } else {
+                                        it.copy(
+                                            hubBottomSheetState = true
+                                        )
+                                    }
+                                }
+                            },
+                            modifier = Modifier
+                                .size(64.dp)
+                        )
+                    },
+                    floatingActionButtonPosition = FabPosition.End
                 ) { innerPadding ->
                     AppNavHost(
                         modifier = Modifier

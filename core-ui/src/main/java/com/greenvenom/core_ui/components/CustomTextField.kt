@@ -69,7 +69,7 @@ fun CustomTextField(
             isError = error.isNotEmpty(),
             shape = RoundedCornerShape(16.dp),
             keyboardOptions = keyboardOptions,
-            modifier = modifier
+            modifier = modifier.fillMaxWidth()
         )
         if (error.isNotEmpty()) {
             Text(

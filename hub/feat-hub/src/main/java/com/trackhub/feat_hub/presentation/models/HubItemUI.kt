@@ -34,7 +34,7 @@ fun formatHubItemDate(timestamp: String): String {
     val instant = Instant.parse(timestamp)
 
     val readableDateFormatter = DateTimeFormatter
-        .ofPattern("MMMM d, yyyy at h:mm a")
+        .ofPattern("MMMM d, yyyy 'at' h:mm a")
         .withZone(ZoneId.systemDefault())
 
     // Return the formatted timestamp

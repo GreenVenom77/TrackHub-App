@@ -46,7 +46,7 @@ sealed class Screen: Destination {
     }
 
     @Serializable
-    data class HubItems(val hubId: String = ""): Screen() {
+    data class HubDetails(val hubId: String = ""): Screen() {
         override val destinationType: DestinationType = DestinationType.SIDE
     }
 

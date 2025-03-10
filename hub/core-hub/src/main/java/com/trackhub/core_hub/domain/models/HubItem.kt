@@ -1,12 +1,13 @@
 package com.trackhub.core_hub.domain.models
 
-import java.math.BigDecimal
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class HubItem(
     val id: Int = 0,
     val hubId: String,
     val name: String,
-    val stockCount: BigDecimal,
+    val stockCount: Float,
     val unit: String,
     val imageUrl: String? = null,
     val createdAt: String = "",

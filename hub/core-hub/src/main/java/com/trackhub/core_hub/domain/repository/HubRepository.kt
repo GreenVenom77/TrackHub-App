@@ -5,7 +5,6 @@ import com.greenvenom.core_network.data.NetworkResult
 import com.trackhub.core_hub.domain.models.Hub
 import com.trackhub.core_hub.domain.models.HubItem
 import kotlinx.coroutines.flow.Flow
-import java.math.BigDecimal
 
 interface HubRepository {
     fun refreshHubs()
@@ -17,7 +16,7 @@ interface HubRepository {
     suspend fun updateItem(
         itemId: Int,
         itemName: String,
-        itemStock: BigDecimal,
+        itemStock: Float,
         unit: String
     ): NetworkResult<Unit, NetworkError>
     suspend fun deleteHubItem(hubItemId: Int): NetworkResult<Unit, NetworkError>

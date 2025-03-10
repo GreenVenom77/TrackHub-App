@@ -18,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
@@ -39,7 +40,9 @@ import com.trackhub.feat_hub.presentation.models.toHubUI
 fun HubListScreen(
     showOwnedHubs: Boolean,
     navigateToHubDetails: (String) -> Unit,
-    onPhysicalBack: () -> Unit
+    onPhysicalBack: () -> Unit,
+    hubBottomSheetState: Boolean,
+    onSheetDismiss: () -> Unit
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
 
@@ -52,6 +55,7 @@ fun HubListScreen(
                     Lifecycle.Event.ON_STOP -> {
                         viewModel.hubListAction(HubListAction.StopCollectingHubs(showOwnedHubs))
                         onPhysicalBack()
+                        onSheetDismiss()
                     }
                     Lifecycle.Event.ON_START -> {
                         viewModel.hubListAction(HubListAction.StartCollectingHubs(showOwnedHubs))
@@ -73,6 +77,8 @@ fun HubListScreen(
             hubListAction = viewModel::hubListAction,
             baseAction = viewModel::baseAction,
             navigateToHubDetails = navigateToHubDetails,
+            hubBottomSheetState = hubBottomSheetState,
+            onSheetDismiss = onSheetDismiss,
             modifier = Modifier.fillMaxSize()
         )
     }
@@ -86,38 +92,42 @@ private fun HubListContent(
     hubListAction: (HubListAction) -> Unit,
     baseAction: (BaseAction) -> Unit,
     navigateToHubDetails: (String) -> Unit,
+    hubBottomSheetState: Boolean,
+    onSheetDismiss: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val hubsResult = if (showOwnedHubs) hubListState.ownedHubsResult else hubListState.sharedHubsResult
 
-    var isSheetShown by rememberSaveable { mutableStateOf(false) }
-
     hubsResult
-        ?.onSuccess { baseAction(BaseAction.HideLoading) }
+        ?.onSuccess {
+            baseAction(BaseAction.HideLoading)
+        }
         ?.onError { error ->
             baseAction(BaseAction.HideLoading)
             baseAction(BaseAction.ShowErrorMessage(
-                error.errorType?.toString(context) ?: context.getString(R.string.something_went_wrong)))
+                error.errorType?.toString(context) ?: stringResource(R.string.something_went_wrong)
+            ))
         }
 
     hubListState.addHubResult
         ?.onSuccess {
             baseAction(BaseAction.HideLoading)
-            isSheetShown = false
+            hubListAction(HubListAction.ClearNetworkOperations)
+            onSheetDismiss()
         }
         ?.onError { error ->
             baseAction(BaseAction.HideLoading)
             baseAction(BaseAction.ShowErrorMessage(
-                error.errorType?.toString(context) ?: context.getString(R.string.something_went_wrong)))
+                error.errorType?.toString(context) ?: stringResource(R.string.something_went_wrong),
+                dismissAction = { hubListAction(HubListAction.ClearNetworkOperations) }
+            ))
         }
 
     Box(modifier = modifier) {
         hubsResult?.onSuccess { hubs ->
-            LazyColumn(
-                contentPadding = PaddingValues(8.dp),
-            ) {
+            LazyColumn {
                 items(
                     items = hubs,
                     key = { hub -> hub.id }
@@ -126,28 +136,19 @@ private fun HubListContent(
                         HubListCard(
                             hub = hubUI,
                             onClick = { navigateToHubDetails(hubUI.id) },
-                            modifier = Modifier.padding(8.dp)
+                            modifier = Modifier
+                                .padding(8.dp)
                         )
                     }
                 }
             }
         }
 
-        if (showOwnedHubs) {
-            FloatingButton(
-                onClick = { isSheetShown = true },
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(22.dp)
-                    .size(64.dp)
-            )
-        }
-
-        if (isSheetShown) {
+        if (hubBottomSheetState) {
             HubBottomSheet(
                 sheetState = sheetState,
                 onDismiss = {
-                    isSheetShown = false
+                    onSheetDismiss()
                 },
                 isEdit = false,
                 onAdd = { hubName, hubDescription ->
@@ -168,5 +169,7 @@ private fun HubListPreview() {
         hubListAction = {  },
         baseAction = {  },
         navigateToHubDetails = {  },
+        hubBottomSheetState = false,
+        onSheetDismiss = {  },
     )
 }

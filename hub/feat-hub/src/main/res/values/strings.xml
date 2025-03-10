@@ -8,4 +8,10 @@
     <string name="edit_hub_Details">Edit Hub Details</string>
     <string name="hub_id">Hub ID</string>
     <string name="update_hub">Update Hub</string>
+    <string name="item_name">Name</string>
+    <string name="item_stock">Stock</string>
+    <string name="item_unit">Unit</string>
+    <string name="update_item">Update Item</string>
+    <string name="add_item">Add Item</string>
+    <string name="delete_item">Delete Item</string>
 </resources>

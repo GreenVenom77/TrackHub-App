@@ -31,7 +31,7 @@ data class HubItemEntity(
     @ColumnInfo(name = "name")
     val name: String,
     @ColumnInfo(name = "stock_count")
-    val stockCount: String,
+    val stockCount: Float,
     @ColumnInfo(name = "unit")
     val unit: String,
     @ColumnInfo(name = "image_url")
@@ -47,7 +47,7 @@ fun HubItem.toHubItemEntity(): HubItemEntity {
         id = this.id,
         hubId = this.hubId,
         name = this.name,
-        stockCount = this.stockCount.toString(),
+        stockCount = this.stockCount,
         unit = this.unit,
         imageUrl = this.imageUrl,
         createdAt = this.createdAt,
@@ -60,7 +60,7 @@ fun HubItemEntity.toHubItem(): HubItem {
         id = this.id,
         hubId = this.hubId,
         name = this.name,
-        stockCount = this.stockCount.toBigDecimal(),
+        stockCount = this.stockCount,
         unit = this.unit,
         imageUrl = this.imageUrl,
         createdAt = this.createdAt,

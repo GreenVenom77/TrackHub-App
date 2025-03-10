@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -37,10 +38,11 @@ fun ItemListCard(
         elevation = CardDefaults.cardElevation(12.dp),
         onClick = onClick,
         modifier = modifier
-            .width(152.dp)
-            .height(184.dp)
+            .fillMaxWidth()
+            .height(120.dp)
     ) {
-        Column(
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(12.dp)
@@ -50,31 +52,33 @@ fun ItemListCard(
                 contentDescription = hubItem.name,
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .size(80.dp)
-                    .weight(1f)
+                    .fillMaxHeight()
+                    .fillMaxWidth(0.2f)
             )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = hubItem.name,
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Row(
-                verticalAlignment = Alignment.Bottom,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
+            Spacer(modifier = Modifier.width(16.dp))
+            Column(
+                verticalArrangement = Arrangement.SpaceAround,
+                horizontalAlignment = Alignment.Start,
+                modifier = Modifier.fillMaxHeight()
             ) {
                 Text(
-                    text = "${hubItem.stockCount} ${hubItem.unit}",
-                    style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold)
+                    text = hubItem.name,
+                    style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold)
                 )
-                Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    text = hubItem.updatedAt ?: hubItem.createdAt ?: "",
-                    style = MaterialTheme.typography.bodySmall
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "${hubItem.stockCount} ${hubItem.unit}",
+                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(
+                        text = hubItem.updatedAt ?: hubItem.createdAt ?: "",
+                        style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold)
+                    )
+                }
             }
         }
     }
@@ -91,8 +95,8 @@ private fun ItemPreview() {
             stockCount = "10",
             unit = "pcs",
             imageUrl = "",
-            createdAt = "May 5 2025",
-            updatedAt = "May 5 2025"
+            createdAt = "March 9, 2025 at 5:30 PM",
+            updatedAt = "March 9, 2025 at 5:30 PM"
         ),
         onClick = {  },
         modifier = Modifier
