@@ -56,7 +56,7 @@ sealed class Screen: Destination {
     }
 
     @Serializable
-    data object More: Screen() {
+    data object Menu: Screen() {
         override val destinationType: DestinationType = DestinationType.MAIN
     }
 

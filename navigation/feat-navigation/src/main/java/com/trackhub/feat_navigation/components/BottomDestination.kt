@@ -29,6 +29,6 @@ enum class BottomDestination(
     More(
         icon = R.drawable.more_ic,
         label = R.string.more,
-        target = Screen.More
+        target = Screen.Menu
     );
 }

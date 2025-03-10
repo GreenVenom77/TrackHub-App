@@ -208,7 +208,7 @@ fun AppNavHost(modifier: Modifier = Modifier) {
             composable<Screen.Activity> {
                 Text(text = "Activity")
             }
-            composable<Screen.More> {
+            composable<Screen.Menu> {
                 Text(text = "More")
             }
             composable<Screen.Profile> {

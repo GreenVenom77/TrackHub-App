@@ -35,15 +35,11 @@ android {
 
 dependencies {
 
-    val koin = "4.0.0"
-
     implementation(project(":hub:core-hub"))
     implementation(project(":network:core-network"))
     implementation(project(":core-ui"))
 
-    implementation(platform("io.insert-koin:koin-bom:$koin"))
-    implementation("io.insert-koin:koin-androidx-compose")
-
+    implementation(libs.bundles.koin)
     implementation("com.valentinilk.shimmer:compose-shimmer:1.3.2")
 
     implementation(libs.androidx.core.ktx)
