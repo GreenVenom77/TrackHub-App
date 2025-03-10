@@ -88,6 +88,8 @@ class MainActivity : AppCompatActivity() {
                     },
                     floatingActionButton = {
                         FloatingButton(
+                            isVisible = navigationState.currentDestination is Screen.HubDetails
+                                || navigationState.currentDestination is Screen.MyHubs,
                             onClick = {
                                 destinationHandler.destinationState.update {
                                     if (navigationState.currentDestination is Screen.HubDetails) {
