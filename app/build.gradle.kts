@@ -6,13 +6,13 @@ plugins {
 }
 
 android {
-    namespace = "com.greevebite.trackhub"
-    compileSdk = 34
+    namespace = "com.skewnexus.trackhub"
+    compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.greevebite.trackhub"
-        minSdk = 24
-        targetSdk = 34
+        applicationId = "com.skewnexus.trackhub"
+        minSdk = 26
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -39,7 +39,6 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
-        buildConfig = true
         compose = true
     }
     packaging {
@@ -47,21 +46,29 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    androidResources {
+        generateLocaleConfig = true
+    }
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.bundles.koin)
-    implementation(libs.bundles.compose)
 
-    // Navigation
+    implementation(project(":network:core-network"))
+    implementation(project(":network:feat-network"))
+    implementation(project(":navigation:core-navigation"))
+    implementation(project(":navigation:feat-navigation"))
+
+    implementation(project(":core-ui"))
+    implementation(project(":auth:feat-auth"))
+    implementation(project(":hub:feat-hub"))
+    implementation(project(":hub:core-hub"))
+    implementation(project(":menu:feat-menu"))
+
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.bundles.compose)
+    implementation(libs.bundles.koin)
     implementation(libs.kotlinx.serialization.json)
-    implementation(project(":domain"))
-    implementation(project(":data"))
-    implementation(project(":navigation"))
-    implementation(project(":networking"))
-    implementation(project(":ui"))
-    implementation(project(":features:auth"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
