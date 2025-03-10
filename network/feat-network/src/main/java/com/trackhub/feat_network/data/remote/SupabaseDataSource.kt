@@ -119,6 +119,7 @@ class SupabaseDataSource(
     override suspend fun updateHub(hub: Hub): NetworkResult<Hub, NetworkError> {
         val result = supabaseCall {
             client.from("hubs").update(hub.toHubDto()) {
+                filter { HubDto::id eq hub.id }
                 select()
             }.decodeSingle<HubDto>()
         }
@@ -129,7 +130,7 @@ class SupabaseDataSource(
     override suspend fun deleteHub(hubId: String): NetworkResult<Unit, NetworkError> {
         return supabaseCall {
             client.from("hubs").delete {
-                filter { eq("id", hubId) }
+                filter { HubDto::id eq hubId }
             }
         }
     }

@@ -53,9 +53,11 @@ private fun BottomBarContent(
                         contentDescription = "${stringResource(destination.label)} Navigation Icon"
                     )
                 },
-                label = { Text(
-                    text = stringResource(destination.label),
-                    style = MaterialTheme.typography.labelLarge)
+                label = {
+                    Text(
+                        text = stringResource(destination.label),
+                        style = MaterialTheme.typography.labelMedium
+                    )
                 },
                 selected = destination.target == currentDestination,
             )

@@ -9,6 +9,7 @@ data class HubDetailsState(
     val hub: Hub? = null,
     val currentItem: HubItem? = null,
     val hubDeletionResult: NetworkResult<Unit, NetworkError>? = null,
+    val hubUpdateResult: NetworkResult<Unit, NetworkError>? = null,
     val operationResult: NetworkResult<Unit, NetworkError>? = null,
     val itemDeletionResult: NetworkResult<Unit, NetworkError>? = null,
     val hubItemsResult: NetworkResult<List<HubItem>, NetworkError>? = null

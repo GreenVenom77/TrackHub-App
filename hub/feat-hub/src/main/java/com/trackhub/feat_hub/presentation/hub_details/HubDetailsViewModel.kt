@@ -74,7 +74,7 @@ class HubDetailsViewModel(
             val updateHubResult = hubRepository.updateHub(updatedHub)
             _hubDetailsState.update {
                 it.copy(
-                    operationResult = updateHubResult
+                    hubUpdateResult = updateHubResult
                 )
             }
         }

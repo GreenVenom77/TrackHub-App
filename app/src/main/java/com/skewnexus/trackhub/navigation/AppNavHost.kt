@@ -199,6 +199,9 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                                 itemBottomSheetState = true
                             )
                         }
+                    },
+                    navigateBack = {
+                        navigationStateRepository.navigate(NavigationType.Back)
                     }
                 )
             }

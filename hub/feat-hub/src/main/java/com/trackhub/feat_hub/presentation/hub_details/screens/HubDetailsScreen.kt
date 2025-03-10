@@ -49,6 +49,7 @@ fun HubDetailsScreen(
     itemBottomSheetState: Boolean,
     onSheetDismiss: () -> Unit,
     onEditItem: () -> Unit,
+    navigateBack: () -> Unit
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
 
@@ -85,6 +86,7 @@ fun HubDetailsScreen(
             onSheetDismiss = onSheetDismiss,
             onHubDeletion = onHubDeletion,
             onEditItem = onEditItem,
+            navigateBack = navigateBack,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(12.dp)
@@ -105,6 +107,7 @@ private fun HubDetailsContent(
     onSheetDismiss: () -> Unit,
     onHubDeletion: () -> Unit,
     onEditItem: () -> Unit,
+    navigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -126,11 +129,30 @@ private fun HubDetailsContent(
             baseAction(BaseAction.HideLoading)
             hubDetailsAction(HubDetailsAction.ClearNetworkOperations)
             onSheetDismiss()
+            hubDetailsAction(HubDetailsAction.UpdateCurrentItem(null))
             isItemEdit = false
         }
         ?.onError { error ->
             baseAction(BaseAction.HideLoading)
             baseAction(BaseAction.ShowErrorMessage(
+                error.errorType?.toString(context) ?: stringResource(R.string.something_went_wrong),
+                dismissAction = {
+                    hubDetailsAction(HubDetailsAction.ClearNetworkOperations)
+                }
+            ))
+        }
+
+    hubDetailsState.hubUpdateResult
+        ?.onSuccess {
+            baseAction(BaseAction.HideLoading)
+            hubDetailsAction(HubDetailsAction.ClearNetworkOperations)
+            onSheetDismiss()
+            navigateBack()
+        }
+        ?.onError { error ->
+            baseAction(BaseAction.HideLoading)
+            baseAction(
+                BaseAction.ShowErrorMessage(
                 error.errorType?.toString(context) ?: stringResource(R.string.something_went_wrong),
                 dismissAction = {
                     hubDetailsAction(HubDetailsAction.ClearNetworkOperations)
@@ -159,6 +181,7 @@ private fun HubDetailsContent(
             baseAction(BaseAction.HideLoading)
             hubDetailsAction(HubDetailsAction.ClearNetworkOperations)
             onSheetDismiss()
+            hubDetailsAction(HubDetailsAction.UpdateCurrentItem(null))
             isItemEdit = false
         }
         ?.onError { error ->
@@ -257,6 +280,7 @@ private fun HubDetailsContentPreview() {
         onSheetDismiss = {  },
         itemBottomSheetState = false,
         onHubDeletion = {  },
-        onEditItem = {  }
+        onEditItem = {  },
+        navigateBack = {  }
     )
 }
