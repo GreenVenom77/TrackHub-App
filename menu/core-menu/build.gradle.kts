@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.greenvenom.core_more"
+    namespace = "com.greenvenom.core_menu"
     compileSdk = 35
 
     defaultConfig {
@@ -34,9 +34,9 @@ android {
 
 dependencies {
 
+    implementation(project(":network:core-network"))
+
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -22,6 +22,7 @@ import com.greenvenom.feat_auth.presentation.register.RegisterScreen
 import com.greenvenom.feat_auth.presentation.reset_password.screens.NewPasswordScreen
 import com.greenvenom.feat_auth.presentation.reset_password.screens.VerifyEmailScreen
 import com.greenvenom.feat_auth.presentation.splash.SplashScreen
+import com.greenvenom.feat_menu.presentation.MenuScreen
 import com.trackhub.feat_navigation.routes.Screen
 import com.trackhub.feat_navigation.routes.SubGraph
 import kotlinx.coroutines.flow.update
@@ -209,7 +210,7 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                 Text(text = "Activity")
             }
             composable<Screen.Menu> {
-                Text(text = "More")
+                MenuScreen()
             }
             composable<Screen.Profile> {
                 Text(text = "Profile")
