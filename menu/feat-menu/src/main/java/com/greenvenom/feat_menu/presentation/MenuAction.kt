@@ -1,7 +1,9 @@
 package com.greenvenom.feat_menu.presentation
 
+import android.content.Context
+
 interface MenuAction {
-    data object ChangeLanguage: MenuAction
-    data object ChangeTheme: MenuAction
+    data class ChangeLanguage(val languageTag: String): MenuAction
+    data class ChangeTheme(val context: Context): MenuAction
     data object Logout: MenuAction
 }

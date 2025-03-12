@@ -49,6 +49,11 @@ android {
     androidResources {
         generateLocaleConfig = true
     }
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
 }
 
 dependencies {

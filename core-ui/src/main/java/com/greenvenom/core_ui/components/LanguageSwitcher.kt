@@ -40,7 +40,7 @@ fun LanguageSwitcher(
     parentShape: Shape = CircleShape,
     toggleShape: Shape = CircleShape,
     animationSpec: AnimationSpec<Dp> = tween(durationMillis = 300),
-    onClick: () -> Unit
+    onClick: (String) -> Unit
 ) {
     val offset by animateDpAsState(
         targetValue = if (isArabic) size else 0.dp,
@@ -52,7 +52,7 @@ fun LanguageSwitcher(
             .width(size * 2)
             .height(size)
             .clip(shape = parentShape)
-            .clickable { onClick() }
+            .clickable { onClick(if (isArabic) "en" else "ar") }
             .background(MaterialTheme.colorScheme.secondaryContainer)
     ) {
         Box(
